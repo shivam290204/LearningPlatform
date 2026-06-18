@@ -1,0 +1,39 @@
+@import './assets/css/variables.css';
+
+/* Baseline Global Styles and Utilities */
+a {
+  color: var(--brand-cyan);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--brand-violet);
+  text-shadow: 0 0 8px var(--brand-violet-muted);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-sans);
+}
+
+/* Scrollbar Styling for Sleek Tech Feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-cyan);
+}

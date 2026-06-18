@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Strict 3-Color Premium Design Tokens */
+  --bg-primary: #000000;                  /* Pure Black - 80% */
+  --bg-secondary: #000000;                /* Elevated Cards (kept Black for flat high-fidelity) */
+  --bg-tertiary: rgba(255, 255, 255, 0.15); /* Hairline Elegant White Borders */
+  
+  --text-primary: #FFFFFF;                 /* Pure White - 15% */
+  --text-secondary: rgba(255, 255, 255, 0.75); /* Accessible contrast secondary text */
+  --text-tertiary: rgba(255, 255, 255, 0.5);  /* Muted metadata descriptions */
+  
+  /* Primary Action Highlight - Cyber Cyan - 5% */
+  --brand-cyan: #24E0D9;                   
+  --brand-cyan-muted: rgba(36, 224, 217, 0.1);
+  --brand-cyan-glow: 0 0 16px rgba(36, 224, 217, 0.45);
+  
+  --brand-violet: #FFFFFF;                 /* Mapped to white to eliminate purple colors */
+  --brand-violet-muted: rgba(255, 255, 255, 0.08);
+  
+  --highlight-gradient-end: #FFFFFF;       /* White in dark mode */
+  
+  /* Status indicators mapped cleanly under strict 3-color parameters */
+  --accent-success: #FFFFFF;               /* Correct assessment answers */
+  --accent-warning: #24E0D9;               /* Streak indicators, focus badges */
+  --accent-error: #FFFFFF;                 /* Mapped to white with custom border styles to keep strict branding */
+
+  /* Modern Interface Typography Scale */
+  --font-family-sans: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-slab: 'Roboto Slab', serif;
+  --font-family-serif: 'Lora', serif;
+  --font-family-pixel: 'Press Start 2P', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+  
+  /* Layout Metrics */
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  
+  --box-shadow-glow: 0 0 20px rgba(36, 224, 217, 0.25);
+  --border-glow: 1px solid rgba(36, 224, 217, 0.25);
+}
+
+/* Accessible High-Contrast Off-White Light Mode inversion */
+.light-theme {
+  --bg-primary: #F8F9FA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: rgba(0, 0, 0, 0.15);      /* Slate-black borders */
+  
+  --text-primary: #000000;
+  --text-secondary: rgba(0, 0, 0, 0.75);
+  --text-tertiary: rgba(0, 0, 0, 0.5);
+  
+  --brand-cyan: #24E0D9;
+  --brand-cyan-muted: rgba(36, 224, 217, 0.15);
+  --brand-cyan-glow: 0 0 16px rgba(36, 224, 217, 0.35);
+
+  --brand-violet: #000000;
+  --brand-violet-muted: rgba(0, 0, 0, 0.05);
+
+  --highlight-gradient-end: #000000;       /* Black in light mode */
+
+  --accent-success: #000000;
+  --accent-warning: #24E0D9;
+  --accent-error: #000000;
+}
+
+/* Global Base Resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-slab);
+  font-weight: 700;
+}
+
+/* Premium reading experience font updates */
+.theory-narrative-box, .analogy-narrative-box {
+  font-family: var(--font-family-serif);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Gamified elements using Press Start 2P */
+.xp-badge, .streak-badge {
+  font-family: var(--font-family-pixel);
+  font-size: 0.62rem !important;
+  letter-spacing: -0.5px;
+}
+
+.stats-value {
+  font-family: var(--font-family-pixel);
+  font-size: 1.15rem !important;
+  letter-spacing: -1px;
+}
+
+code, pre {
+  font-family: var(--font-family-mono);
+}

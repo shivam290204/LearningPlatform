@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Environment Variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# Java / Spring Boot
+target/
+*.class
+
+# OS Files
+.DS_Store
+Thumbs.db
