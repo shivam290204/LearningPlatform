@@ -31,7 +31,7 @@ export default function InteractiveVisualizer() {
       // Threshold reached, double size!
       setIsResizing(true);
       setArrayLogs(prev => [
-        `🚨 Threshold reached! Triggering internal array resizing...`,
+        `Threshold reached! Triggering internal array resizing...`,
         ...prev
       ]);
 
@@ -39,7 +39,7 @@ export default function InteractiveVisualizer() {
         const oldCapacity = arrayCapacity;
         const newCapacity = oldCapacity * 2;
         setArrayLogs(prev => [
-          `⚡ Doubled capacity from ${oldCapacity} to ${newCapacity} & copied old elements.`,
+          `Doubled capacity from ${oldCapacity} to ${newCapacity} & copied old elements.`,
           ...prev
         ]);
         setArrayCapacity(newCapacity);
@@ -75,7 +75,7 @@ export default function InteractiveVisualizer() {
 
   const handleListInsertHead = () => {
     if (linkedNodes.length >= 6) {
-      setListLogs(prev => ['⚠️ Visualizer limit of 6 nodes reached.', ...prev]);
+      setListLogs(prev => ['Visualizer limit of 6 nodes reached.', ...prev]);
       return;
     }
     const val = Math.floor(Math.random() * 80 + 10);
@@ -86,7 +86,7 @@ export default function InteractiveVisualizer() {
 
   const handleListInsertTail = () => {
     if (linkedNodes.length >= 6) {
-      setListLogs(prev => ['⚠️ Visualizer limit of 6 nodes reached.', ...prev]);
+      setListLogs(prev => ['Visualizer limit of 6 nodes reached.', ...prev]);
       return;
     }
     const val = Math.floor(Math.random() * 80 + 10);
@@ -97,7 +97,7 @@ export default function InteractiveVisualizer() {
 
   const handleListDeleteTail = () => {
     if (linkedNodes.length === 0) {
-      setListLogs(prev => ['⚠️ Underflow: List is empty.', ...prev]);
+      setListLogs(prev => ['Underflow: List is empty.', ...prev]);
       return;
     }
     const removedVal = linkedNodes[linkedNodes.length - 1].val;
@@ -113,7 +113,7 @@ export default function InteractiveVisualizer() {
 
   const handleStackPush = () => {
     if (stackItems.length >= 5) {
-      setStackLogs(prev => ['❌ StackOverflowError! Stack limit (5 items) reached.', ...prev]);
+      setStackLogs(prev => ['StackOverflowError! Stack limit (5 items) reached.', ...prev]);
       return;
     }
     const val = Math.floor(Math.random() * 80 + 10);
@@ -123,7 +123,7 @@ export default function InteractiveVisualizer() {
 
   const handleStackPop = () => {
     if (stackItems.length === 0) {
-      setStackLogs(prev => ['❌ EmptyStackException! Pop operation underflow.', ...prev]);
+      setStackLogs(prev => ['EmptyStackException! Pop operation underflow.', ...prev]);
       return;
     }
     const popped = stackItems[stackItems.length - 1];
@@ -139,7 +139,7 @@ export default function InteractiveVisualizer() {
 
   const handleQueueEnqueue = () => {
     if (queueItems.length >= 5) {
-      setQueueLogs(prev => ['❌ Queue Full (Overflow)! Cannot add element.', ...prev]);
+      setQueueLogs(prev => ['Queue Full (Overflow)! Cannot add element.', ...prev]);
       return;
     }
     const val = Math.floor(Math.random() * 80 + 10);
@@ -149,7 +149,7 @@ export default function InteractiveVisualizer() {
 
   const handleQueueDequeue = () => {
     if (queueItems.length === 0) {
-      setQueueLogs(prev => ['❌ Queue Empty (Underflow)! Cannot remove element.', ...prev]);
+      setQueueLogs(prev => ['Queue Empty (Underflow)! Cannot remove element.', ...prev]);
       return;
     }
     const dequeued = queueItems[0];

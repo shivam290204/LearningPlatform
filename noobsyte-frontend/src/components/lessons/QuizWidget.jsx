@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import './QuizWidget.css';
 
-function QuizWidget({ quiz, onQuizPassed }) {
+function QuizWidget({ quiz, onQuizPassed, onSubmitAnswer }) {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
+
+  // Local state for answers returned by server if not pre-provided (stripped in API)
+  const activeQuestion = quiz ? quiz.questions[0] : null;
+  const [correctIdx, setCorrectIdx] = useState(activeQuestion ? activeQuestion.correctAnswerIndex : null);
+  const [explanationText, setExplanationText] = useState(activeQuestion ? activeQuestion.explanation : '');
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   if (!quiz || !quiz.questions || quiz.questions.length === 0) {
     return (
@@ -14,23 +20,45 @@ function QuizWidget({ quiz, onQuizPassed }) {
     );
   }
 
-  // Support first question in list for simple inline assessments
-  const activeQuestion = quiz.questions[0];
-  const { questionText, options, correctAnswerIndex, explanation } = activeQuestion;
+  const { questionText, options } = activeQuestion;
 
   const handleOptionSelect = (idx) => {
     if (isAnswered) return; // Prevent multiple selection locks
     setSelectedIdx(idx);
   };
 
-  const handleCheckAnswer = () => {
+  const handleCheckAnswer = async () => {
     if (selectedIdx === null || isAnswered) return;
-    setIsAnswered(true);
-    setShowExplanation(true);
 
-    const isCorrect = selectedIdx === correctAnswerIndex;
-    if (isCorrect && onQuizPassed) {
-      onQuizPassed();
+    if (onSubmitAnswer) {
+      // Server-side validation flow
+      const result = await onSubmitAnswer(selectedIdx);
+      if (result && result.success) {
+        setCorrectIdx(result.correctAnswerIndex);
+        setExplanationText(result.explanation);
+        setIsCorrectAnswer(result.isCorrect);
+        setIsAnswered(true);
+        setShowExplanation(true);
+        if (result.isCorrect && onQuizPassed) {
+          onQuizPassed(true); // server-synced pass
+        }
+      } else {
+        alert('Failed to submit answer. Please try again.');
+      }
+    } else {
+      // Local fallback validation (offline/guest mode)
+      const localCorrectIdx = activeQuestion.correctAnswerIndex;
+      const localExplanation = activeQuestion.explanation;
+      const isCorrect = selectedIdx === localCorrectIdx;
+
+      setCorrectIdx(localCorrectIdx);
+      setExplanationText(localExplanation);
+      setIsCorrectAnswer(isCorrect);
+      setIsAnswered(true);
+      setShowExplanation(true);
+      if (isCorrect && onQuizPassed) {
+        onQuizPassed(false); // local-only pass
+      }
     }
   };
 
@@ -38,6 +66,9 @@ function QuizWidget({ quiz, onQuizPassed }) {
     setSelectedIdx(null);
     setIsAnswered(false);
     setShowExplanation(false);
+    setIsCorrectAnswer(false);
+    setCorrectIdx(activeQuestion ? activeQuestion.correctAnswerIndex : null);
+    setExplanationText(activeQuestion ? activeQuestion.explanation : '');
   };
 
   return (
@@ -53,7 +84,7 @@ function QuizWidget({ quiz, onQuizPassed }) {
         <div className="quiz-options-list">
           {options.map((option, idx) => {
             const isSelected = selectedIdx === idx;
-            const isCorrect = idx === correctAnswerIndex;
+            const isCorrect = idx === correctIdx;
             
             let cardClass = '';
             if (isSelected) cardClass = 'selected';
@@ -85,15 +116,15 @@ function QuizWidget({ quiz, onQuizPassed }) {
 
       {/* Logic explanation banner */}
       {showExplanation && (
-        <div className={`explanation-card ${selectedIdx === correctAnswerIndex ? 'passed' : 'failed'}`}>
+        <div className={`explanation-card ${isCorrectAnswer ? 'passed' : 'failed'}`}>
           <h5 className="explanation-title">
-            {selectedIdx === correctAnswerIndex ? (
+            {isCorrectAnswer ? (
               <><i className="fa-solid fa-circle-check" style={{ marginRight: '0.5rem' }}></i> Excellent! Correct Answer.</>
             ) : (
               <><i className="fa-solid fa-circle-xmark" style={{ marginRight: '0.5rem' }}></i> Oops! Incorrect Answer.</>
             )}
           </h5>
-          <p className="explanation-text">{explanation}</p>
+          <p className="explanation-text">{explanationText}</p>
         </div>
       )}
 

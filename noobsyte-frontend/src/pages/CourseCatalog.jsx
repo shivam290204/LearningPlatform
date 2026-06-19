@@ -5,15 +5,20 @@ import { AuthContext } from '../context/AuthContext';
 import JavaSandbox from '../components/dashboard/JavaSandbox';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 
-function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
+function CourseCatalog({ 
+  onSelectLesson, 
+  onClaimCertificate,
+  activeCatalogTab,
+  setActiveCatalogTab,
+  selectedCourseSlug,
+  setSelectedCourseSlug
+}) {
   const { courses, modules, loading, fetchCourses, fetchCourseModules } = useContext(LearningContext);
   const { completedLessons, activeStreak, totalXp } = useContext(ProgressContext);
   const { user } = useContext(AuthContext);
 
-  const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
   const [simStep, setSimStep] = useState('declare'); // 'declare' or 'allocate'
-  const [activeCatalogTab, setActiveCatalogTab] = useState('learning');
 
   // Ref for roadmap scrolling
   const roadmapRef = useRef(null);
@@ -294,7 +299,7 @@ function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
           className={`workspace-tab-btn ${activeCatalogTab === 'jvm' ? 'active' : ''}`}
           onClick={() => setActiveCatalogTab('jvm')}
         >
-          <i className="fa-solid fa-brain" style={{ marginRight: '0.5rem' }}></i> Visualizer (JVM & DSA)
+          <i className="fa-solid fa-brain" style={{ marginRight: '0.5rem' }}></i> Visualizer
         </button>
         <button
           className={`workspace-tab-btn ${activeCatalogTab === 'sandbox' ? 'active' : ''}`}
@@ -323,41 +328,41 @@ function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
               Master Java <span className="highlight-text">the Visual Way</span>
             </h1>
             <p className="hero-subtitle">
-              Learn Java through interactive JVM memory simulations, real-world analogies, structural code walkthroughs, and conceptual quizzes. Zero boring textbooks, 100% execution-based depth.
+              Zero boring textbooks, 100% execution-based depth.
             </p>
 
             {/* Highlights Deck */}
             <div className="hero-highlights-deck">
               <div className="hero-highlight-item">
-                <span className="highlight-icon">📚</span>
+                <span className="highlight-icon"><i className="fa-solid fa-book-open"></i></span>
                 <div className="highlight-info">
                   <span className="info-title">120+ Lessons</span>
                   <span className="info-sub">Core to Advanced</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon">🎯</span>
+                <span className="highlight-icon"><i className="fa-solid fa-bullseye"></i></span>
                 <div className="highlight-info">
                   <span className="info-title">Beginner to Expert</span>
                   <span className="info-sub">Career Oriented</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon">⚡</span>
+                <span className="highlight-icon"><i className="fa-solid fa-bolt"></i></span>
                 <div className="highlight-info">
                   <span className="info-title">XP System</span>
                   <span className="info-sub">Active Rewards</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon">🏆</span>
+                <span className="highlight-icon"><i className="fa-solid fa-trophy"></i></span>
                 <div className="highlight-info">
                   <span className="info-title">Certificates</span>
                   <span className="info-sub">Verified Credentials</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon">🧠</span>
+                <span className="highlight-icon"><i className="fa-solid fa-brain"></i></span>
                 <div className="highlight-info">
                   <span className="info-title">JVM Visuals</span>
                   <span className="info-sub">Stack & Heap SIMs</span>
@@ -448,7 +453,7 @@ function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
 
             {!user && (
               <div className="guest-tracker-callout">
-                <span>🔒 Progress tracking is currently paused. <strong>Sign In</strong> or <strong>Register</strong> to save your streak and unlock certificates!</span>
+                <span><i className="fa-solid fa-lock" style={{ marginRight: '0.5rem', color: 'var(--brand-cyan)' }}></i> Progress tracking is currently paused. <strong>Sign In</strong> or <strong>Register</strong> to save your streak and unlock certificates!</span>
               </div>
             )}
           </section>
@@ -624,37 +629,37 @@ function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
             <div className="features-deck-grid">
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-brain"></i></div>
-                <h4>🧠 JVM Simulations</h4>
+                <h4>JVM Simulations</h4>
                 <p>Step inside JVM memory stack and heap blocks. Watch references allocation, parameters passing, and heap dereferencing occur in real-time.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-earth-americas"></i></div>
-                <h4>🌍 Real-Life Analogies</h4>
+                <h4>Real-Life Analogies</h4>
                 <p>No dry syntax charts. Complex OOP rules and concurrency models explained through intuitive real-world structures.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-code"></i></div>
-                <h4>💻 Interactive Examples</h4>
+                <h4>Interactive Examples</h4>
                 <p>Run, modify, and dissect actual code snippets inside modular execution containers right in your browser tab.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-circle-question"></i></div>
-                <h4>❓ Conceptual Quizzes</h4>
+                <h4>Conceptual Quizzes</h4>
                 <p>Validate your knowledge at the end of each lesson with challenging quizzes focused on memory rules and structural outcomes.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-bolt"></i></div>
-                <h4>⚡ Reward-Driven XP</h4>
+                <h4>Reward-Driven XP</h4>
                 <p>Climb milestones and gain reputation by keeping streaks alive, completing lessons, and answering quizzes cleanly.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-graduation-cap"></i></div>
-                <h4>🏆 Verified Certificates</h4>
+                <h4>Verified Certificates</h4>
                 <p>Unlock, view, print, and share your graduation certificate to highlight your core Java expertise on platforms like LinkedIn.</p>
               </div>
             </div>

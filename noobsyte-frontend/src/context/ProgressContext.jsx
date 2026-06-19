@@ -50,12 +50,22 @@ export const ProgressProvider = ({ children }) => {
     }
   };
 
-  const submitScore = async (lessonId, score, passed) => {
+  const submitScore = async (lessonId, selectedOptionIndex) => {
     try {
-      await axios.post(`${API_URL}/api/v1/progress/lessons/${lessonId}/quiz-submit`, { score, passed });
+      const response = await axios.post(`${API_URL}/api/v1/progress/lessons/${lessonId}/quiz-submit`, { selectedOptionIndex });
       await fetchProgressSummary();
+      return {
+        success: true,
+        isCorrect: response.data.data.isCorrect,
+        correctAnswerIndex: response.data.data.correctAnswerIndex,
+        explanation: response.data.data.explanation
+      };
     } catch (error) {
       console.error('Error logging quiz scores telemetry:', error.message);
+      return {
+        success: false,
+        error: error.message
+      };
     }
   };
 

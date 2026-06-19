@@ -25,6 +25,8 @@ function AppContent() {
   const [selectedLessonSlug, setSelectedLessonSlug] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [certificateCourseSlug, setCertificateCourseSlug] = useState(null);
+  const [activeCatalogTab, setActiveCatalogTab] = useState('learning');
+  const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
 
   // Initialize theme state: default 'dark' black and white minimalist
   const [theme, setTheme] = useState(localStorage.getItem('ns_theme') || 'dark');
@@ -56,12 +58,14 @@ function AppContent() {
     setCertificateCourseSlug(null);
     setSearchQuery('');
     setSearchResults([]);
+    setActiveCatalogTab('learning');
+    setSelectedCourseSlug(null);
     setActiveScreen('home');
   };
 
   const handleSelectLesson = (lessonSlug) => {
     if (!user) {
-      alert('🔒 Please sign in to access interactive visual lessons, SVG simulators, and quiz assessments!');
+      alert('Please sign in to access interactive visual lessons, SVG simulators, and quiz assessments!');
       setActiveScreen('login');
       return;
     }
@@ -77,9 +81,16 @@ function AppContent() {
     setActiveScreen('home');
   };
 
+  const handleNavbarCoursesClick = () => {
+    setSelectedLessonSlug(null);
+    handleCloseSearch();
+    setActiveCatalogTab('learning');
+    setSelectedCourseSlug(null);
+  };
+
   const handleClaimCertificate = (courseSlug) => {
     if (!user) {
-      alert('🔒 Please sign in to claim verified credentials!');
+      alert('Please sign in to claim verified credentials!');
       setActiveScreen('login');
       return;
     }
@@ -92,7 +103,7 @@ function AppContent() {
       <header className="navbar">
         <div 
           className="logo-container" 
-          onClick={() => { setSelectedLessonSlug(null); handleCloseSearch(); }} 
+          onClick={handleNavbarCoursesClick} 
           style={{ cursor: 'pointer' }}
         >
           <span className="logo-glow">noob</span>
@@ -117,7 +128,7 @@ function AppContent() {
         <nav className="nav-links">
           <button 
             className={`nav-btn ${(activeScreen === 'home' || activeScreen === 'lesson') ? 'active' : ''}`}
-            onClick={() => { setSelectedLessonSlug(null); handleCloseSearch(); }}
+            onClick={handleNavbarCoursesClick}
           >
             Courses
           </button>
@@ -249,6 +260,10 @@ function AppContent() {
         <CourseCatalog 
           onSelectLesson={handleSelectLesson} 
           onClaimCertificate={handleClaimCertificate} 
+          activeCatalogTab={activeCatalogTab}
+          setActiveCatalogTab={setActiveCatalogTab}
+          selectedCourseSlug={selectedCourseSlug}
+          setSelectedCourseSlug={setSelectedCourseSlug}
         />
       )}
 
