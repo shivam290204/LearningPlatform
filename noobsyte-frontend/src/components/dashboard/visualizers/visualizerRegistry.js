@@ -18,6 +18,11 @@ import GraphTraversalVisualizer from './dsa/GraphTraversalVisualizer';
 import BinarySearchVisualizer from './dsa/BinarySearchVisualizer';
 import BstVisualizer from './dsa/BstVisualizer';
 import QuickSortVisualizer from './dsa/QuickSortVisualizer';
+import AvlVisualizer from './dsa/AvlVisualizer';
+import HeapVisualizer from './dsa/HeapVisualizer';
+import TrieVisualizer from './dsa/TrieVisualizer';
+import DijkstraVisualizer from './dsa/DijkstraVisualizer';
+import TopoSortVisualizer from './dsa/TopoSortVisualizer';
 
 export const VISUALIZER_REGISTRY = {
   JAVA: [
@@ -160,56 +165,36 @@ export const VISUALIZER_REGISTRY = {
       id: 'avl-tree',
       name: 'AVL Tree',
       icon: 'fa-solid fa-folder-tree',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'High',
-      objective: 'Learn self-balancing binary search trees with single (LL/RR) and double (LR/RL) rotation animations.',
-      features: ['Insert Node', 'Auto-rotation Trigger', 'Balance Factor Monitor', 'Node Deletions'],
-      previewType: 'avl'
+      component: AvlVisualizer,
+      description: 'Learn self-balancing binary search trees with single (LL/RR) and double (LR/RL) height rotation animations.'
     },
     {
       id: 'heap-dsa',
       name: 'Binary Heap',
       icon: 'fa-solid fa-mountain',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'High',
-      objective: 'Understand Min-Heaps and Max-Heaps, heapify heap-up/heap-down swap operations, and Priority Queue behaviors.',
-      features: ['Insert Element', 'Extract Min/Max', 'Heapify Array Visualizer', 'Dynamic Swap Pointers'],
-      previewType: 'heap'
+      component: HeapVisualizer,
+      description: 'Observe Min-Heaps and Max-Heaps, bubble-up/down swap animations, and Priority Queue elements.'
     },
     {
       id: 'trie-visual',
       name: 'Trie (Prefix Tree)',
       icon: 'fa-solid fa-network-wired',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'High',
-      objective: 'Master character prefix trees, word additions, auto-completions, and prefix lookup paths.',
-      features: ['Insert Word', 'Search Prefix', 'Autocomplete Suggestions', 'Depth-First Suggestions Search'],
-      previewType: 'trie'
+      component: TrieVisualizer,
+      description: 'Master prefix character trees, word queries, prefix lookups, and auto-complete DFS listings.'
     },
     {
       id: 'dijkstra-graph',
       name: 'Dijkstra Algorithm',
       icon: 'fa-solid fa-route',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'Very High',
-      objective: 'Solve shortest-paths on weighted graphs utilizing greedy node relaxations and priority queues.',
-      features: ['Weighted Graph Grid', 'Priority Queue state list', 'Dynamic node relaxation colors', 'Shortest path highlight line'],
-      previewType: 'dijkstra'
+      component: DijkstraVisualizer,
+      description: 'Solve shortest paths on weighted graphs using greedy node relaxations and Priority Queue tracking.'
     },
     {
       id: 'topo-sort',
       name: 'Topological Sort',
       icon: 'fa-solid fa-diagram-next',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'Medium',
-      objective: 'Solve dependency sequences on Directed Acyclic Graphs (DAG) using Kahn\'s (BFS) and DFS in-degree algorithms.',
-      features: ['DAG Node Layout', 'In-degree list trackers', 'Queue/Stack processing elements', 'Sorted output order list'],
-      previewType: 'topo'
+      component: TopoSortVisualizer,
+      description: 'Solve course prerequisites and linear ordering on DAGs using Kahn\'s BFS in-degree algorithm.'
     }
   ],
   SYSTEM_DESIGN: [
