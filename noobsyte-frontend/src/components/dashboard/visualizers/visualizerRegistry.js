@@ -46,6 +46,13 @@ import FailoverSystemVisualizer from './system/FailoverSystemVisualizer';
 import QueueLoadLevelingVisualizer from './system/QueueLoadLevelingVisualizer';
 import DnsSystemVisualizer from './system/DnsSystemVisualizer';
 import WebsocketSystemVisualizer from './system/WebsocketSystemVisualizer';
+import MicroservicesVisualizer from './system/MicroservicesVisualizer';
+import EventDrivenVisualizer from './system/EventDrivenVisualizer';
+import PubSubVisualizer from './system/PubSubVisualizer';
+import CapTheoremVisualizer from './system/CapTheoremVisualizer';
+import ServiceDiscoveryVisualizer from './system/ServiceDiscoveryVisualizer';
+import GraphqlApiVisualizer from './system/GraphqlApiVisualizer';
+import PacelcTheoremVisualizer from './system/PacelcTheoremVisualizer';
 
 export const VISUALIZER_REGISTRY = {
   JAVA: [
@@ -344,49 +351,29 @@ export const VISUALIZER_REGISTRY = {
       id: 'microservices',
       name: 'Microservices Architecture',
       icon: 'fa-solid fa-cubes',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'Very High',
-      objective: 'Contrast monolithic designs with decoupled microservices, noting routing and boundaries.',
-      features: ['Monolith vs Microservices toggle', 'Independent deployment simulation', 'Database-per-service pattern'],
-      companies: ['Netflix', 'Amazon', 'Spotify', 'Uber'],
-      previewType: 'microservice'
+      component: MicroservicesVisualizer,
+      description: 'Contrast monolithic designs with decoupled microservices, noting routing, database ownership, and fault isolation.'
     },
     {
       id: 'event-driven',
       name: 'Event-Driven Architecture',
       icon: 'fa-solid fa-shuffle',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'High',
-      objective: 'Learn asynchronous event patterns, event buses, and asynchronous callback loops.',
-      features: ['Event Producer streaming streams', 'Event Broker central bus', 'Multiple anonymous Consumers'],
-      companies: ['Uber', 'LinkedIn (Kafka)', 'Confluent'],
-      previewType: 'event-drive'
+      component: EventDrivenVisualizer,
+      description: 'Stream events asynchronously via offset broker logs to decoupled parallel consumer queues.'
     },
     {
       id: 'cap-theorem',
       name: 'CAP Theorem',
       icon: 'fa-solid fa-triangle-exclamation',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'Very High',
-      objective: 'Explore the trade-offs between Consistency, Availability, and Partition Tolerance.',
-      features: ['Network Partition link breaker', 'CP Mode vs AP Mode toggle', 'Consistency/Availability checks'],
-      companies: ['Apache Cassandra', 'Amazon DynamoDB', 'Apache HBase'],
-      previewType: 'cap'
+      component: CapTheoremVisualizer,
+      description: 'Explore Consistency vs Availability constraints and partition recovery pathways.'
     },
     {
       id: 'service-discovery',
       name: 'Service Discovery',
       icon: 'fa-solid fa-magnifying-glass-location',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'High',
-      objective: 'Understand how microservice instances dynamically register their IP addresses.',
-      features: ['Dynamic Service Registry lookup', 'Client-side vs Server-side Discovery', 'Heartbeat health checker'],
-      companies: ['HashiCorp Consul', 'Netflix Eureka', 'Kubernetes'],
-      previewType: 'discovery'
+      component: ServiceDiscoveryVisualizer,
+      description: 'Trace dynamic IP registrations, health checks, and server/client-side discovery routing.'
     },
     {
       id: 'distributed-cache',
@@ -413,13 +400,8 @@ export const VISUALIZER_REGISTRY = {
       id: 'pub-sub',
       name: 'Pub/Sub Architecture',
       icon: 'fa-solid fa-tower-broadcast',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'High',
-      objective: 'Understand topic-based message broadcasts to multiple anonymous subscribers.',
-      features: ['Topic channels creation', 'Subscriber registrations', 'Message fan-out broadcasting'],
-      companies: ['Google Cloud Pub/Sub', 'Slack', 'Firebase'],
-      previewType: 'pubsub'
+      component: PubSubVisualizer,
+      description: 'Publish messages to logical topic channels and watch broker asynchronous broadcasts.'
     },
     {
       id: 'websocket-system',
@@ -439,25 +421,15 @@ export const VISUALIZER_REGISTRY = {
       id: 'graphql-api',
       name: 'GraphQL vs REST',
       icon: 'fa-solid fa-code-compare',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'Medium',
-      objective: 'Contrast REST endpoints with GraphQL queries and single schema endpoints.',
-      features: ['Resolver query executor', 'Over-fetching vs Under-fetching comparison', 'Fields schema builder'],
-      companies: ['Facebook', 'GitHub', 'Shopify', 'Pinterest'],
-      previewType: 'graphql'
+      component: GraphqlApiVisualizer,
+      description: 'Compare REST API under-fetching roundtrips to single entry GraphQL query schemas.'
     },
     {
       id: 'pacelc-theorem',
       name: 'PACELC Theorem',
       icon: 'fa-solid fa-scale-unbalanced',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'Medium',
-      objective: 'Deepen CAP understanding by adding Latency vs Consistency trade-offs during normal operations.',
-      features: ['Partition mode CAP choice', 'Normal mode Latency vs Consistency choice', 'Database read/write response speeds'],
-      companies: ['MongoDB', 'Apache Cassandra', 'Amazon DynamoDB'],
-      previewType: 'pacelc'
+      component: PacelcTheoremVisualizer,
+      description: 'Examine Latency vs Consistency trade-offs during normal operations alongside partitions.'
     }
   ],
   DATABASE: [
