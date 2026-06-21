@@ -5,15 +5,20 @@ import { AuthContext } from '../context/AuthContext';
 import JavaSandbox from '../components/dashboard/JavaSandbox';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 
-function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
+function CourseCatalog({ 
+  onSelectLesson, 
+  onClaimCertificate,
+  activeCatalogTab,
+  setActiveCatalogTab,
+  selectedCourseSlug,
+  setSelectedCourseSlug
+}) {
   const { courses, modules, loading, fetchCourses, fetchCourseModules } = useContext(LearningContext);
   const { completedLessons, activeStreak, totalXp } = useContext(ProgressContext);
   const { user } = useContext(AuthContext);
 
-  const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
   const [simStep, setSimStep] = useState('declare'); // 'declare' or 'allocate'
-  const [activeCatalogTab, setActiveCatalogTab] = useState('learning');
 
   // Ref for roadmap scrolling
   const roadmapRef = useRef(null);

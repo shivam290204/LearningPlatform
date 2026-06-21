@@ -10,7 +10,8 @@
     "seed": "node src/seed.js",
     "extract-log": "node src/extract_log.js",
     "update-module8": "node src/update_module8.js",
-    "check-seed": "node -c src/seed.js"
+    "check-seed": "node -c src/seed.js",
+    "read-sections": "node src/read_readme_sections.js"
   },
   "keywords": [
     "java",
