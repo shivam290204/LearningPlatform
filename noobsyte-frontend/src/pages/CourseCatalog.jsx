@@ -5,20 +5,15 @@ import { AuthContext } from '../context/AuthContext';
 import JavaSandbox from '../components/dashboard/JavaSandbox';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 
-function CourseCatalog({ 
-  onSelectLesson, 
-  onClaimCertificate,
-  activeCatalogTab,
-  setActiveCatalogTab,
-  selectedCourseSlug,
-  setSelectedCourseSlug
-}) {
+function CourseCatalog({ onSelectLesson, onClaimCertificate }) {
   const { courses, modules, loading, fetchCourses, fetchCourseModules } = useContext(LearningContext);
   const { completedLessons, activeStreak, totalXp } = useContext(ProgressContext);
   const { user } = useContext(AuthContext);
 
+  const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
   const [simStep, setSimStep] = useState('declare'); // 'declare' or 'allocate'
+  const [activeCatalogTab, setActiveCatalogTab] = useState('learning');
 
   // Ref for roadmap scrolling
   const roadmapRef = useRef(null);
@@ -274,13 +269,13 @@ function CourseCatalog({
   };
 
   const displayedCourses = courses && courses.length > 0 ? courses : getMockedCurriculum();
-  
+
   // Calculate completed modules dynamically based on completed lessons
   const topicsMasteredCount = Math.min(Math.floor(completedLessons.length / 2), 23);
 
   return (
     <div className="catalog-wrapper">
-      
+
       {/* Workspace Tabs Navigation Row */}
       <div className="workspace-tabs-row">
         <button
@@ -334,35 +329,35 @@ function CourseCatalog({
             {/* Highlights Deck */}
             <div className="hero-highlights-deck">
               <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-book-open"></i></span>
+                <span className="highlight-icon"></span>
                 <div className="highlight-info">
                   <span className="info-title">120+ Lessons</span>
                   <span className="info-sub">Core to Advanced</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-bullseye"></i></span>
+                <span className="highlight-icon"></span>
                 <div className="highlight-info">
                   <span className="info-title">Beginner to Expert</span>
                   <span className="info-sub">Career Oriented</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-bolt"></i></span>
+                <span className="highlight-icon"></span>
                 <div className="highlight-info">
                   <span className="info-title">XP System</span>
                   <span className="info-sub">Active Rewards</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-trophy"></i></span>
+                <span className="highlight-icon"></span>
                 <div className="highlight-info">
                   <span className="info-title">Certificates</span>
                   <span className="info-sub">Verified Credentials</span>
                 </div>
               </div>
               <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-brain"></i></span>
+                <span className="highlight-icon"></span>
                 <div className="highlight-info">
                   <span className="info-title">JVM Visuals</span>
                   <span className="info-sub">Stack & Heap SIMs</span>
@@ -372,13 +367,13 @@ function CourseCatalog({
 
             {/* Hero CTAs */}
             <div className="hero-cta-group">
-              <button 
-                className="btn-primary btn-hero-primary" 
+              <button
+                className="btn-primary btn-hero-primary"
                 onClick={() => setActiveCatalogTab('syllabus')}
               >
                 Start Learning <i className="fa-solid fa-arrow-right" style={{ marginLeft: '0.5rem' }}></i>
               </button>
-              <button 
+              <button
                 className="btn-secondary btn-hero-secondary"
                 onClick={() => scrollToSection(roadmapRef)}
               >
@@ -453,7 +448,7 @@ function CourseCatalog({
 
             {!user && (
               <div className="guest-tracker-callout">
-                <span><i className="fa-solid fa-lock" style={{ marginRight: '0.5rem', color: 'var(--brand-cyan)' }}></i> Progress tracking is currently paused. <strong>Sign In</strong> or <strong>Register</strong> to save your streak and unlock certificates!</span>
+                <span>Progress tracking is currently paused. <strong>Sign In</strong> or <strong>Register</strong> to save your streak and unlock certificates!</span>
               </div>
             )}
           </section>
@@ -474,8 +469,8 @@ function CourseCatalog({
               {/* Timeline Scroll Tracker */}
               <div className="roadmap-timeline-tracker">
                 <div className="roadmap-track-line">
-                  <div 
-                    className="roadmap-track-fill" 
+                  <div
+                    className="roadmap-track-fill"
                     style={{ height: `${((activeRoadmapMod - 1) / 22) * 100}%` }}
                   ></div>
                 </div>
@@ -485,8 +480,8 @@ function CourseCatalog({
                     const isActive = activeRoadmapMod === m.num;
                     const isCompleted = m.num <= topicsMasteredCount;
                     return (
-                      <div 
-                        key={m.num} 
+                      <div
+                        key={m.num}
                         className={`roadmap-node-row ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
                         onClick={() => setActiveRoadmapMod(m.num)}
                       >
@@ -513,7 +508,7 @@ function CourseCatalog({
                 <p className="focused-desc">
                   {roadmapModules[activeRoadmapMod - 1].desc}
                 </p>
-                
+
                 <div className="focused-milestones-box">
                   <h5>Target Mastery Goals:</h5>
                   <div className="milestones-checklist">
@@ -532,7 +527,7 @@ function CourseCatalog({
                   </div>
                 </div>
 
-                <button 
+                <button
                   className="btn-primary btn-roadmap-focused"
                   onClick={() => setActiveCatalogTab('syllabus')}
                 >
@@ -629,37 +624,37 @@ function CourseCatalog({
             <div className="features-deck-grid">
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-brain"></i></div>
-                <h4>JVM Simulations</h4>
+                <h4>🧠 JVM Simulations</h4>
                 <p>Step inside JVM memory stack and heap blocks. Watch references allocation, parameters passing, and heap dereferencing occur in real-time.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-earth-americas"></i></div>
-                <h4>Real-Life Analogies</h4>
+                <h4>🌍 Real-Life Analogies</h4>
                 <p>No dry syntax charts. Complex OOP rules and concurrency models explained through intuitive real-world structures.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-code"></i></div>
-                <h4>Interactive Examples</h4>
+                <h4>💻 Interactive Examples</h4>
                 <p>Run, modify, and dissect actual code snippets inside modular execution containers right in your browser tab.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-circle-question"></i></div>
-                <h4>Conceptual Quizzes</h4>
+                <h4>❓ Conceptual Quizzes</h4>
                 <p>Validate your knowledge at the end of each lesson with challenging quizzes focused on memory rules and structural outcomes.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-bolt"></i></div>
-                <h4>Reward-Driven XP</h4>
+                <h4>⚡ Reward-Driven XP</h4>
                 <p>Climb milestones and gain reputation by keeping streaks alive, completing lessons, and answering quizzes cleanly.</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon"><i className="fa-solid fa-graduation-cap"></i></div>
-                <h4>Verified Certificates</h4>
+                <h4>🏆 Verified Certificates</h4>
                 <p>Unlock, view, print, and share your graduation certificate to highlight your core Java expertise on platforms like LinkedIn.</p>
               </div>
             </div>
@@ -691,14 +686,14 @@ function CourseCatalog({
                     key={course.slug}
                     className={`catalog-card-container ${isExpanded ? 'expanded' : ''}`}
                   >
-                    <div 
+                    <div
                       className="catalog-course-card"
                       onClick={() => handleCourseClick(course.slug)}
                     >
                       <div className="catalog-badge">Mastery Track</div>
                       <h3>{course.title}</h3>
                       <p>{course.description}</p>
-                      
+
                       {/* Visual metadata metrics */}
                       <div className="course-card-metrics">
                         <span className="metric-row"><i className="fa-solid fa-book"></i> {course.lessonsCount || 120} Lessons</span>
@@ -711,7 +706,7 @@ function CourseCatalog({
                           Beginner to Advanced
                         </span>
                         <div className="card-actions-group" style={{ display: 'flex', gap: '0.75rem' }}>
-                          <button 
+                          <button
                             className="btn-claim-cert"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -804,14 +799,14 @@ function CourseCatalog({
         <section className="certification-promo-section">
           <div className="certificate-showcase-panel">
             <div className="certificate-mock-glow"></div>
-            
+
             <div className="certificate-mock-frame">
               <div className="cert-border-accent"></div>
               <div className="cert-header">
                 <div className="cert-logo">noob<span>Syte</span></div>
                 <span className="cert-doc-type">VERIFIED ACADEMIC CREDENTIAL</span>
               </div>
-              
+
               <div className="cert-body">
                 <span className="cert-presentation">This is to certify that</span>
                 <h4>[ YOUR FULL NAME ]</h4>
@@ -840,7 +835,7 @@ function CourseCatalog({
               <p>
                 Highlight your visual Java execution credentials. Complete all modules, solve quizzes perfectly, maintain streaks to rack up XP points, and claim your shared verified graduation certificate.
               </p>
-              
+
               <div className="milestones-checklist mb-4">
                 <div className="milestone-check-row">
                   <i className="fa-solid fa-circle-check"></i>
@@ -856,7 +851,7 @@ function CourseCatalog({
                 </div>
               </div>
 
-              <button 
+              <button
                 className="btn-primary btn-cert-cta"
                 onClick={() => {
                   setActiveCatalogTab('syllabus');

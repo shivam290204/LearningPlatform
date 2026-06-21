@@ -1,5 +1,9 @@
+const crypto = require('crypto');
 const User = require('../models/User');
 const Lesson = require('../models/Lesson');
+const Course = require('../models/Course');
+const Module = require('../models/Module');
+const Progress = require('../models/Progress');
 const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -48,10 +52,6 @@ exports.getBookmarks = asyncHandler(async (req, res, next) => {
 });
 
 // Dynamic course completions verification and cryptographically tracked certificate generation
-const crypto = require('crypto');
-const Course = require('../models/Course');
-const Module = require('../models/Module');
-const Progress = require('../models/Progress');
 
 exports.generateCertificate = asyncHandler(async (req, res, next) => {
   const { courseSlug } = req.params;
@@ -66,7 +66,6 @@ exports.generateCertificate = asyncHandler(async (req, res, next) => {
   const moduleIds = modules.map(m => m._id);
 
   // Find all lessons under these modules
-  const Lesson = require('../models/Lesson');
   const lessons = await Lesson.find({ module: { $in: moduleIds } });
   const lessonIds = lessons.map(l => l._id);
 
@@ -94,7 +93,7 @@ exports.generateCertificate = asyncHandler(async (req, res, next) => {
   // Calculate unique verified credential tracking verification hash
   const verificationHash = crypto
     .createHash('sha256')
-    .update(`${req.user._id}-${course._id}`)
+    .update(`${req.user._id}-${course._id}-${process.env.JWT_SECRET || 'secret-salt-key-noobsyte'}`)
     .digest('hex')
     .substring(0, 16)
     .toUpperCase();

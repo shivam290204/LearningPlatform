@@ -39,14 +39,29 @@ exports.markLessonComplete = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Record quiz submit scores
+const Quiz = require('../models/Quiz');
+
+// Record quiz submit scores with server-side validation
 exports.submitQuizScore = asyncHandler(async (req, res, next) => {
   const { lessonId } = req.params;
-  const { score, passed } = req.body;
+  const { selectedOptionIndex } = req.body;
 
-  if (score === undefined || passed === undefined) {
-    return next(new AppError('Please provide quiz score and passed parameters.', 400));
+  if (selectedOptionIndex === undefined) {
+    return next(new AppError('Please provide selectedOptionIndex parameter.', 400));
   }
+
+  // Retrieve the actual Quiz document for the lesson
+  const quiz = await Quiz.findOne({ lesson: lessonId });
+  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
+    return next(new AppError('No quiz found for this lesson.', 404));
+  }
+
+  // Evaluate correctness against the active question (first question in current schema)
+  const activeQuestion = quiz.questions[0];
+  const isCorrect = selectedOptionIndex === activeQuestion.correctAnswerIndex;
+  
+  const score = isCorrect ? 1 : 0;
+  const passed = isCorrect;
 
   let progress = await Progress.findOne({ user: req.user._id, lesson: lessonId });
 
@@ -78,7 +93,10 @@ exports.submitQuizScore = asyncHandler(async (req, res, next) => {
     status: 'success',
     data: {
       progress,
-      xpGained: passed ? 50 : 0
+      xpGained: passed ? 50 : 0,
+      isCorrect,
+      correctAnswerIndex: activeQuestion.correctAnswerIndex,
+      explanation: activeQuestion.explanation
     }
   });
 });
