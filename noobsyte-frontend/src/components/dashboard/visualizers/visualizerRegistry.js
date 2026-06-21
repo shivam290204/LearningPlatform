@@ -1,6 +1,13 @@
 import JvmMemoryVisualizer from './java/JvmMemoryVisualizer';
 import GarbageCollectionVisualizer from './java/GarbageCollectionVisualizer';
 import ThreadLifecycleVisualizer from './java/ThreadLifecycleVisualizer';
+import JvmArchitectureVisualizer from './java/JvmArchitectureVisualizer';
+import StringPoolVisualizer from './java/StringPoolVisualizer';
+import WrapperClassesVisualizer from './java/WrapperClassesVisualizer';
+import OopPolymorphismVisualizer from './java/OopPolymorphismVisualizer';
+import ExceptionHandlingVisualizer from './java/ExceptionHandlingVisualizer';
+import ConcurrencySyncVisualizer from './java/ConcurrencySyncVisualizer';
+
 import ArrayListVisualizer from './dsa/ArrayListVisualizer';
 import LinkedListVisualizer from './dsa/LinkedListVisualizer';
 import StackVisualizer from './dsa/StackVisualizer';
@@ -36,42 +43,42 @@ export const VISUALIZER_REGISTRY = {
       id: 'jvm-architecture',
       name: 'JVM Architecture',
       icon: 'fa-solid fa-network-wired',
-      isPlaceholder: true,
+      component: JvmArchitectureVisualizer,
       description: 'Classloader subsystem, Runtime Data Areas, and execution engine workflows.'
     },
     {
       id: 'string-pool',
       name: 'String Pool',
       icon: 'fa-solid fa-font',
-      isPlaceholder: true,
+      component: StringPoolVisualizer,
       description: 'Visualize String literal sharing vs heap-allocated String objects in memory.'
     },
     {
       id: 'wrapper-classes',
       name: 'Wrapper Classes & Autoboxing',
       icon: 'fa-solid fa-box',
-      isPlaceholder: true,
+      component: WrapperClassesVisualizer,
       description: 'Primitive types vs object wrappers and caches (like Integer Cache -128 to 127).'
     },
     {
       id: 'oop-concepts',
       name: 'OOP & Polymorphism',
       icon: 'fa-solid fa-shapes',
-      isPlaceholder: true,
+      component: OopPolymorphismVisualizer,
       description: 'Dynamic dispatch, vtables, method overriding vs overloading execution paths.'
     },
     {
       id: 'exception-hierarchy',
       name: 'Exception Handling',
       icon: 'fa-solid fa-triangle-exclamation',
-      isPlaceholder: true,
+      component: ExceptionHandlingVisualizer,
       description: 'Call stack unwinding and try-catch-finally execution transitions.'
     },
     {
       id: 'concurrency-sync',
       name: 'Synchronization & Deadlocks',
       icon: 'fa-solid fa-lock',
-      isPlaceholder: true,
+      component: ConcurrencySyncVisualizer,
       description: 'Thread monitors, object headers, lock acquisition, and wait-notify rings.'
     }
   ],
