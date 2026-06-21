@@ -257,9 +257,9 @@ export default function BstVisualizer() {
         <li><strong>Complexity:</strong> Searching, inserting, and deleting run in O(log N) average time. However, if keys are inserted in sorted order, the tree degrades into a straight line (skewed tree), making operations O(N).</li>
         <li><strong>Traversals:</strong>
           <ul>
-            <li>In-order (LNR): Left -> Node -> Right. <em>Guarantees visited nodes are in sorted ascending order.</em></li>
-            <li>Pre-order (NLR): Node -> Left -> Right.</li>
-            <li>Post-order (LRN): Left -> Right -> Node.</li>
+            <li>In-order (LNR): Left {'->'} Node {'->'} Right. <em>Guarantees visited nodes are in sorted ascending order.</em></li>
+            <li>Pre-order (NLR): Node {'->'} Left {'->'} Right.</li>
+            <li>Post-order (LRN): Left {'->'} Right {'->'} Node.</li>
           </ul>
         </li>
       </ul>
