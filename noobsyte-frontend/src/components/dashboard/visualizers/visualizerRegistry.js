@@ -15,6 +15,9 @@ import QueueVisualizer from './dsa/QueueVisualizer';
 import HashMapVisualizer from './dsa/HashMapVisualizer';
 import MergeSortVisualizer from './dsa/MergeSortVisualizer';
 import GraphTraversalVisualizer from './dsa/GraphTraversalVisualizer';
+import BinarySearchVisualizer from './dsa/BinarySearchVisualizer';
+import BstVisualizer from './dsa/BstVisualizer';
+import QuickSortVisualizer from './dsa/QuickSortVisualizer';
 
 export const VISUALIZER_REGISTRY = {
   JAVA: [
@@ -136,22 +139,77 @@ export const VISUALIZER_REGISTRY = {
       id: 'binary-search',
       name: 'Binary Search',
       icon: 'fa-solid fa-magnifying-glass',
-      isPlaceholder: true,
-      description: 'Dynamic low/mid/high cursor updates on sorted arrays.'
+      component: BinarySearchVisualizer,
+      description: 'Dynamic low/mid/high pointer updates for standard search and upper/lower bounds.'
     },
     {
       id: 'bst-tree',
       name: 'Binary Search Tree',
       icon: 'fa-solid fa-tree',
+      component: BstVisualizer,
+      description: 'Interactive node insertions, traversals, and dynamic deletion refactorings.'
+    },
+    {
+      id: 'quick-sort',
+      name: 'Quick Sort',
+      icon: 'fa-solid fa-arrow-up-down-left-right',
+      component: QuickSortVisualizer,
+      description: 'Visualize in-place pivot partitions and scanner swap iterations.'
+    },
+    {
+      id: 'avl-tree',
+      name: 'AVL Tree',
+      icon: 'fa-solid fa-folder-tree',
       isPlaceholder: true,
-      description: 'Interactive node insertions, traversals, and balance rotations.'
+      difficulty: 'Advanced',
+      frequency: 'High',
+      objective: 'Learn self-balancing binary search trees with single (LL/RR) and double (LR/RL) rotation animations.',
+      features: ['Insert Node', 'Auto-rotation Trigger', 'Balance Factor Monitor', 'Node Deletions'],
+      previewType: 'avl'
+    },
+    {
+      id: 'heap-dsa',
+      name: 'Binary Heap',
+      icon: 'fa-solid fa-mountain',
+      isPlaceholder: true,
+      difficulty: 'Intermediate',
+      frequency: 'High',
+      objective: 'Understand Min-Heaps and Max-Heaps, heapify heap-up/heap-down swap operations, and Priority Queue behaviors.',
+      features: ['Insert Element', 'Extract Min/Max', 'Heapify Array Visualizer', 'Dynamic Swap Pointers'],
+      previewType: 'heap'
     },
     {
       id: 'trie-visual',
       name: 'Trie (Prefix Tree)',
       icon: 'fa-solid fa-network-wired',
       isPlaceholder: true,
-      description: 'Simulate search auto-completions and prefix merges visually.'
+      difficulty: 'Advanced',
+      frequency: 'High',
+      objective: 'Master character prefix trees, word additions, auto-completions, and prefix lookup paths.',
+      features: ['Insert Word', 'Search Prefix', 'Autocomplete Suggestions', 'Depth-First Suggestions Search'],
+      previewType: 'trie'
+    },
+    {
+      id: 'dijkstra-graph',
+      name: 'Dijkstra Algorithm',
+      icon: 'fa-solid fa-route',
+      isPlaceholder: true,
+      difficulty: 'Advanced',
+      frequency: 'Very High',
+      objective: 'Solve shortest-paths on weighted graphs utilizing greedy node relaxations and priority queues.',
+      features: ['Weighted Graph Grid', 'Priority Queue state list', 'Dynamic node relaxation colors', 'Shortest path highlight line'],
+      previewType: 'dijkstra'
+    },
+    {
+      id: 'topo-sort',
+      name: 'Topological Sort',
+      icon: 'fa-solid fa-diagram-next',
+      isPlaceholder: true,
+      difficulty: 'Intermediate',
+      frequency: 'Medium',
+      objective: 'Solve dependency sequences on Directed Acyclic Graphs (DAG) using Kahn\'s (BFS) and DFS in-degree algorithms.',
+      features: ['DAG Node Layout', 'In-degree list trackers', 'Queue/Stack processing elements', 'Sorted output order list'],
+      previewType: 'topo'
     }
   ],
   SYSTEM_DESIGN: [
@@ -160,35 +218,55 @@ export const VISUALIZER_REGISTRY = {
       name: 'Client-Server API',
       icon: 'fa-solid fa-network-wired',
       isPlaceholder: true,
-      description: 'HTTP request-response lifecycles, HTTP methods, headers, and body payloads.'
+      difficulty: 'Beginner',
+      frequency: 'High',
+      objective: 'Observe HTTP request-response lifecycles, HTTP methods, headers, and body payloads.',
+      features: ['Send GET/POST request', 'Header Inspector', 'DNS Lookup Simulation', 'Response Status Codes'],
+      previewType: 'client-server'
     },
     {
       id: 'jwt-auth',
       name: 'JWT Auth Flow',
       icon: 'fa-solid fa-key',
       isPlaceholder: true,
-      description: 'Token generation, headers, signature verification, and secure client-side storage.'
+      difficulty: 'Intermediate',
+      frequency: 'High',
+      objective: 'Token generation, headers, signature verification, and secure client-side storage.',
+      features: ['Login Input', 'Token Signer Inspector', 'LocalStore save', 'Request Interceptor headers'],
+      previewType: 'jwt'
     },
     {
       id: 'load-balancer',
       name: 'Load Balancer',
       icon: 'fa-solid fa-scale-balanced',
       isPlaceholder: true,
-      description: 'Round-robin, IP Hash, and Least Connection request distributions across servers.'
+      difficulty: 'Intermediate',
+      frequency: 'Very High',
+      objective: 'Round-robin, IP Hash, and Least Connection request distributions across servers.',
+      features: ['Request Generator', 'Round-Robin Dispatcher', 'Server Nodes CPU monitor', 'Failover simulation'],
+      previewType: 'lb'
     },
     {
       id: 'redis-cache',
       name: 'Redis Cache Workflows',
       icon: 'fa-solid fa-database',
       isPlaceholder: true,
-      description: 'Cache-aside read/write paths, Cache Hits vs Misses, and LRU eviction policy.'
+      difficulty: 'Intermediate',
+      frequency: 'Very High',
+      objective: 'Cache-aside read/write paths, Cache Hits vs Misses, and LRU eviction policy.',
+      features: ['DB Read request', 'Cache Hit/Miss indicators', 'Cache-aside write through', 'Eviction animation'],
+      previewType: 'redis'
     },
     {
       id: 'message-queue',
       name: 'Message Queues',
       icon: 'fa-solid fa-envelope-open-text',
       isPlaceholder: true,
-      description: 'Producer-Consumer decouplings, pub/sub topologies, and message acknowledgements.'
+      difficulty: 'Intermediate',
+      frequency: 'High',
+      objective: 'Producer-Consumer decouplings, pub/sub topologies, and message acknowledgements.',
+      features: ['Producer messages list', 'Queue broker buffer', 'Consumer polling threads', 'Dead Letter Queue'],
+      previewType: 'mq'
     }
   ],
   DATABASE: [
@@ -197,28 +275,44 @@ export const VISUALIZER_REGISTRY = {
       name: 'SQL Joins',
       icon: 'fa-solid fa-circle-nodes',
       isPlaceholder: true,
-      description: 'Venn diagram overlaps of INNER, LEFT, RIGHT, and FULL OUTER joins.'
+      difficulty: 'Beginner',
+      frequency: 'Very High',
+      objective: 'Venn diagram overlaps of INNER, LEFT, RIGHT, and FULL OUTER joins.',
+      features: ['Venn diagram selector', 'Interactive tables', 'Resulting join output table', 'Compiled SQL query builder'],
+      previewType: 'joins'
     },
     {
       id: 'db-indexing',
       name: 'Database Indexes',
       icon: 'fa-solid fa-search-plus',
       isPlaceholder: true,
-      description: 'Compare full-table scans vs Index scans (pointer lookups).'
+      difficulty: 'Intermediate',
+      frequency: 'High',
+      objective: 'Compare full-table scans vs Index scans (pointer lookups).',
+      features: ['Un-indexed query speed test', 'B-Tree Index scan path', 'Page Read operations counter', 'Scan path highlighter'],
+      previewType: 'indexing'
     },
     {
       id: 'b-plus-tree',
       name: 'B+ Tree Indexing',
       icon: 'fa-solid fa-sitemap',
       isPlaceholder: true,
-      description: 'Multi-level branch node traversal down to leaf sequential lists.'
+      difficulty: 'Advanced',
+      frequency: 'High',
+      objective: 'Multi-level branch node traversal down to leaf sequential lists.',
+      features: ['Search Key path', 'Root/Internal/Leaf nodes representation', 'Leaf page sequence links', 'Range query scan path'],
+      previewType: 'bplus'
     },
     {
       id: 'mongodb-aggregation',
       name: 'MongoDB Aggregations',
       icon: 'fa-solid fa-filter',
       isPlaceholder: true,
-      description: 'Dynamic pipelines: $match -> $group -> $sort -> $project step filters.'
+      difficulty: 'Intermediate',
+      frequency: 'High',
+      objective: 'Dynamic pipelines: $match -> $group -> $sort -> $project step filters.',
+      features: ['Document records input', '$match stage filter', '$group accumulators', 'Stage output records list'],
+      previewType: 'aggregation'
     }
   ]
 };
