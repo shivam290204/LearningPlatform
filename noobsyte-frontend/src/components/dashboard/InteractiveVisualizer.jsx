@@ -358,6 +358,293 @@ function PreviewDiagram({ type }) {
           <text x="165" y="103" textAnchor="middle" fill="#10b981" fontSize="0.5rem">L vs C</text>
         </svg>
       );
+    case 'optimizer':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="10" y="45" width="45" height="26" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="3" />
+          <text x="32" y="61" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">SQL Query</text>
+          
+          <line x1="55" y1="58" x2="75" y2="58" stroke="#1591DC" strokeWidth="1.5" />
+          <polygon points="75,55 81,58 75,61" fill="#1591DC" />
+          
+          <circle cx="95" cy="58" r="16" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="95" y="61" textAnchor="middle" fill="#1591DC" fontSize="0.45rem" fontWeight="bold">Optimizer</text>
+          
+          <line x1="111" y1="58" x2="135" y2="58" stroke="#1591DC" strokeWidth="1.5" />
+          <polygon points="135,55 141,58 135,61" fill="#1591DC" />
+          
+          <rect x="145" y="45" width="60" height="26" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="3" />
+          <text x="175" y="61" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">Optimal Plan</text>
+          
+          <text x="95" y="90" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="0.45rem">Cost Evaluation</text>
+        </svg>
+      );
+    case 'views':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="15" y="20" width="55" height="24" fill="none" stroke="#FFFFFF" strokeWidth="1.5" rx="3" />
+          <text x="42.5" y="35" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">Base Table</text>
+          
+          <path d="M 42.5 44 L 42.5 75" stroke="#1591DC" strokeWidth="1" strokeDasharray="2,2" />
+          
+          <rect x="15" y="75" width="55" height="24" fill="none" stroke="#1591DC" strokeWidth="1.5" rx="3" />
+          <text x="42.5" y="90" textAnchor="middle" fill="#1591DC" fontSize="0.45rem" fontWeight="bold">Mat. View</text>
+          
+          <circle cx="150" cy="50" r="14" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="150" y="54" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">Client</text>
+          
+          <line x1="136" y1="55" x2="70" y2="82" stroke="#1591DC" strokeWidth="1.5" />
+          <polygon points="70,78 65,85 73,84" fill="#1591DC" />
+          <text x="115" y="77" fill="#1591DC" fontSize="0.45rem" transform="rotate(18, 115, 77)">Fast seek</text>
+        </svg>
+      );
+    case 'oltp-olap':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <g>
+            <text x="40" y="15" textAnchor="middle" fill="#FFFFFF" fontSize="0.55rem" fontWeight="bold">Row-Store (OLTP)</text>
+            <rect x="10" y="25" width="65" height="10" fill="none" stroke="#1591DC" strokeWidth="1" />
+            <text x="42.5" y="32" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">Row 1: ID, Name...</text>
+            <rect x="10" y="38" width="65" height="10" fill="none" stroke="#1591DC" strokeWidth="1" />
+            <rect x="10" y="51" width="65" height="10" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+          </g>
+          
+          <line x1="110" y1="15" x2="110" y2="105" stroke="var(--bg-tertiary)" strokeWidth="1.5" />
+          
+          <g>
+            <text x="165" y="15" textAnchor="middle" fill="#FFFFFF" fontSize="0.55rem" fontWeight="bold">Col-Store (OLAP)</text>
+            <rect x="125" y="25" width="15" height="60" fill="none" stroke="#1591DC" strokeWidth="1" />
+            <text x="132.5" y="55" textAnchor="middle" fill="#FFFFFF" fontSize="0.38rem" transform="rotate(-90, 132.5, 55)">IDs</text>
+            
+            <rect x="145" y="25" width="15" height="60" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+            <text x="152.5" y="55" textAnchor="middle" fill="#FFFFFF" fontSize="0.38rem" transform="rotate(-90, 152.5, 55)">Names</text>
+            
+            <rect x="165" y="25" width="15" height="60" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+            <text x="172.5" y="55" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="0.38rem" transform="rotate(-90, 172.5, 55)">Salaries</text>
+          </g>
+        </svg>
+      );
+    case 'warehouse':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="10" y="15" width="30" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="25" y="26" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">DB 1</text>
+          <rect x="10" y="45" width="30" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="25" y="56" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">DB 2</text>
+          <rect x="10" y="75" width="30" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="25" y="86" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">API</text>
+          
+          <path d="M 40 24 L 85 54" stroke="#1591DC" strokeWidth="1" />
+          <path d="M 40 54 L 85 54" stroke="#1591DC" strokeWidth="1" />
+          <path d="M 40 84 L 85 54" stroke="#1591DC" strokeWidth="1" />
+          
+          <rect x="85" y="42" width="40" height="24" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="105" y="56" textAnchor="middle" fill="#1591DC" fontSize="0.42rem" fontWeight="bold">ETL Pipeline</text>
+          
+          <line x1="125" y1="54" x2="160" y2="54" stroke="#1591DC" strokeWidth="1.5" />
+          <polygon points="160,51 166,54 160,57" fill="#1591DC" />
+          
+          <rect x="165" y="32" width="45" height="44" rx="4" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="187.5" y="52" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem" fontWeight="bold">Data</text>
+          <text x="187.5" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem" fontWeight="bold">Warehouse</text>
+        </svg>
+      );
+    case 'snowflake':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="80" y="45" width="60" height="30" rx="3" fill="none" stroke="#1591DC" strokeWidth="2" />
+          <text x="110" y="63" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem" fontWeight="bold">Fact_Sales</text>
+          
+          <line x1="110" y1="45" x2="110" y2="25" stroke="#FFFFFF" strokeWidth="1.2" />
+          <rect x="85" y="5" width="50" height="20" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="110" y="17" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Product</text>
+          
+          <line x1="135" y1="15" x2="165" y2="15" stroke="#1591DC" strokeWidth="1" strokeDasharray="2,2" />
+          <rect x="165" y="5" width="50" height="20" rx="2" fill="none" stroke="#1591DC" strokeWidth="1" />
+          <text x="190" y="17" textAnchor="middle" fill="#1591DC" fontSize="0.4rem">Dim_Category</text>
+          
+          <line x1="80" y1="60" x2="50" y2="60" stroke="#FFFFFF" strokeWidth="1.2" />
+          <rect x="2" y="50" width="48" height="20" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="26" y="62" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Store</text>
+          
+          <line x1="26" y1="70" x2="26" y2="90" stroke="#1591DC" strokeWidth="1" strokeDasharray="2,2" />
+          <rect x="2" y="90" width="48" height="20" rx="2" fill="none" stroke="#1591DC" strokeWidth="1" />
+          <text x="26" y="102" textAnchor="middle" fill="#1591DC" fontSize="0.4rem">Dim_Region</text>
+        </svg>
+      );
+    case 'star':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="85" y="48" width="50" height="24" rx="3" fill="none" stroke="#1591DC" strokeWidth="2" />
+          <text x="110" y="62" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem" fontWeight="bold">Fact_Sales</text>
+          
+          <line x1="85" y1="48" x2="45" y2="28" stroke="#FFFFFF" strokeWidth="1" />
+          <rect x="5" y="10" width="40" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="25" y="21" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Date</text>
+          
+          <line x1="135" y1="48" x2="175" y2="28" stroke="#FFFFFF" strokeWidth="1" />
+          <rect x="175" y="10" width="40" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="195" y="21" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Item</text>
+          
+          <line x1="85" y1="72" x2="45" y2="92" stroke="#FFFFFF" strokeWidth="1" />
+          <rect x="5" y="90" width="40" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="25" y="101" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Store</text>
+          
+          <line x1="135" y1="72" x2="175" y2="92" stroke="#FFFFFF" strokeWidth="1" />
+          <rect x="175" y="90" width="40" height="18" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="195" y="101" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Dim_Cust</text>
+        </svg>
+      );
+    case 'dist-db':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <circle cx="110" cy="60" r="30" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+          
+          <circle cx="110" cy="30" r="10" fill="none" stroke="#1591DC" strokeWidth="2.5" />
+          <text x="110" y="33" textAnchor="middle" fill="#1591DC" fontSize="0.42rem" fontWeight="bold">Leader</text>
+          
+          <circle cx="80" cy="75" r="9" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="80" y="78" textAnchor="middle" fill="#FFFFFF" fontSize="0.38rem">Follower</text>
+          
+          <circle cx="140" cy="75" r="9" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="140" y="78" textAnchor="middle" fill="#FFFFFF" fontSize="0.38rem">Follower</text>
+          
+          <path d="M 103 37 A 30 30 0 0 1 80 66" fill="none" stroke="#1591DC" strokeWidth="1" strokeDasharray="2,2" />
+          <path d="M 117 37 A 30 30 0 0 0 140 66" fill="none" stroke="#1591DC" strokeWidth="1" strokeDasharray="2,2" />
+          <text x="110" y="93" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="0.45rem">Raft Consensus</text>
+        </svg>
+      );
+    case 'eventsourcing':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <line x1="15" y1="60" x2="205" y2="60" stroke="#FFFFFF" strokeWidth="1.5" />
+          <polygon points="205,57 211,60 205,63" fill="#FFFFFF" />
+          
+          <rect x="25" y="45" width="45" height="30" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="47.5" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">Event 1</text>
+          <text x="47.5" y="68" textAnchor="middle" fill="#1591DC" fontSize="0.4rem" fontWeight="bold">Created</text>
+          
+          <rect x="85" y="45" width="45" height="30" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="107.5" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">Event 2</text>
+          <text x="107.5" y="68" textAnchor="middle" fill="#1591DC" fontSize="0.4rem" fontWeight="bold">Updated</text>
+          
+          <rect x="145" y="45" width="45" height="30" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="167.5" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="0.4rem">Event 3</text>
+          <text x="167.5" y="68" textAnchor="middle" fill="#1591DC" fontSize="0.4rem" fontWeight="bold">Committed</text>
+          
+          <text x="110" y="25" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="0.5rem">Immutable Append-Only Ledger</text>
+        </svg>
+      );
+    case 'cqrs':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <circle cx="25" cy="60" r="12" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="25" y="64" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">Client</text>
+          
+          <path d="M 37 54 L 85 30" stroke="#1591DC" strokeWidth="1.2" />
+          <rect x="85" y="15" width="55" height="22" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="112.5" y="29" textAnchor="middle" fill="#1591DC" fontSize="0.45rem" fontWeight="bold">Write DB</text>
+          
+          <path d="M 112.5 37 L 112.5 83" stroke="#FFFFFF" strokeWidth="1.2" strokeDasharray="3,3" />
+          <text x="125" y="62" fill="rgba(255,255,255,0.6)" fontSize="0.45rem">Async sync</text>
+          
+          <rect x="85" y="83" width="55" height="22" rx="2" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="112.5" y="97" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem" fontWeight="bold">Read Cache</text>
+          <path d="M 85 94 L 37 66" stroke="#FFFFFF" strokeWidth="1.2" />
+        </svg>
+      );
+    case 'cdc':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="15" y="38" width="45" height="44" rx="3" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="37.5" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem" fontWeight="bold">Primary</text>
+          <text x="37.5" y="68" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem" fontWeight="bold">RDBMS</text>
+          
+          <rect x="75" y="48" width="30" height="24" fill="none" stroke="#1591DC" strokeWidth="1.2" />
+          <text x="90" y="62" textAnchor="middle" fill="#1591DC" fontSize="0.45rem">WAL</text>
+          
+          <line x1="60" y1="60" x2="75" y2="60" stroke="#1591DC" strokeWidth="1" />
+          
+          <line x1="105" y1="60" x2="125" y2="60" stroke="#1591DC" strokeWidth="1.5" />
+          <polygon points="125,57 131,60 125,63" fill="#1591DC" />
+          
+          <rect x="131" y="45" width="40" height="30" rx="2" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          <text x="151" y="58" textAnchor="middle" fill="#FFFFFF" fontSize="0.48rem" fontWeight="bold">CDC Engine</text>
+          <text x="151" y="68" textAnchor="middle" fill="#1591DC" fontSize="0.4rem">(Debezium)</text>
+          
+          <line x1="171" y1="60" x2="195" y2="60" stroke="#FFFFFF" strokeWidth="1" strokeDasharray="2,2" />
+          <text x="110" y="96" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="0.45rem">Realtime Event Stream</text>
+        </svg>
+      );
+    case 'elastic':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <text x="50" y="18" textAnchor="middle" fill="#FFFFFF" fontSize="0.5rem">Inverted Index</text>
+          
+          <rect x="10" y="28" width="60" height="16" fill="none" stroke="#1591DC" strokeWidth="1" />
+          <text x="40" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">"database"</text>
+          <line x1="70" y1="36" x2="110" y2="36" stroke="#1591DC" strokeWidth="1.2" />
+          <rect x="110" y="28" width="90" height="16" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="155" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Doc 1, Doc 3</text>
+          
+          <rect x="10" y="52" width="60" height="16" fill="none" stroke="#1591DC" strokeWidth="1" />
+          <text x="40" y="62" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">"indexes"</text>
+          <line x1="70" y1="60" x2="110" y2="60" stroke="#1591DC" strokeWidth="1.2" />
+          <rect x="110" y="52" width="90" height="16" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="155" y="62" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem">Doc 2, Doc 3</text>
+          
+          <rect x="10" y="76" width="60" height="16" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+          <text x="40" y="86" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="0.45rem">"sharding"</text>
+          <line x1="70" y1="84" x2="110" y2="84" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" />
+          <rect x="110" y="76" width="90" height="16" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+          <text x="155" y="86" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="0.45rem">Doc 3</text>
+        </svg>
+      );
+    case 'vector':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <line x1="20" y1="100" x2="190" y2="100" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+          <line x1="20" y1="10" x2="20" y2="100" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+          
+          <circle cx="50" cy="40" r="4" fill="#FFFFFF" />
+          <circle cx="55" cy="35" r="4" fill="#FFFFFF" />
+          <circle cx="160" cy="70" r="4" fill="#FFFFFF" />
+          <circle cx="155" cy="80" r="4" fill="#FFFFFF" />
+          
+          <line x1="20" y1="100" x2="140" y2="40" stroke="#1591DC" strokeWidth="2.5" />
+          <polygon points="140,36 144,43 137,45" fill="#1591DC" />
+          <circle cx="140" cy="40" r="5" fill="none" stroke="#1591DC" strokeWidth="1.5" />
+          
+          <circle cx="140" cy="40" r="24" fill="none" stroke="#1591DC" strokeWidth="1" strokeDasharray="3,3" />
+          <text x="140" y="18" textAnchor="middle" fill="#1591DC" fontSize="0.45rem">Cosine Search Range</text>
+        </svg>
+      );
+    case 'postgres':
+      return (
+        <svg width="220" height="120" style={{ overflow: 'visible' }}>
+          <rect x="15" y="20" width="85" height="35" rx="3" fill="none" stroke="#1591DC" strokeWidth="2" />
+          <text x="57.5" y="32" textAnchor="middle" fill="#1591DC" fontSize="0.45rem" fontWeight="bold">Shared Buffers</text>
+          
+          <rect x="25" y="38" width="12" height="12" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="31" y="46" textAnchor="middle" fill="#FFFFFF" fontSize="0.35rem">P1</text>
+          <rect x="42" y="38" width="12" height="12" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+          <text x="48" y="46" textAnchor="middle" fill="#FFFFFF" fontSize="0.35rem">P2</text>
+          <rect x="59" y="38" width="12" height="12" fill="none" stroke="#1591DC" strokeWidth="1" />
+          <text x="65" y="46" textAnchor="middle" fill="#1591DC" fontSize="0.35rem">P3</text>
+          <rect x="76" y="38" width="12" height="12" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+          
+          <rect x="120" y="20" width="85" height="35" rx="3" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="162.5" y="40" textAnchor="middle" fill="#FFFFFF" fontSize="0.45rem" fontWeight="bold">Disk Storage</text>
+          
+          <path d="M 100 37 L 120 37" stroke="#1591DC" strokeWidth="1.2" />
+          <path d="M 120 43 L 100 43" stroke="#1591DC" strokeWidth="1.2" />
+          
+          <circle cx="110" cy="85" r="16" fill="none" stroke="#FFFFFF" strokeWidth="1.5" />
+          <text x="110" y="88.5" textAnchor="middle" fill="#FFFFFF" fontSize="0.42rem">VACUUM</text>
+          <path d="M 110 69 L 110 55" stroke="#FFFFFF" strokeWidth="1" strokeDasharray="2,2" />
+          <text x="110" y="109" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="0.45rem">MVCC Garbage Sweeper</text>
+        </svg>
+      );
     default:
       return (
         <svg width="220" height="120" style={{ overflow: 'visible' }}>
@@ -441,10 +728,37 @@ const TOPIC_GROUPS = {
   'pacelc-theorem': 'Scaling & Reliability',
 
   // DATABASE
+  'db-table-sim': 'SQL Fundamentals',
+  'primary-key-viz': 'SQL Fundamentals',
+  'foreign-key-viz': 'SQL Fundamentals',
   'sql-joins': 'Querying & Indexing',
   'db-indexing': 'Querying & Indexing',
   'b-plus-tree': 'Querying & Indexing',
-  'mongodb-aggregation': 'NoSQL aggregations'
+  'query-execution-engine': 'Engine & Schema Design',
+  'normalization-lab': 'Engine & Schema Design',
+  'acid-transactions': 'Transactions & Concurrency',
+  'concurrency-control': 'Transactions & Concurrency',
+  'mongodb-document': 'NoSQL & Caching',
+  'mongodb-aggregation': 'NoSQL & Caching',
+  'cache-visualizer': 'NoSQL & Caching',
+  'db-sharding-viz': 'Distributed Scaling',
+  'db-replication-viz': 'Distributed Scaling',
+  'cap-theorem-viz': 'Distributed Scaling',
+  
+  // DATABASE ROADMAP
+  'query-optimizer': 'Engine & Schema Design',
+  'materialized-views': 'Engine & Schema Design',
+  'oltp-olap': 'OLAP & Warehousing',
+  'data-warehousing': 'OLAP & Warehousing',
+  'snowflake-schema': 'OLAP & Warehousing',
+  'star-schema': 'OLAP & Warehousing',
+  'distributed-databases': 'Distributed Scaling',
+  'event-sourcing': 'Distributed Patterns',
+  'cqrs': 'Distributed Patterns',
+  'cdc-pattern': 'Distributed Patterns',
+  'elasticsearch': 'Specialized Indexes',
+  'vector-databases': 'Specialized Indexes',
+  'postgresql-internals': 'Engine & Schema Design'
 };
 
 export default function InteractiveVisualizer() {
@@ -479,6 +793,8 @@ export default function InteractiveVisualizer() {
     }
     group[1].push(topic);
   });
+
+  const isDatabase = activeCategory === 'DATABASE';
 
   return (
     <div className="visualizer-tab-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
@@ -575,9 +891,9 @@ export default function InteractiveVisualizer() {
                     fontWeight: '700',
                     padding: '0.3rem 0.6rem',
                     borderRadius: '3px',
-                    border: '1px solid #f59e0b',
-                    color: '#f59e0b',
-                    backgroundColor: 'rgba(245, 158, 11, 0.05)'
+                    border: isDatabase ? '1px solid #1591DC' : '1px solid #f59e0b',
+                    color: isDatabase ? '#1591DC' : '#f59e0b',
+                    backgroundColor: isDatabase ? 'rgba(21, 145, 220, 0.05)' : 'rgba(245, 158, 11, 0.05)'
                   }}>
                     Diff: {activeTopic.difficulty || 'Intermediate'}
                   </span>
@@ -586,9 +902,9 @@ export default function InteractiveVisualizer() {
                     fontWeight: '700',
                     padding: '0.3rem 0.6rem',
                     borderRadius: '3px',
-                    border: '1px solid #ef4444',
-                    color: '#ef4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.05)'
+                    border: isDatabase ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid #ef4444',
+                    color: isDatabase ? '#FFFFFF' : '#ef4444',
+                    backgroundColor: isDatabase ? 'rgba(255, 255, 255, 0.05)' : 'rgba(239, 68, 68, 0.05)'
                   }}>
                     Freq: {activeTopic.frequency || 'High'}
                   </span>
@@ -645,13 +961,13 @@ export default function InteractiveVisualizer() {
                     padding: '1.25rem'
                   }}>
                     <h5 style={{ color: '#FFFFFF', fontWeight: '700', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <i className="fa-solid fa-list-check" style={{ color: '#10b981' }}></i> Planned Simulation Features
+                      <i className="fa-solid fa-list-check" style={{ color: isDatabase ? '#1591DC' : '#10b981' }}></i> Planned Simulation Features
                     </h5>
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                       {(activeTopic.features || []).map((feat, index) => (
                         <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                          <span style={{ color: '#10b981', fontWeight: '700' }}>✓</span>
+                          <span style={{ color: isDatabase ? '#1591DC' : '#10b981', fontWeight: '700' }}>✓</span>
                           <span>{feat}</span>
                         </div>
                       ))}
@@ -666,7 +982,7 @@ export default function InteractiveVisualizer() {
                       padding: '1.25rem'
                     }}>
                       <h5 style={{ color: '#FFFFFF', fontWeight: '700', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <i className="fa-solid fa-building" style={{ color: '#f59e0b' }}></i> Industry Adoption
+                        <i className="fa-solid fa-building" style={{ color: isDatabase ? '#1591DC' : '#f59e0b' }}></i> Industry Adoption
                       </h5>
                       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                         {activeTopic.companies.map((company, cIdx) => (
@@ -674,10 +990,10 @@ export default function InteractiveVisualizer() {
                             fontSize: '0.7rem',
                             fontWeight: '700',
                             padding: '0.2rem 0.5rem',
-                            backgroundColor: 'rgba(245, 158, 11, 0.05)',
-                            border: '1px solid rgba(245, 158, 11, 0.3)',
+                            backgroundColor: isDatabase ? 'rgba(21, 145, 220, 0.05)' : 'rgba(245, 158, 11, 0.05)',
+                            border: isDatabase ? '1px solid rgba(21, 145, 220, 0.3)' : '1px solid rgba(245, 158, 11, 0.3)',
                             borderRadius: '3px',
-                            color: '#f59e0b'
+                            color: isDatabase ? '#1591DC' : '#f59e0b'
                           }}>
                             {company}
                           </span>

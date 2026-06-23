@@ -54,6 +54,37 @@ import ServiceDiscoveryVisualizer from './system/ServiceDiscoveryVisualizer';
 import GraphqlApiVisualizer from './system/GraphqlApiVisualizer';
 import PacelcTheoremVisualizer from './system/PacelcTheoremVisualizer';
 
+import DbTableSimulator from './database/DbTableSimulator';
+import PrimaryKeyVisualizer from './database/PrimaryKeyVisualizer';
+import ForeignKeyVisualizer from './database/ForeignKeyVisualizer';
+import SqlJoinsVisualizer from './database/SqlJoinsVisualizer';
+import DbIndexingVisualizer from './database/DbIndexingVisualizer';
+import BPlusTreeVisualizer from './database/BPlusTreeVisualizer';
+import QueryExecutionVisualizer from './database/QueryExecutionVisualizer';
+import NormalizationVisualizer from './database/NormalizationVisualizer';
+import AcidTransactionsVisualizer from './database/AcidTransactionsVisualizer';
+import DbLockingVisualizer from './database/DbLockingVisualizer';
+import MongoDocumentVisualizer from './database/MongoDocumentVisualizer';
+import MongoAggregationVisualizer from './database/MongoAggregationVisualizer';
+import DbCacheVisualizer from './database/DbCacheVisualizer';
+import DbShardingDbVisualizer from './database/DbShardingVisualizer';
+import DbReplicationDbVisualizer from './database/DbReplicationVisualizer';
+import DbCapVisualizer from './database/DbCapVisualizer';
+
+import QueryOptimizerVisualizer from './database/QueryOptimizerVisualizer';
+import MaterializedViewsVisualizer from './database/MaterializedViewsVisualizer';
+import OltpOlapVisualizer from './database/OltpOlapVisualizer';
+import DataWarehousingVisualizer from './database/DataWarehousingVisualizer';
+import SnowflakeSchemaVisualizer from './database/SnowflakeSchemaVisualizer';
+import StarSchemaVisualizer from './database/StarSchemaVisualizer';
+import DistributedDatabasesVisualizer from './database/DistributedDatabasesVisualizer';
+import EventSourcingVisualizer from './database/EventSourcingVisualizer';
+import CqrsVisualizer from './database/CqrsVisualizer';
+import CdcPatternVisualizer from './database/CdcPatternVisualizer';
+import ElasticsearchVisualizer from './database/ElasticsearchVisualizer';
+import VectorDatabasesVisualizer from './database/VectorDatabasesVisualizer';
+import PostgresInternalsVisualizer from './database/PostgresInternalsVisualizer';
+
 export const VISUALIZER_REGISTRY = {
   JAVA: [
     {
@@ -434,48 +465,207 @@ export const VISUALIZER_REGISTRY = {
   ],
   DATABASE: [
     {
+      id: 'db-table-sim',
+      name: 'Database Table Simulator',
+      icon: 'fa-solid fa-table',
+      component: DbTableSimulator,
+      description: 'Add, update, and delete rows with real-time primary key checks.'
+    },
+    {
+      id: 'primary-key-viz',
+      name: 'Primary Key Constraints',
+      icon: 'fa-solid fa-key',
+      component: PrimaryKeyVisualizer,
+      description: 'Observe duplicate key scans, null constraint rejections, and success commits.'
+    },
+    {
+      id: 'foreign-key-viz',
+      name: 'Foreign Key Constraints',
+      icon: 'fa-solid fa-link',
+      component: ForeignKeyVisualizer,
+      description: 'Trace parent-child table linkages, CASCADE deletes, and RESTRICT blocking rules.'
+    },
+    {
       id: 'sql-joins',
       name: 'SQL Joins',
       icon: 'fa-solid fa-circle-nodes',
-      isPlaceholder: true,
-      difficulty: 'Beginner',
-      frequency: 'Very High',
-      objective: 'Venn diagram overlaps of INNER, LEFT, RIGHT, and FULL OUTER joins.',
-      features: ['Venn diagram selector', 'Interactive tables', 'Resulting join output table', 'Compiled SQL query builder'],
-      previewType: 'joins'
+      component: SqlJoinsVisualizer,
+      description: 'Interactive Join operations (INNER, LEFT, RIGHT, FULL, CROSS, SELF) with live datasets.'
     },
     {
       id: 'db-indexing',
       name: 'Database Indexes',
       icon: 'fa-solid fa-search-plus',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'High',
-      objective: 'Compare full-table scans vs Index scans (pointer lookups).',
-      features: ['Un-indexed query speed test', 'B-Tree Index scan path', 'Page Read operations counter', 'Scan path highlighter'],
-      previewType: 'indexing'
+      component: DbIndexingVisualizer,
+      description: 'Compare Full Table Scans vs Index seeks. Verify page read counters.'
     },
     {
       id: 'b-plus-tree',
       name: 'B+ Tree Indexing',
       icon: 'fa-solid fa-sitemap',
-      isPlaceholder: true,
-      difficulty: 'Advanced',
-      frequency: 'High',
-      objective: 'Multi-level branch node traversal down to leaf sequential lists.',
-      features: ['Search Key path', 'Root/Internal/Leaf nodes representation', 'Leaf page sequence links', 'Range query scan path'],
-      previewType: 'bplus'
+      component: BPlusTreeVisualizer,
+      description: 'Understand node traversals, splits, leaf page sequence linked lists, and re-balancing.'
+    },
+    {
+      id: 'query-execution-engine',
+      name: 'SQL Query Execution',
+      icon: 'fa-solid fa-play',
+      component: QueryExecutionVisualizer,
+      description: 'Trace query syntax parsing, cost-based optimization, and physical plan retrievals.'
+    },
+    {
+      id: 'normalization-lab',
+      name: 'Normalization Lab',
+      icon: 'fa-solid fa-border-all',
+      component: NormalizationVisualizer,
+      description: 'Decompose database tables from 1NF to 3NF. Resolve transitive and partial dependencies.'
+    },
+    {
+      id: 'acid-transactions',
+      name: 'ACID Transactions',
+      icon: 'fa-solid fa-wallet',
+      component: AcidTransactionsVisualizer,
+      description: 'Simulate money transfers, abort crashes, rollbacks, and committed durability writes.'
+    },
+    {
+      id: 'concurrency-control',
+      name: 'Concurrency & Locking',
+      icon: 'fa-solid fa-lock',
+      component: DbLockingVisualizer,
+      description: 'Observe Shared vs Exclusive conflicts, transaction wait states, and deadlock detector sweep resolutions.'
+    },
+    {
+      id: 'mongodb-document',
+      name: 'MongoDB Document',
+      icon: 'fa-solid fa-file-code',
+      component: MongoDocumentVisualizer,
+      description: 'Examine collections, BSON nested document fields, arrays, and embedded objects.'
     },
     {
       id: 'mongodb-aggregation',
       name: 'MongoDB Aggregations',
       icon: 'fa-solid fa-filter',
-      isPlaceholder: true,
-      difficulty: 'Intermediate',
-      frequency: 'High',
-      objective: 'Dynamic pipelines: $match -> $group -> $sort -> $project step filters.',
-      features: ['Document records input', '$match stage filter', '$group accumulators', 'Stage output records list'],
-      previewType: 'aggregation'
+      component: MongoAggregationVisualizer,
+      description: 'Stream documents sequentially through match, group, sort, and project pipeline stages.'
+    },
+    {
+      id: 'cache-visualizer',
+      name: 'Cache Workflows',
+      icon: 'fa-solid fa-bolt',
+      component: DbCacheVisualizer,
+      description: 'Trace Redis cache hit/miss queries, TTL invalidations, and database write-backs.'
+    },
+    {
+      id: 'db-sharding-viz',
+      name: 'Horizontal Sharding',
+      icon: 'fa-solid fa-server',
+      component: DbShardingDbVisualizer,
+      description: 'Map range-based query routing to targeted database shards.'
+    },
+    {
+      id: 'db-replication-viz',
+      name: 'Master-Replica replication',
+      icon: 'fa-solid fa-copy',
+      component: DbReplicationDbVisualizer,
+      description: 'Model write propagations, asynchronous lags, read scalings, and replica promotions.'
+    },
+    {
+      id: 'cap-theorem-viz',
+      name: 'CAP Theorem',
+      icon: 'fa-solid fa-triangle-exclamation',
+      component: DbCapVisualizer,
+      description: 'Contrast Cassandra AP availability staleness with HBase CP consistency write rejects under partition.'
+    },
+    {
+      id: 'query-optimizer',
+      name: 'Query Optimizer',
+      icon: 'fa-solid fa-brain',
+      component: QueryOptimizerVisualizer,
+      description: 'Trace query parsing, predicate pushdowns, join costs, and optimal physical execution plans.'
+    },
+    {
+      id: 'materialized-views',
+      name: 'Materialized Views',
+      icon: 'fa-solid fa-eye',
+      component: MaterializedViewsVisualizer,
+      description: 'Persist query aggregates to disk. Compare immediate vs manual refreshes and page scans.'
+    },
+    {
+      id: 'oltp-olap',
+      name: 'OLTP vs OLAP',
+      icon: 'fa-solid fa-chart-line',
+      component: OltpOlapVisualizer,
+      description: 'Contrast row-oriented transactional stores (OLTP) with column-oriented analytics (OLAP) memory layouts.'
+    },
+    {
+      id: 'data-warehousing',
+      name: 'Data Warehousing',
+      icon: 'fa-solid fa-warehouse',
+      component: DataWarehousingVisualizer,
+      description: 'Ingest operational RDBMS, APIs, and web click log files through staging ETL pipelines into warehouses.'
+    },
+    {
+      id: 'snowflake-schema',
+      name: 'Snowflake Schema',
+      icon: 'fa-solid fa-snowflake',
+      component: SnowflakeSchemaVisualizer,
+      description: 'Model a central fact table surrounded by nested, normalized dimension table hierarchies.'
+    },
+    {
+      id: 'star-schema',
+      name: 'Star Schema',
+      icon: 'fa-solid fa-star',
+      component: StarSchemaVisualizer,
+      description: 'Model a central fact table surrounded by denormalized flat dimension tables for low-join queries.'
+    },
+    {
+      id: 'distributed-databases',
+      name: 'Distributed Databases',
+      icon: 'fa-solid fa-network-wired',
+      component: DistributedDatabasesVisualizer,
+      description: 'Simulate distributed Raft consensus syncing, quorum checks, leader crashes, and follower election campaigns.'
+    },
+    {
+      id: 'event-sourcing',
+      name: 'Event Sourcing',
+      icon: 'fa-solid fa-history',
+      component: EventSourcingVisualizer,
+      description: 'Reconstruct state by replaying chronological immutable event ledgers and capturing checkpoints.'
+    },
+    {
+      id: 'cqrs',
+      name: 'CQRS Pattern',
+      icon: 'fa-solid fa-arrows-split-up-and-left',
+      component: CqrsVisualizer,
+      description: 'Segregate writes (Command model) from reads (Query model) and observe eventual consistency syncing lags.'
+    },
+    {
+      id: 'cdc-pattern',
+      name: 'Change Data Capture (CDC)',
+      icon: 'fa-solid fa-clock-rotate-left',
+      component: CdcPatternVisualizer,
+      description: 'Tail Write-Ahead Log (WAL) binary files, publish row mutations, and sync search index engines in real-time.'
+    },
+    {
+      id: 'elasticsearch',
+      name: 'Elasticsearch Indexing',
+      icon: 'fa-solid fa-search',
+      component: ElasticsearchVisualizer,
+      description: 'Analyze text through tokenization, stopwords, and stemming pipelines into Inverted Index postings.'
+    },
+    {
+      id: 'vector-databases',
+      name: 'Vector Databases',
+      icon: 'fa-solid fa-shapes',
+      component: VectorDatabasesVisualizer,
+      description: 'Plot high-dimensional embeddings, compute Cosine similarity distance, and find semantic nearest neighbors.'
+    },
+    {
+      id: 'postgresql-internals',
+      name: 'PostgreSQL Internals',
+      icon: 'fa-solid fa-gears',
+      component: PostgresInternalsVisualizer,
+      description: 'Manage shared buffer dirty frames, MVCC xmin/xmax tuple visibility, and vacuum dead space sweeps.'
     }
   ]
 };
