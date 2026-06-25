@@ -50,9 +50,9 @@ export const ProgressProvider = ({ children }) => {
     }
   };
 
-  const submitScore = async (lessonId, selectedOptionIndex) => {
+  const submitScore = async (lessonId, selectedOptionIndex, questionIndex = 0) => {
     try {
-      const response = await axios.post(`${API_URL}/api/v1/progress/lessons/${lessonId}/quiz-submit`, { selectedOptionIndex });
+      const response = await axios.post(`${API_URL}/api/v1/progress/lessons/${lessonId}/quiz-submit`, { selectedOptionIndex, questionIndex });
       await fetchProgressSummary();
       return {
         success: true,

@@ -39,7 +39,9 @@ LessonSchema.index({ title: 'text', content: 'text' }); // High-performance fuzz
 
 LessonSchema.pre('save', function(next) {
   if (!this.isModified('title')) return next();
-  this.slug = this.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
+  if (!this.slug) {
+    this.slug = this.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
+  }
   next();
 });
 

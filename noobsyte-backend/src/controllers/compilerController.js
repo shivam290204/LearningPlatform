@@ -1,7 +1,8 @@
 const { submitCode } = require('../services/judge0Service');
+const { executeLocally } = require('../services/localCompilerService');
 
 /**
- * Validates request parameters and coordinates code execution via Judge0.
+ * Validates request parameters and coordinates code execution via Judge0 with local fallback.
  * @route POST /api/v1/compiler/run
  */
 const runCode = async (req, res) => {
@@ -23,11 +24,18 @@ const runCode = async (req, res) => {
       });
     }
 
-    // Call Judge0 execution service
-    const result = await submitCode(source_code, language_id, stdin || '');
-
-    console.log("Judge0 Raw Response:");
-    console.dir(result, { depth: null });
+    let result;
+    try {
+      // Call Judge0 execution service
+      result = await submitCode(source_code, language_id, stdin || '');
+      console.log("Judge0 Raw Response:");
+      console.dir(result, { depth: null });
+    } catch (judge0Error) {
+      console.warn("⚠️ Judge0 connection failed or service offline. Falling back to local execution engine...");
+      result = await executeLocally(source_code, language_id, stdin || '');
+      console.log("Local Compiler Response:");
+      console.dir(result, { depth: null });
+    }
 
     return res.status(200).json({
       success: true,

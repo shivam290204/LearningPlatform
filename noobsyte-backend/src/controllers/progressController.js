@@ -44,7 +44,7 @@ const Quiz = require('../models/Quiz');
 // Record quiz submit scores with server-side validation
 exports.submitQuizScore = asyncHandler(async (req, res, next) => {
   const { lessonId } = req.params;
-  const { selectedOptionIndex } = req.body;
+  const { selectedOptionIndex, questionIndex = 0 } = req.body;
 
   if (selectedOptionIndex === undefined) {
     return next(new AppError('Please provide selectedOptionIndex parameter.', 400));
@@ -56,8 +56,8 @@ exports.submitQuizScore = asyncHandler(async (req, res, next) => {
     return next(new AppError('No quiz found for this lesson.', 404));
   }
 
-  // Evaluate correctness against the active question (first question in current schema)
-  const activeQuestion = quiz.questions[0];
+  // Evaluate correctness against the specified question index
+  const activeQuestion = quiz.questions[questionIndex] || quiz.questions[0];
   const isCorrect = selectedOptionIndex === activeQuestion.correctAnswerIndex;
   
   const score = isCorrect ? 1 : 0;

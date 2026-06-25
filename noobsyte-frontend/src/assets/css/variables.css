@@ -95,11 +95,11 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.7;
 }
 
-/* Gamified elements using Press Start 2P */
+/* Gamified elements using modern clean font */
 .xp-badge, .streak-badge {
-  font-family: var(--font-family-pixel);
-  font-size: 0.62rem !important;
-  letter-spacing: -0.5px;
+  font-family: var(--font-family-sans);
+  font-size: 0.85rem !important;
+  letter-spacing: -0.2px;
 }
 
 .stats-value {

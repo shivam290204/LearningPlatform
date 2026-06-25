@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState, useRef } from 'react';
 import { LearningContext } from '../context/LearningContext';
 import { ProgressContext } from '../context/ProgressContext';
 import { AuthContext } from '../context/AuthContext';
+import { getCourses, getCourseModules } from '../curriculum/curriculumRegistry';
 import CodeEditorTab from '../components/dashboard/CodeEditorTab';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 
@@ -117,7 +118,9 @@ function CourseCatalog({
         {
           title: 'Module 3: Object-Oriented Programming (OOP) Foundations',
           lessons: [
-            { title: 'OOP Basics (Classes, Objects, Constructors)', slug: 'oop-basics', time: '10 min', sim: false, quiz: true }
+            { title: 'Lesson 1: What is OOP? (Philosophy & Why It Exists)', slug: 'oop-basics', time: '10 min', sim: false, quiz: true },
+            { title: 'Lesson 2: Classes, Objects & Constructors', slug: 'classes-objects', time: '25 min', sim: false, quiz: true },
+            { title: 'Lesson 3: Encapsulation & Access Modifiers', slug: 'encapsulation', time: '30 min', sim: false, quiz: true }
           ]
         },
         {
@@ -273,8 +276,38 @@ function CourseCatalog({
     return [];
   };
 
-  const displayedCourses = courses && courses.length > 0 ? courses : getMockedCurriculum();
+  const registryCourses = getCourses();
+  const displayedCourses = courses && courses.length > 0 ? courses.map(c => {
+    const regC = registryCourses.find(rc => rc.slug === c.slug) || {};
+    return { ...c, ...regC };
+  }) : registryCourses;
   
+  const getMergedModules = (courseSlug) => {
+    const backendModules = modules || [];
+    const localModules = getCourseModules(courseSlug);
+    
+    return localModules.map((localMod, modIdx) => {
+      const backendMod = backendModules.find(bm => bm.title === localMod.title) || backendModules[modIdx] || {};
+      
+      const mergedLessons = localMod.lessons.map((localLes, lesIdx) => {
+        const backendLes = (backendMod.lessons || []).find(l => l.slug === localLes.slug) || (backendMod.lessons || [])[lesIdx] || {};
+        return {
+          ...localLes,
+          _id: backendLes._id,
+          sim: !!(localLes.visualizer || backendLes.sim),
+          quiz: !!(localLes.quiz || backendLes.quiz),
+          time: localLes.estTime || backendLes.time || '10 min'
+        };
+      });
+      
+      return {
+        ...localMod,
+        _id: backendMod._id,
+        lessons: mergedLessons
+      };
+    });
+  };
+
   // Calculate completed modules dynamically based on completed lessons
   const topicsMasteredCount = Math.min(Math.floor(completedLessons.length / 2), 23);
 
@@ -743,7 +776,7 @@ function CourseCatalog({
                         {loading ? (
                           <div className="loading-spinner-small">Loading syllabus modules...</div>
                         ) : (
-                          (modules && modules.length > 0 ? modules : getMockedModules(course.slug)).map((mod, idx) => (
+                          getMergedModules(course.slug).map((mod, idx) => (
                             <div key={idx} className="directory-module-block">
                               <h5>{mod.title}</h5>
                               <div className="lessons-slugs-list">

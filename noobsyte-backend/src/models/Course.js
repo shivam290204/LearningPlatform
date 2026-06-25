@@ -30,7 +30,9 @@ const CourseSchema = new mongoose.Schema({
 // Auto-generate dynamic slugs on save
 CourseSchema.pre('save', function(next) {
   if (!this.isModified('title')) return next();
-  this.slug = this.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
+  if (!this.slug) {
+    this.slug = this.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
+  }
   next();
 });
 
