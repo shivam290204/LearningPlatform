@@ -267,9 +267,11 @@ function AppContent() {
         />
       )}
 
-      <footer className="platform-footer">
-        <p>© 2026 NoobSyte Educational Platform.</p>
-      </footer>
+      {activeScreen !== 'lesson' && activeCatalogTab !== 'sandbox' && (
+        <footer className="platform-footer">
+          <p>© 2026 NoobSyte Educational Platform.</p>
+        </footer>
+      )}
     </div>
   );
 }

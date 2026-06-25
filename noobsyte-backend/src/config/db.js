@@ -15,7 +15,11 @@ const connectDB = async () => {
       console.log(`MongoDB Database Connected (Local Fallback): ${conn.connection.host}`);
     } catch (localError) {
       console.error(`Local Database Connection Error: ${localError.message}`);
-      process.exit(1);
+      if (process.env.NODE_ENV === 'production') {
+        process.exit(1);
+      } else {
+        console.warn('⚠️ Development warning: Database is offline. Running without active DB connection.');
+      }
     }
   }
 };

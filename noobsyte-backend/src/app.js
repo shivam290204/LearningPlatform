@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const userRoutes = require('./routes/userRoutes');
+const compilerRoutes = require('./routes/compilerRoutes');
 const globalErrorHandler = require('./middlewares/error');
 
 const app = express();
@@ -40,6 +41,8 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/courses', courseRoutes);
 app.use('/api/v1/progress', progressRoutes);
 app.use('/api/v1/users', userRoutes);
+
+app.use('/api/v1/compiler', compilerRoutes);
 
 // Core Health Check Route
 app.get('/api/v1/health', (req, res) => {
