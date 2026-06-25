@@ -385,6 +385,8 @@ const LessonSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 LessonSchema.index({ module: 1, order: 1 }, { unique: true });
+LessonSchema.index({ title: 'text', content: 'text' }); // High-performance fuzzy text queries index
+
 LessonSchema.pre('save', function(next) {
   if (!this.isModified('title')) return next();
   this.slug = this.title.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-');
@@ -851,7 +853,7 @@ exports.getPlatformAnalytics = asyncHandler(async (req, res, next) => {
 
 ## 8. CONTENT MANAGEMENT SYSTEM (CMS)
 
-Lessons in NoobSyte are dynamic documents featuring integrated visual and assessment states. Rather than building a heavy external UI interface, the curriculum is stored as formatted Markdown paired with structured JSON configurations.
+Lessons in NoobSyte are dynamic documents featuring integrated visual and assessment states. Rather than building a heavy external UI interface, the curriculum is stored as formatted Markdown/HTML paired with structured JSON configurations.
 
 ### CMS Storage Architecture Map
 
@@ -865,12 +867,15 @@ graph TD
     
     subgraph UI Render Cycle
         Vite[Vite React Client Engine]
-        R_MD[ReactMarkdown Engine]
+        Parser[DOMParser Content Splitter]
+        R_MD[HTML Parser Engine]
         Prism[PrismJS Syntax Tokenizer]
-        V_SVG[Custom D3/SVG Memory Drawer]
+        V_SVG[Custom SVG Memory Drawer]
     end
 
-    MD -->|Parsed by| R_MD
+    MD -->|Parsed by| Parser
+    Parser -->|Theory| R_MD
+    Parser -->|Analogy| R_MD
     Code -->|Highlighted by| Prism
     Vis -->|Animated by| V_SVG
     R_MD --> Vite
@@ -880,6 +885,10 @@ graph TD
 
 *   **Syntax Highlighting:** Written in standard markdown format (````java ... ````). The React frontend converts code blocks into syntax-highlighted HTML spans using `prismjs` or `react-syntax-highlighter`.
 *   **Visualizations Schema:** Standard JSON maps specifying variables, reference objects in the heap, pointers, and descriptive labels.
+*   **Dynamic HTML Tab-Splitting (`DOMParser`):** To avoid duplicating content in the database, the backend feeds a single comprehensive lesson HTML body. The React client dynamically processes this HTML at runtime using the browser's native `DOMParser`. It scans for `<h2>` or `<h3>` headers matching "analogy" or "real-life analogy" and automatically splits the document into a **Theory** section and an **Analogy** section. This content is then displayed under separate, interactive tabs on the UI.
+*   **Layout Adaptability:** The rendering engine checks the presence of JVM memory visualization steps (`activeLesson.visualizations`).
+    *   If visualization steps are present, a two-column `split-pane-layout` is rendered, displaying the SVG visual memory map simulator side-by-side with the narrative content.
+    *   If no visual blueprints are configured for the lesson, it dynamically shifts to `single-pane-layout` where the narrative pane takes up 100% of the available width (`full-width-pane`), optimizing screen real estate for reading.
 
 ---
 
@@ -1008,7 +1017,7 @@ A clean, visual interface featuring three key components:
 
 ### Search & Navigation Engine
 *   **Fuzzy Searching Strategy:** Implemented using MongoDB's text indexes (`$text`) on courses and lessons, allowing users to find relevant content even with typos (e.g., searching for "linkedlist" returns "Linked List").
-*   **Course Navigation:** Standard nested paths (e.g., `/courses/:courseSlug/:moduleOrder/:lessonSlug`) paired with a global React layout component that keeps navigation controls visible on the page.
+*   **State-Preserved Course Navigation:** To provide an intuitive learning flow, navigation states (such as the active workspace tab `activeCatalogTab` and expanded course slug `selectedCourseSlug`) are lifted to the root `App.jsx` component. When a user is in the "Syllabus" section, drills down into a specific module/lesson, and then clicks the back button, the platform returns them precisely to the "Syllabus" tab with the same course expanded, rather than resetting their navigation to the "Learn & Roadmap" home tab.
 
 ---
 

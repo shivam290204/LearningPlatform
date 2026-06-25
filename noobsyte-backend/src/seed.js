@@ -337,45 +337,1162 @@ Function BinarySearch(Array, Target):
             title: 'What are Data Structures?',
             slug: 'what-are-data-structures',
             order: 1,
-            content: `<h3>What are Data Structures?</h3>
-<p>A **Data Structure** is a systematic way of organizing, managing, and storing data in computer memory so that operations (search, insert, delete) can be performed efficiently.</p>
-<p>Data structures are divided into:</p>
-<ul>
-  <li><strong>Linear:</strong> Elements arranged sequentially (Arrays, Linked Lists, Stacks, Queues).</li>
-  <li><strong>Non-Linear:</strong> Hierarchical or mesh arrangements (Trees, Graphs).</li>
-</ul>`,
+            content: `<article class="lesson-content">
+
+  <section class="lesson-intro">
+    <h2>What Are Data Structures?</h2>
+    <p>
+      Imagine you're moving houses. You have hundreds of items — books, clothes, kitchen tools, electronics.
+      Now, you could throw everything into random boxes, but that would make unpacking a nightmare.
+      Or you could organize things smartly: books in labeled boxes, fragile items in padded containers, clothes sorted by room.
+      That organization system you use? That's exactly what a <strong>data structure</strong> is — but for computer memory.
+    </p>
+    <p>
+      A <strong>data structure</strong> is a systematic, organized way to store, manage, and arrange data in a computer's memory so that
+      operations like searching, inserting, deleting, and updating can be performed efficiently.
+    </p>
+    <p>
+      Every software application you use — Instagram, Google, Netflix, your banking app — is built on data structures.
+      Without them, computers would be forced to scan through millions of records one by one for every single operation.
+      The right data structure can make a program run in milliseconds instead of hours.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Why Are Data Structures Important?</h3>
+    <p>
+      Consider Google Search. When you type "pizza near me", Google doesn't scan through 8 billion web pages
+      one by one. It uses specialized data structures (like inverted indexes and hash maps) to locate relevant
+      results in milliseconds.
+    </p>
+    <p>
+      Consider your smartphone's contact list. Without a data structure, finding "Priya Sharma" in 500 contacts
+      would require checking every single contact. With a sorted data structure and binary search, it can be found
+      in under 10 comparisons.
+    </p>
+    <p>
+      Data structures determine the difference between:
+    </p>
+    <ul>
+      <li>A website that loads in 200ms vs. one that times out</li>
+      <li>A game that runs at 60fps vs. one that stutters</li>
+      <li>A database query that returns instantly vs. one that takes minutes</li>
+    </ul>
+    <p>
+      In every technical interview at top companies (Google, Amazon, Microsoft, Meta), data structures and
+      algorithms form the core of coding rounds. Mastering them is non-negotiable for a software engineering career.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Real-Life Analogy: The Library</h3>
+    <p>
+      Think of a library. A librarian could store all 50,000 books in a giant random pile — technically,
+      all the books are "stored", but finding any specific book would take hours.
+    </p>
+    <p>
+      Instead, libraries organize books using the Dewey Decimal System:
+    </p>
+    <ul>
+      <li>Books are grouped by subject (like categories in a data structure)</li>
+      <li>Within subjects, they're sorted alphabetically by author (ordering)</li>
+      <li>Each shelf is labeled (indexing)</li>
+      <li>The catalog maps title/author to shelf location (hash mapping)</li>
+    </ul>
+    <p>
+      Different sections of the library represent different data structures:
+    </p>
+    <ul>
+      <li><strong>Reference shelves</strong> (sorted arrays — fast lookup, hard to rearrange)</li>
+      <li><strong>Waiting list for reserved books</strong> (queue — first come, first served)</li>
+      <li><strong>Return counter stack</strong> (stack — last returned, first processed)</li>
+      <li><strong>Catalog index</strong> (hash map — instant lookup by key)</li>
+      <li><strong>Dewey Decimal tree</strong> (tree — hierarchical organization)</li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Core Theory: Classification of Data Structures</h3>
+    <p>Data structures are broadly divided into two families based on how elements relate to each other:</p>
+
+    <h4>1. Linear Data Structures</h4>
+    <p>
+      Elements are arranged in a <strong>sequential, one-dimensional order</strong>. Each element has a unique
+      predecessor and successor (except for the first and last elements). They are stored in contiguous or
+      linked memory locations.
+    </p>
+    <ul>
+      <li><strong>Array:</strong> Fixed-size, indexed collection. Elements stored in contiguous memory. Fast random access O(1).</li>
+      <li><strong>Linked List:</strong> Nodes scattered in memory, connected by pointers. Dynamic size. O(N) access.</li>
+      <li><strong>Stack:</strong> LIFO (Last-In, First-Out) structure. Like a stack of plates.</li>
+      <li><strong>Queue:</strong> FIFO (First-In, First-Out) structure. Like a checkout line.</li>
+    </ul>
+
+    <h4>2. Non-Linear Data Structures</h4>
+    <p>
+      Elements are arranged in a <strong>hierarchical or network (mesh) pattern</strong>. One element can connect to multiple elements.
+      These structures model complex real-world relationships that don't fit into a simple sequence.
+    </p>
+    <ul>
+      <li><strong>Tree:</strong> Hierarchical parent-child relationships. File systems, HTML DOM, organization charts.</li>
+      <li><strong>Graph:</strong> Nodes (vertices) connected by edges. Social networks, road maps, internet routing.</li>
+      <li><strong>Heap:</strong> Specialized tree with priority ordering. Used in scheduling and sorting.</li>
+      <li><strong>Trie:</strong> Prefix-based tree optimized for string searches and autocomplete.</li>
+    </ul>
+
+    <h4>3. Static vs. Dynamic Data Structures</h4>
+    <ul>
+      <li>
+        <strong>Static:</strong> Fixed size allocated at compile time. Cannot grow or shrink during execution.
+        Example: standard arrays in Java — <code>int[] arr = new int[10]</code> always holds exactly 10 integers.
+      </li>
+      <li>
+        <strong>Dynamic:</strong> Size adjusts at runtime as elements are added or removed.
+        Example: Java's <code>ArrayList</code> or <code>LinkedList</code> grow and shrink automatically.
+      </li>
+    </ul>
+
+    <h4>4. Primitive vs. Abstract Data Types</h4>
+    <ul>
+      <li>
+        <strong>Primitive Data Types (PDT):</strong> Basic types built into the language — <code>int</code>,
+        <code>char</code>, <code>boolean</code>, <code>double</code>. They store a single value directly.
+      </li>
+      <li>
+        <strong>Abstract Data Types (ADT):</strong> Define behavior (what operations are supported) without
+        specifying implementation. A <em>Stack ADT</em> defines push/pop/peek — the internal implementation
+        can be an array or linked list. ADTs are the "contracts" that data structures fulfill.
+      </li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Visual Explanation: Memory Layout Comparison</h3>
+    <p>
+      One of the most important concepts in understanding data structures is <em>how they actually exist in computer memory</em>.
+      Arrays store elements side by side (contiguous), while linked lists scatter them across memory and use pointer chains.
+      This physical difference directly causes performance differences.
+    </p>
+    <p>
+      The diagram below shows how an Array and a Linked List store the same sequence [10, 20, 30] differently in RAM.
+      Notice that Array elements occupy consecutive addresses, enabling direct index math, while Linked List nodes
+      can be anywhere — they're stitched together by pointer references.
+    </p>
+
+    <div class="visualization-block">
+      <div class="viz-label">Memory Layout: Array vs Linked List (storing values 10, 20, 30)</div>
+      <div class="memory-layout">
+        <div class="mem-column">
+          <div class="mem-title">Array (Contiguous Memory)</div>
+          <div class="mem-row">
+            <div class="mem-addr">0x1000</div>
+            <div class="mem-cell array-cell">10</div>
+          </div>
+          <div class="mem-row">
+            <div class="mem-addr">0x1004</div>
+            <div class="mem-cell array-cell">20</div>
+          </div>
+          <div class="mem-row">
+            <div class="mem-addr">0x1008</div>
+            <div class="mem-cell array-cell">30</div>
+          </div>
+          <div class="mem-note">Access arr[2] = 0x1000 + 2×4 = 0x1008 ✓ O(1)</div>
+        </div>
+        <div class="mem-column">
+          <div class="mem-title">Linked List (Scattered Memory)</div>
+          <div class="mem-row">
+            <div class="mem-addr">0x2F10</div>
+            <div class="mem-cell linked-cell">10 | → 0x5A40</div>
+          </div>
+          <div class="mem-row gap-row">
+            <div class="mem-addr">...</div>
+            <div class="mem-cell empty-cell">other data</div>
+          </div>
+          <div class="mem-row">
+            <div class="mem-addr">0x5A40</div>
+            <div class="mem-cell linked-cell">20 | → 0x8C02</div>
+          </div>
+          <div class="mem-row gap-row">
+            <div class="mem-addr">...</div>
+            <div class="mem-cell empty-cell">other data</div>
+          </div>
+          <div class="mem-row">
+            <div class="mem-addr">0x8C02</div>
+            <div class="mem-cell linked-cell">30 | → null</div>
+          </div>
+          <div class="mem-note">Access node[2]: must follow pointer chain → O(N)</div>
+        </div>
+      </div>
+    </div>
+
+    <h4>The Big Picture: Data Structure Taxonomy</h4>
+    <p>
+      This taxonomy diagram shows all the major data structures you will study, and how they're related to each other.
+      Notice how everything branches from the concept of "organizing data" into linear and non-linear families.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Java Implementation: Observing Data Structure Behavior</h3>
+    <p>
+      Let's look at a practical example demonstrating how different data structures approach the same task — storing
+      and retrieving a list of student names — and how their behavior differs:
+    </p>
+    <pre><code>import java.util.*;
+
+public class DataStructureDemo {
+
+    public static void main(String[] args) {
+
+        // 1. ARRAY — fixed size, fast random access
+        // Must declare size upfront. Cannot grow dynamically.
+        String[] arrayDemo = new String[3];
+        arrayDemo[0] = "Alice";    // Direct assignment to index 0 → O(1)
+        arrayDemo[1] = "Bob";      // Direct assignment to index 1 → O(1)
+        arrayDemo[2] = "Charlie";  // Direct assignment to index 2 → O(1)
+        System.out.println("Array element at index 1: " + arrayDemo[1]); // O(1) access
+
+        // 2. ARRAYLIST — dynamic array (resizes automatically)
+        // Backed by an internal array. Doubles when full.
+        List&lt;String&gt; listDemo = new ArrayList&lt;&gt;();
+        listDemo.add("Alice");     // Adds to end → Amortized O(1)
+        listDemo.add("Bob");
+        listDemo.add("Charlie");
+        listDemo.add("Diana");     // If internal array is full, it resizes (copies) → O(N) occasionally
+        System.out.println("List element at index 2: " + listDemo.get(2)); // O(1) access
+
+        // 3. STACK — Last-In, First-Out (LIFO)
+        // Think: stack of plates. Last plate placed = first plate removed.
+        Deque&lt;String&gt; stackDemo = new ArrayDeque&lt;&gt;();
+        stackDemo.push("First");   // Push to top → O(1)
+        stackDemo.push("Second");
+        stackDemo.push("Third");
+        System.out.println("Stack top (peek): " + stackDemo.peek());  // "Third" — O(1)
+        System.out.println("Popped from stack: " + stackDemo.pop());  // "Third" removed — O(1)
+
+        // 4. QUEUE — First-In, First-Out (FIFO)
+        // Think: checkout line. First person in = first person served.
+        Queue&lt;String&gt; queueDemo = new LinkedList&lt;&gt;();
+        queueDemo.offer("Alice");  // Enqueue at rear → O(1)
+        queueDemo.offer("Bob");
+        queueDemo.offer("Charlie");
+        System.out.println("Queue front (peek): " + queueDemo.peek());   // "Alice" — O(1)
+        System.out.println("Dequeued from queue: " + queueDemo.poll());  // "Alice" removed — O(1)
+
+        // 5. HASHMAP — Key-Value pairs, near-instant lookup
+        // Think: dictionary. Key = word, Value = definition.
+        Map&lt;String, Integer&gt; mapDemo = new HashMap&lt;&gt;();
+        mapDemo.put("Alice", 95);    // Store key-value pair → Amortized O(1)
+        mapDemo.put("Bob", 87);
+        mapDemo.put("Charlie", 91);
+        System.out.println("Bob's score: " + mapDemo.get("Bob"));  // O(1) lookup by key
+
+        // 6. TREESET — Sorted, unique elements
+        // Backed by a Red-Black Tree. Always maintains sorted order.
+        Set&lt;Integer&gt; treeSetDemo = new TreeSet&lt;&gt;();
+        treeSetDemo.add(50);
+        treeSetDemo.add(30);
+        treeSetDemo.add(80);
+        treeSetDemo.add(10);
+        System.out.println("TreeSet (always sorted): " + treeSetDemo);  // [10, 30, 50, 80]
+    }
+}
+
+/*
+ * OUTPUT:
+ * Array element at index 1: Bob
+ * List element at index 2: Charlie
+ * Stack top (peek): Third
+ * Popped from stack: Third
+ * Queue front (peek): Alice
+ * Dequeued from queue: Alice
+ * Bob's score: 87
+ * TreeSet (always sorted): [10, 30, 50, 80]
+ */</code></pre>
+    <p>
+      Notice how each data structure gives us a different "view" and access pattern for the same kind of data.
+      The choice of which to use depends entirely on what operations your program needs to perform most frequently.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Dry Run: Step-by-Step Execution Trace</h3>
+    <p>Let's trace what happens internally when we use a <code>Stack</code> (using <code>ArrayDeque</code>):</p>
+
+    <div class="drySrun-block">
+      <div class="step">
+        <span class="step-num">Step 1</span>
+        <code>stackDemo.push("First")</code>
+        <p>Internal array: <code>["First"]</code> — top pointer at index 0</p>
+      </div>
+      <div class="step">
+        <span class="step-num">Step 2</span>
+        <code>stackDemo.push("Second")</code>
+        <p>Internal array: <code>["First", "Second"]</code> — top pointer at index 1</p>
+      </div>
+      <div class="step">
+        <span class="step-num">Step 3</span>
+        <code>stackDemo.push("Third")</code>
+        <p>Internal array: <code>["First", "Second", "Third"]</code> — top pointer at index 2</p>
+      </div>
+      <div class="step">
+        <span class="step-num">Step 4</span>
+        <code>stackDemo.peek()</code>
+        <p>Returns element at top index (2) → "Third". Array unchanged.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">Step 5</span>
+        <code>stackDemo.pop()</code>
+        <p>Removes and returns element at top index (2) → "Third". Array: <code>["First", "Second"]</code>. Top pointer moves to index 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Time and Space Complexity Overview</h3>
+    <p>Here's a quick reference for the fundamental operations across core data structures:</p>
+
+    <table class="complexity-table">
+      <thead>
+        <tr>
+          <th>Data Structure</th>
+          <th>Access</th>
+          <th>Search</th>
+          <th>Insertion</th>
+          <th>Deletion</th>
+          <th>Space</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Array</td>
+          <td class="good">O(1)</td>
+          <td class="ok">O(N)</td>
+          <td class="bad">O(N)</td>
+          <td class="bad">O(N)</td>
+          <td class="good">O(N)</td>
+        </tr>
+        <tr>
+          <td>Linked List</td>
+          <td class="bad">O(N)</td>
+          <td class="bad">O(N)</td>
+          <td class="good">O(1)*</td>
+          <td class="good">O(1)*</td>
+          <td class="ok">O(N)</td>
+        </tr>
+        <tr>
+          <td>Stack</td>
+          <td class="bad">O(N)</td>
+          <td class="bad">O(N)</td>
+          <td class="good">O(1)</td>
+          <td class="good">O(1)</td>
+          <td class="good">O(N)</td>
+        </tr>
+        <tr>
+          <td>Queue</td>
+          <td class="bad">O(N)</td>
+          <td class="bad">O(N)</td>
+          <td class="good">O(1)</td>
+          <td class="good">O(1)</td>
+          <td class="good">O(N)</td>
+        </tr>
+        <tr>
+          <td>Hash Map</td>
+          <td>N/A</td>
+          <td class="good">O(1) avg</td>
+          <td class="good">O(1) avg</td>
+          <td class="good">O(1) avg</td>
+          <td class="ok">O(N)</td>
+        </tr>
+        <tr>
+          <td>Binary Search Tree</td>
+          <td class="ok">O(log N)</td>
+          <td class="ok">O(log N)</td>
+          <td class="ok">O(log N)</td>
+          <td class="ok">O(log N)</td>
+          <td class="ok">O(N)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><em>* At known position, with reference to node already in hand</em></p>
+    <p>
+      The goal when choosing a data structure is to minimize the complexity of your most frequent operations.
+      If you search 90% of the time, a HashMap is usually the best choice. If you insert/delete from both ends
+      frequently, a Deque wins. There's no single "best" structure — it always depends on your use case.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Advantages and Disadvantages</h3>
+    <h4>Linear Structures</h4>
+    <ul>
+      <li><strong>Advantages:</strong> Simple to implement, traverse, and reason about. Memory-efficient for sequential access.</li>
+      <li><strong>Disadvantages:</strong> Arrays have fixed sizes; linked lists have slow random access; both have linear search time without sorting.</li>
+    </ul>
+    <h4>Non-Linear Structures</h4>
+    <ul>
+      <li><strong>Advantages:</strong> Model complex relationships naturally. Provide O(log N) or better operations.</li>
+      <li><strong>Disadvantages:</strong> More complex to implement and maintain. Extra memory for pointers/references. Harder to serialize and store.</li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Common Beginner Mistakes</h3>
+    <ul>
+      <li>
+        <strong>Choosing Array when size is unknown:</strong> If data grows dynamically, use <code>ArrayList</code>.
+        Fixed arrays waste memory if oversized or crash if undersized.
+      </li>
+      <li>
+        <strong>Using <code>LinkedList</code> for random access:</strong> If you frequently access elements by index,
+        <code>ArrayList</code> is faster. <code>LinkedList</code> excels at frequent head/tail insertions/removals.
+      </li>
+      <li>
+        <strong>Ignoring space complexity:</strong> A data structure with O(1) time can still be catastrophically slow
+        if it exhausts RAM and triggers garbage collection or swapping. Always consider memory trade-offs.
+      </li>
+      <li>
+        <strong>Premature optimization:</strong> Don't jump straight to complex structures like Segment Trees for small datasets.
+        Start simple — measure first, optimize if needed.
+      </li>
+      <li>
+        <strong>Confusing ADT with implementation:</strong> <code>List</code> is an ADT (interface). <code>ArrayList</code>
+        and <code>LinkedList</code> are implementations. A good engineer thinks in ADTs and chooses implementations based on
+        performance requirements.
+      </li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Interview Preparation</h3>
+
+    <div class="interview-qa">
+      <div class="qa-item">
+        <h4>Q1: What is the difference between an Array and an ArrayList in Java?</h4>
+        <p>
+          <strong>Answer:</strong> An Array is a fixed-size, primitive data structure allocated at compile time.
+          Its size cannot change after creation. An <code>ArrayList</code> is a dynamic, resizable array backed by
+          an internal array. When the internal array fills up, <code>ArrayList</code> creates a new array of 1.5× the
+          current size and copies all elements. Arrays can hold primitives directly (<code>int[]</code>), while
+          <code>ArrayList</code> requires wrapper types (<code>Integer</code>). Arrays offer slightly faster access
+          due to no method call overhead; <code>ArrayList</code> offers flexibility.
+        </p>
+      </div>
+
+      <div class="qa-item">
+        <h4>Q2: When would you use a Stack vs. a Queue?</h4>
+        <p>
+          <strong>Answer:</strong> Use a <strong>Stack (LIFO)</strong> when the order of processing must be reversed — the last item added
+          is the first processed. Examples: browser back button (last visited page pops first), undo operations,
+          expression parsing, function call management (call stack), depth-first search (DFS).
+          Use a <strong>Queue (FIFO)</strong> when processing must happen in arrival order — first item added is first processed.
+          Examples: print job scheduling, request handling in web servers, breadth-first search (BFS),
+          task scheduling in operating systems.
+        </p>
+      </div>
+
+      <div class="qa-item">
+        <h4>Q3: What is an Abstract Data Type (ADT)?</h4>
+        <p>
+          <strong>Answer:</strong> An ADT defines a data model by specifying the type of data, the operations
+          that can be performed on it, and the behavior of those operations — <em>without</em> specifying how
+          they're implemented. It's a logical description, not a concrete implementation. For example, the
+          <em>Stack ADT</em> specifies push, pop, peek, isEmpty operations and their expected behavior.
+          Java's <code>Deque</code> interface is the ADT; <code>ArrayDeque</code> and <code>LinkedList</code>
+          are two different implementations of that ADT.
+        </p>
+      </div>
+
+      <div class="qa-item">
+        <h4>Q4: Why is HashMap lookup O(1) and what can degrade it?</h4>
+        <p>
+          <strong>Answer:</strong> HashMap computes a hash code for the key and uses it to directly calculate
+          a bucket index, giving O(1) average lookup. This degrades to O(N) in the worst case when all keys
+          hash to the same bucket (causing collisions), or in Java's case O(log N) after the bucket converts
+          from a linked list to a Red-Black tree (when bucket size exceeds 8 elements). A poorly designed
+          <code>hashCode()</code> method that returns the same value for all keys would cause this.
+        </p>
+      </div>
+
+      <div class="qa-item">
+        <h4>Q5: What's the difference between linear and non-linear data structures?</h4>
+        <p>
+          <strong>Answer:</strong> In linear data structures, elements are arranged sequentially where each
+          element has exactly one predecessor and one successor (except the first and last). Memory is typically
+          laid out in one dimension. Examples: arrays, linked lists, stacks, queues. In non-linear data
+          structures, elements are arranged hierarchically or in a network/mesh pattern. An element can have
+          multiple successors (children). They naturally model hierarchical or relational data. Examples:
+          trees, graphs, heaps. Non-linear structures generally enable more efficient search operations at
+          the cost of more complex implementation and memory overhead for pointers.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Practice Problems</h3>
+
+    <h4>Easy Level</h4>
+    <ol>
+      <li>
+        <strong>Reverse an Array:</strong> Given an integer array <code>[1, 2, 3, 4, 5]</code>, reverse it
+        in-place (without using extra memory for another array). Expected output: <code>[5, 4, 3, 2, 1]</code>.
+      </li>
+      <li>
+        <strong>Balanced Parentheses:</strong> Write a method that takes a string of parentheses like
+        <code>"((()))"</code> or <code>"(()"</code> and returns true if all parentheses are properly balanced
+        and nested. Use a Stack.
+      </li>
+      <li>
+        <strong>First Non-Repeating Character:</strong> Given a string like <code>"aabccd"</code>, find the
+        first character that doesn't repeat (<code>'b'</code> in this case). Use a LinkedHashMap to preserve
+        insertion order.
+      </li>
+    </ol>
+
+    <h4>Medium Level</h4>
+    <ol>
+      <li>
+        <strong>Implement a Queue Using Two Stacks:</strong> Design a class <code>MyQueue</code> that implements
+        FIFO queue operations (<code>enqueue</code>, <code>dequeue</code>, <code>peek</code>) using only two
+        Stack data structures internally.
+      </li>
+      <li>
+        <strong>Find All Pairs with Target Sum:</strong> Given an unsorted array of integers and a target sum,
+        find all pairs that add up to the target. Solve it in O(N) time using a HashSet.
+      </li>
+      <li>
+        <strong>Group Anagrams:</strong> Given a list of strings like <code>["eat", "tea", "tan", "ate", "nat", "bat"]</code>,
+        group them into lists of anagrams. Use a HashMap where the key is the sorted version of each word.
+      </li>
+    </ol>
+
+    <h4>Hard Level</h4>
+    <ol>
+      <li>
+        <strong>LRU Cache Implementation:</strong> Implement an LRU (Least Recently Used) cache with O(1)
+        get and put operations. The cache should evict the least recently used item when capacity is reached.
+        Hint: Use a combination of a HashMap and a Doubly Linked List.
+      </li>
+      <li>
+        <strong>Sliding Window Maximum:</strong> Given an array and a window of size K that slides from left
+        to right, return the maximum value in each window position. Solve in O(N) time using a Deque.
+        Example: array = [1,3,-1,-3,5,3,6,7], K=3 → output: [3,3,5,5,6,7].
+      </li>
+    </ol>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Coding Assignment</h3>
+    <div class="assignment-block">
+      <h4>Assignment: Build a Student Grade Tracker</h4>
+      <p>
+        Create a Java program called <code>StudentGradeTracker</code> that manages student records using
+        appropriate data structures. Your solution must demonstrate understanding of when to use different structures:
+      </p>
+      <ol>
+        <li>Use a <code>HashMap&lt;String, List&lt;Integer&gt;&gt;</code> to store each student's name mapped to their list of quiz scores.</li>
+        <li>Implement a method <code>addScore(String studentName, int score)</code> that adds a score to a student's record. If the student doesn't exist yet, create their entry.</li>
+        <li>Implement a method <code>getAverage(String studentName)</code> that returns the student's average score.</li>
+        <li>Implement a method <code>getTopStudents(int topN)</code> that returns the top N students by average score, sorted in descending order. Use a <code>TreeMap</code> or <code>PriorityQueue</code> for this.</li>
+        <li>Implement a method <code>getRecentScore(String studentName)</code> that returns the most recently added score (Stack concept — last in, first out).</li>
+        <li>Implement a method <code>processGradingQueue(Queue&lt;String&gt; pendingStudents)</code> that processes students for grading in the order they submitted their work.</li>
+      </ol>
+      <p>
+        <strong>Bonus:</strong> Add a method <code>getClassRanking()</code> that returns all students sorted by average score using a data structure that maintains sorted order automatically.
+      </p>
+      <p>
+        <strong>Expected learning outcome:</strong> You will practice selecting the right data structure for each sub-problem based on the access patterns required.
+      </p>
+    </div>
+  </section>
+
+  <section class="lesson-summary">
+    <h3>Summary</h3>
+    <ul>
+      <li>A <strong>data structure</strong> is an organized way to store data in memory to enable efficient operations.</li>
+      <li>Data structures are classified as <strong>Linear</strong> (sequential: arrays, lists, stacks, queues) or <strong>Non-Linear</strong> (hierarchical: trees, graphs).</li>
+      <li><strong>Arrays</strong> offer O(1) random access via contiguous memory but have fixed size and O(N) insertions.</li>
+      <li><strong>Linked Lists</strong> offer dynamic sizing and O(1) head insertion but O(N) random access.</li>
+      <li><strong>Stacks (LIFO)</strong> are used for undo operations, parsing, and DFS. <strong>Queues (FIFO)</strong> are used for task scheduling, BFS, and buffering.</li>
+      <li><strong>HashMaps</strong> provide average O(1) lookup, insertion, and deletion — ideal for key-value associations.</li>
+      <li>An <strong>Abstract Data Type (ADT)</strong> defines what operations a structure supports; a data structure is the concrete implementation.</li>
+      <li>Choosing the right data structure directly determines your program's time and space efficiency.</li>
+      <li>In interviews, always justify your data structure choice by explaining the time complexity trade-offs.</li>
+    </ul>
+  </section>
+
+</article>
+
+<style>
+.lesson-content { font-family: inherit; color: var(--color-text-primary); line-height: 1.7; }
+.lesson-content h2 { font-size: 22px; font-weight: 500; margin: 1.5rem 0 1rem; }
+.lesson-content h3 { font-size: 18px; font-weight: 500; margin: 2rem 0 0.75rem; border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 0.4rem; }
+.lesson-content h4 { font-size: 16px; font-weight: 500; margin: 1.25rem 0 0.5rem; }
+.lesson-content p { margin: 0.75rem 0; }
+.lesson-content ul, .lesson-content ol { margin: 0.5rem 0 0.5rem 1.5rem; }
+.lesson-content li { margin: 0.4rem 0; }
+.lesson-content code { background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; border: 0.5px solid var(--color-border-tertiary); }
+.lesson-content pre { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 1.25rem; overflow-x: auto; margin: 1rem 0; }
+.lesson-content pre code { background: none; border: none; padding: 0; font-size: 13px; line-height: 1.6; }
+.lesson-section { margin: 2rem 0; }
+.lesson-intro { background: var(--color-background-secondary); border-left: 3px solid var(--color-border-info); padding: 1rem 1.25rem; border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; margin-bottom: 2rem; }
+.memory-layout { display: flex; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; }
+.mem-column { flex: 1; min-width: 260px; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem; }
+.mem-title { font-size: 14px; font-weight: 500; margin-bottom: 0.75rem; color: var(--color-text-primary); }
+.mem-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.3rem 0; }
+.mem-addr { font-family: var(--font-mono); font-size: 11px; color: var(--color-text-secondary); width: 60px; }
+.mem-cell { flex: 1; padding: 0.3rem 0.6rem; border-radius: 4px; font-family: var(--font-mono); font-size: 12px; border: 0.5px solid var(--color-border-secondary); }
+.array-cell { background: #E6F1FB; color: #0C447C; border-color: #85B7EB; }
+.linked-cell { background: #E1F5EE; color: #085041; border-color: #5DCAA5; }
+.empty-cell { background: var(--color-background-primary); color: var(--color-text-tertiary); }
+.gap-row { opacity: 0.5; }
+.mem-note { font-size: 12px; color: var(--color-text-secondary); margin-top: 0.5rem; font-style: italic; }
+.complexity-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 1rem 0; }
+.complexity-table th { background: var(--color-background-secondary); padding: 0.5rem 0.75rem; text-align: left; border: 0.5px solid var(--color-border-secondary); font-weight: 500; }
+.complexity-table td { padding: 0.45rem 0.75rem; border: 0.5px solid var(--color-border-tertiary); }
+.good { color: var(--color-text-success); font-weight: 500; }
+.ok { color: var(--color-text-warning); font-weight: 500; }
+.bad { color: var(--color-text-danger); font-weight: 500; }
+.drySrun-block { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; margin: 1rem 0; }
+.step { padding: 0.75rem 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.step:last-child { border-bottom: none; }
+.step-num { background: var(--color-background-info); color: var(--color-text-info); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; margin-right: 8px; }
+.step p { margin: 0.3rem 0 0; font-size: 13px; color: var(--color-text-secondary); }
+.interview-qa { margin: 1rem 0; }
+.qa-item { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; margin: 0.75rem 0; border: 0.5px solid var(--color-border-tertiary); }
+.qa-item h4 { margin: 0 0 0.5rem; color: var(--color-text-primary); font-size: 14px; }
+.qa-item p { margin: 0; font-size: 14px; color: var(--color-text-secondary); }
+.quiz-section { margin: 1rem 0; }
+.quiz-q { padding: 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.quiz-q p { margin: 0 0 0.5rem; }
+.quiz-q ul { margin: 0.25rem 0 0.5rem 1rem; }
+.quiz-q li { font-size: 14px; margin: 0.2rem 0; }
+.explanation { font-size: 13px; color: var(--color-text-secondary); margin: 0.5rem 0 0; padding: 0.5rem 0.75rem; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+.assignment-block { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin: 1rem 0; }
+.assignment-block h4 { margin: 0 0 0.75rem; }
+.lesson-summary { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-top: 2rem; border: 0.5px solid var(--color-border-tertiary); }
+.lesson-summary h3 { border-bottom: none; margin-top: 0; }
+.visualization-block { margin: 1rem 0 1.5rem; }
+.viz-label { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+</style>`,
             quiz: {
-              questions: [{
-                questionText: 'Which of the following is a non-linear data structure?',
-                options: [
-                  { text: 'Stack', isCode: false },
-                  { text: 'Binary Tree', isCode: false },
-                  { text: 'Queue', isCode: false }
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'Binary Trees are non-linear data structures because elements are arranged hierarchically, not sequentially.'
-              }]
-            }
+          "questions": [
+                    {
+                              "questionText": "Which data structure is used to model a FIFO (First-In, First-Out) process?",
+                              "options": [
+                                        {
+                                                  "text": "Stack",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Queue",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Array",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "HashMap",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 1,
+                              "explanation": "Queue processes elements in the order they arrive. The first element added is the first to be removed, just like a real-world waiting line."
+                    },
+                    {
+                              "questionText": "What is the time complexity of accessing an element at a specific index in an Array?",
+                              "options": [
+                                        {
+                                                  "text": "O(N)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(log N)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(1)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(N log N)",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 2,
+                              "explanation": "Arrays are contiguous in memory. The address of any element can be computed directly: BaseAddress + Index × ElementSize, requiring exactly one calculation regardless of array size."
+                    },
+                    {
+                              "questionText": "Which of the following is a non-linear data structure?",
+                              "options": [
+                                        {
+                                                  "text": "Stack",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Linked List",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Binary Tree",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Queue",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 2,
+                              "explanation": "A Binary Tree is non-linear because each node can have up to two children — the elements are arranged hierarchically, not in a single sequence."
+                    },
+                    {
+                              "questionText": "What distinguishes an Abstract Data Type (ADT) from a data structure?",
+                              "options": [
+                                        {
+                                                  "text": "ADTs define implementation details",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "ADTs define behavior/operations without specifying implementation",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "ADTs only work with primitive types",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "ADTs are faster than data structures",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 1,
+                              "explanation": "An ADT is a logical model specifying what operations exist and how they behave. A data structure is the concrete implementation. Stack is an ADT; ArrayDeque is a data structure implementing it."
+                    },
+                    {
+                              "questionText": "Which data structure provides the best performance for frequent insertion and deletion at both ends?",
+                              "options": [
+                                        {
+                                                  "text": "Array",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "ArrayList",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Deque (Double-Ended Queue)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "TreeSet",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 2,
+                              "explanation": "A Deque supports O(1) insertion and removal at both the head and tail. Arrays and ArrayLists require O(N) shifting for head insertions."
+                    },
+                    {
+                              "questionText": "What happens to an ArrayList in Java when its internal array is full?",
+                              "options": [
+                                        {
+                                                  "text": "Throws an exception",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Creates a new array of 1.5× the size and copies all elements",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Stops accepting new elements",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Doubles capacity and never copies",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 1,
+                              "explanation": "Java's ArrayList grows by creating a new backing array at 1.5× the current capacity and copying all existing elements. This makes occasional insertions O(N), but amortized over many insertions, the average cost is O(1)."
+                    },
+                    {
+                              "questionText": "In which memory region are objects (instances) of data structures stored in Java?",
+                              "options": [
+                                        {
+                                                  "text": "Stack Memory",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Method Area",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Heap Memory",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Code Cache",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 2,
+                              "explanation": "All objects in Java — including data structure instances like ArrayList, LinkedList, and HashMap — are allocated on the Heap, managed by the garbage collector."
+                    },
+                    {
+                              "questionText": "What is the worst-case time complexity of lookup in a HashMap when all keys hash to the same bucket?",
+                              "options": [
+                                        {
+                                                  "text": "O(1)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(log N) or O(N)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(N log N)",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "O(N²)",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 1,
+                              "explanation": "When all keys collide into the same bucket, the bucket becomes a linked list of N entries, degrading lookup to O(N). In Java 8+, after 8 entries, the bucket converts to a Red-Black Tree, making worst-case O(log N)."
+                    },
+                    {
+                              "questionText": "Which scenario is best suited for a Stack data structure?",
+                              "options": [
+                                        {
+                                                  "text": "Processing print jobs in order of arrival",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Finding the shortest path in a graph",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Implementing an undo/redo feature in a text editor",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Storing sorted student records",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 2,
+                              "explanation": "Undo/redo is a classic Stack use case. Each action is pushed onto the stack. Ctrl+Z pops the last action and reverses it. LIFO perfectly models \"undo the most recent thing\"."
+                    },
+                    {
+                              "questionText": "What is the main advantage of a Linked List over an Array?",
+                              "options": [
+                                        {
+                                                  "text": "Faster random access by index",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Dynamic size — no wasted memory for unused slots, O(1) head insertion",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Better cache performance",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "Simpler implementation",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 1,
+                              "explanation": "Linked Lists grow and shrink dynamically — no memory is wasted for unused capacity. Insertion and deletion at the head (or any known position) runs in O(1) since no shifting is required. Arrays have better cache performance due to contiguous memory but suffer from fixed sizes and O(N) insertions."
+                    }
+          ]
+}
           },
           {
             title: 'Why are Data Structures Important?',
             slug: 'why-data-structures-important',
             order: 2,
-            content: `<h3>Why are Data Structures Important?</h3>
-<p>As applications handle massive datasets, choosing the right data structure directly determines program responsiveness. Organized storage profiles reduce CPU processing times and memory footprint.</p>
-<p>For example, searching a telephone index takes <code>O(N)</code> with a sequential list, but halves recursively to <code>O(log N)</code> using a sorted array and Binary Search.</p>`,
+            content: `<article class="lesson-content">
+
+  <section class="lesson-intro">
+    <h2>Why Are Data Structures Important?</h2>
+    <p>
+      You might be tempted to think: "I can just use a list or array for everything — why does it matter?"
+      This is one of the most common misconceptions in early programming. The answer becomes crystal clear
+      when you look at scale. The difference between a poorly chosen and well-chosen data structure is often
+      the difference between <em>seconds and hours</em> — and at internet scale, between <em>milliseconds and timeouts</em>.
+    </p>
+    <p>
+      This lesson explores the "why" behind data structures through real numbers, real companies, and concrete
+      examples that demonstrate why the right data structure choice is a career-defining skill.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Real-Life Analogy: Searching for a Name in a Phone Book</h3>
+    <p>
+      Imagine two scenarios for finding "Priya Sharma" in a phone book with 1,000,000 names:
+    </p>
+    <ul>
+      <li>
+        <strong>Scenario A — Unsorted list:</strong> You read names one by one from the beginning.
+        In the worst case, you read all 1,000,000 names. Average case: 500,000 reads.
+        At 1 read per millisecond: roughly <strong>8 minutes</strong>.
+      </li>
+      <li>
+        <strong>Scenario B — Sorted + Binary Search:</strong> You open the middle of the book.
+        Is "Sharma" before or after "M"? After. You eliminate the entire first half.
+        You repeat this 20 times for 1,000,000 entries (log₂ 1,000,000 ≈ 20).
+        At 1 read per millisecond: roughly <strong>20 milliseconds</strong>.
+      </li>
+    </ul>
+    <p>
+      <strong>Result: 24,000× faster</strong>, just by using the right data structure (sorted array + binary search
+      instead of unsorted list + linear search). Now multiply this by billions of queries per day, and you
+      understand why companies like Google obsess over data structure choices.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Core Theory: The Scale Problem</h3>
+    <p>
+      When programs handle small datasets (10 records, 100 records), almost any approach works because modern
+      computers execute billions of operations per second. But real-world applications operate at scale:
+    </p>
+    <ul>
+      <li>Facebook stores profiles for <strong>3 billion</strong> users</li>
+      <li>Google indexes over <strong>100 billion</strong> web pages</li>
+      <li>Amazon's warehouse system tracks <strong>350 million+</strong> products</li>
+      <li>WhatsApp processes <strong>100 billion</strong> messages per day</li>
+    </ul>
+    <p>
+      At this scale, an algorithm running in O(N²) time instead of O(N log N) time isn't just slower — it
+      can make the difference between a system that works and one that's completely unusable.
+    </p>
+
+    <h4>The Big-O Reality Check</h4>
+    <p>
+      Let's visualize what different complexities mean with a concrete dataset of 1,000,000 (one million) records,
+      assuming 1 billion operations per second (a modern CPU):
+    </p>
+
+    <table class="complexity-table">
+      <thead>
+        <tr>
+          <th>Complexity</th>
+          <th>Operations (N=1,000,000)</th>
+          <th>Time at 10⁹ ops/sec</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">O(1)</td>
+          <td>1</td>
+          <td class="good">1 nanosecond</td>
+          <td>HashMap lookup</td>
+        </tr>
+        <tr>
+          <td class="mono">O(log N)</td>
+          <td>~20</td>
+          <td class="good">20 nanoseconds</td>
+          <td>Binary search</td>
+        </tr>
+        <tr>
+          <td class="mono">O(N)</td>
+          <td>1,000,000</td>
+          <td class="ok">1 millisecond</td>
+          <td>Linear scan</td>
+        </tr>
+        <tr>
+          <td class="mono">O(N log N)</td>
+          <td>~20,000,000</td>
+          <td class="ok">20 milliseconds</td>
+          <td>Merge Sort</td>
+        </tr>
+        <tr>
+          <td class="mono">O(N²)</td>
+          <td>1,000,000,000,000</td>
+          <td class="bad">16.7 minutes</td>
+          <td>Bubble Sort</td>
+        </tr>
+        <tr>
+          <td class="mono">O(2ᴺ)</td>
+          <td>2^1,000,000</td>
+          <td class="bad">Longer than universe age</td>
+          <td>Naive subset search</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Notice that O(N²) turns 1 millisecond into 16 minutes for just 1 million records.
+      At 10 million records, that same O(N²) algorithm would take <strong>27 hours</strong>.
+      This is why choosing the right data structure and algorithm isn't premature optimization — it's engineering.
+    </p>
+
+    <h4>Real-World Impact: Case Studies</h4>
+
+    <h5>Case 1 — Contact Search on a Smartphone</h5>
+    <p>
+      Without sorted data + binary search: finding a contact in 1,000 names requires scanning up to 1,000 entries.
+      With sorted storage + binary search: maximum 10 comparisons. At 100ms latency difference per search,
+      and 20 searches per day across 3 billion smartphones: that's <strong>600 million seconds of human time saved daily</strong>.
+    </p>
+
+    <h5>Case 2 — Routing the Internet</h5>
+    <p>
+      Every time you open a website, your request travels through dozens of routers. Each router must find
+      the next hop for your packet in milliseconds. Routers use <strong>Trie data structures</strong> to look up
+      destination IP addresses in their routing tables. Without Tries, routing would degrade from O(log N)
+      to O(N), making internet routing catastrophically slow.
+    </p>
+
+    <h5>Case 3 — Autocomplete in Search Engines</h5>
+    <p>
+      When you type "java" in Google's search bar and see suggestions instantly, that's powered by
+      <strong>Trie and Ternary Search Tree</strong> data structures that store billions of search queries
+      and retrieve prefix matches in O(L) time (where L is your query length). A naive approach using
+      string comparison across billions of queries would take seconds — making autocomplete useless.
+    </p>
+
+    <h5>Case 4 — Social Network "Degrees of Separation"</h5>
+    <p>
+      LinkedIn's "How are you connected?" feature uses <strong>Graph data structures</strong> with BFS traversal
+      to find the shortest connection path between two people in a network of 900 million+ users.
+      Without a Graph, modeling these connections would be impossible.
+    </p>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Visual Explanation: Performance Comparison</h3>
+    <p>
+      The chart below shows how the same "find an element" operation scales across different approaches.
+      Notice how linear search (O(N)) quickly becomes impractical, while binary search (O(log N)) and
+      hash map lookup (O(1)) remain fast even at huge scales.
+    </p>
+
+    <div class="perf-chart-wrapper">
+      <div class="chart-label">Operations needed to find one element (lower is better)</div>
+      <div class="chart-bars">
+        <div class="bar-group">
+          <div class="bar-label">100 records</div>
+          <div class="bar-row"><span class="bar-name">Linear Search</span><div class="bar-fill" style="width: 100px; background: #E24B4A">100</div></div>
+          <div class="bar-row"><span class="bar-name">Binary Search</span><div class="bar-fill" style="width: 7px; background: #1D9E75">7</div></div>
+          <div class="bar-row"><span class="bar-name">HashMap</span><div class="bar-fill" style="width: 1px; background: #534AB7">~1</div></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-label">10,000 records</div>
+          <div class="bar-row"><span class="bar-name">Linear Search</span><div class="bar-fill bar-truncated" style="width: 200px; background: #E24B4A">10,000 →</div></div>
+          <div class="bar-row"><span class="bar-name">Binary Search</span><div class="bar-fill" style="width: 13px; background: #1D9E75">13</div></div>
+          <div class="bar-row"><span class="bar-name">HashMap</span><div class="bar-fill" style="width: 1px; background: #534AB7">~1</div></div>
+        </div>
+        <div class="bar-group">
+          <div class="bar-label">1,000,000 records</div>
+          <div class="bar-row"><span class="bar-name">Linear Search</span><div class="bar-fill bar-truncated" style="width: 200px; background: #E24B4A">1,000,000 →</div></div>
+          <div class="bar-row"><span class="bar-name">Binary Search</span><div class="bar-fill" style="width: 20px; background: #1D9E75">20</div></div>
+          <div class="bar-row"><span class="bar-name">HashMap</span><div class="bar-fill" style="width: 1px; background: #534AB7">~1</div></div>
+        </div>
+      </div>
+      <div class="chart-legend">
+        <span class="legend-item"><span style="background:#E24B4A"></span>Linear Search (O(N))</span>
+        <span class="legend-item"><span style="background:#1D9E75"></span>Binary Search (O(log N))</span>
+        <span class="legend-item"><span style="background:#534AB7"></span>HashMap (O(1))</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Advantages and Disadvantages</h3>
+    <p>Choosing data structures is always about trade-offs:</p>
+    <ul>
+      <li><strong>Arrays / Lists:</strong> Easy to use, but poor search times unless sorted.</li>
+      <li><strong>Hash Maps:</strong> Fastest lookup (O(1)), but no sorting or order guarantees, and high memory overhead.</li>
+      <li><strong>Trees / Graphs:</strong> Excel at relationships and hierarchy, but complex to implement and traverse.</li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Common Beginner Mistakes</h3>
+    <ul>
+      <li>
+        <strong>Defaulting to ArrayList for everything:</strong> If you need to frequently check if items exist,
+        ArrayList is O(N) while HashSet is O(1).
+      </li>
+      <li>
+        <strong>Ignoring size limits:</strong> If data gets very large, standard memory storage isn't enough,
+        requiring out-of-core data structures (like B-Trees in databases).
+      </li>
+    </ul>
+  </section>
+
+  <section class="lesson-section">
+    <h3>Practice Problems</h3>
+    <ol>
+      <li>
+        <strong>Measure Search Time:</strong> Write a Java program that measures the millisecond difference
+        between checking a value in an unsorted ArrayList of 100,000 integers vs a HashSet of the same size.
+      </li>
+      <li>
+        <strong>Autocomplete Simulation:</strong> Design a basic program that uses a Prefix Trie or simple list
+        filtering to suggest words as a user types.
+      </li>
+    </ol>
+  </section>
+
+  <section class="lesson-summary">
+    <h3>Summary</h3>
+    <ul>
+      <li>Software performance depends directly on the complexity of its underlying data structures.</li>
+      <li>Scale turns minor time differences (milliseconds) into hours or complete timeouts.</li>
+      <li>Massive companies design their core systems around specialized structures to guarantee quick operations.</li>
+      <li>A SDE's primary value is matching a problem's requirements to the correct data structure trade-offs.</li>
+    </ul>
+  </section>
+
+</article>
+
+<style>
+.perf-chart-wrapper { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin: 1.5rem 0; }
+.chart-label { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 1rem; }
+.chart-bars { display: flex; flex-direction: column; gap: 1.25rem; }
+.bar-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.bar-label { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+.bar-row { display: flex; align-items: center; gap: 0.75rem; }
+.bar-name { font-size: 11px; color: var(--color-text-secondary); width: 90px; }
+.bar-fill { height: 16px; border-radius: 3px; font-size: 10px; color: #fff; display: flex; align-items: center; padding-left: 6px; font-family: var(--font-mono); }
+.bar-truncated { position: relative; overflow: hidden; }
+.bar-truncated::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 20px; background: linear-gradient(to right, transparent, var(--color-background-secondary)); }
+.chart-legend { display: flex; gap: 1.5rem; margin-top: 1.25rem; border-top: 0.5px solid var(--color-border-secondary); padding-top: 0.75rem; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 11px; color: var(--color-text-secondary); }
+.legend-item span { width: 12px; height: 12px; border-radius: 2px; }
+</style>`,
             quiz: {
-              questions: [{
-                questionText: 'Why is matching a problem to the correct data structure critical?',
-                options: [
-                  { text: 'To minimize time and space complexity during operations', isCode: false },
-                  { text: 'To ensure the code compiles without exceptions', isCode: false },
-                  { text: 'To convert primitive types to references', isCode: false }
-                ],
-                correctAnswerIndex: 0,
-                explanation: 'Using the optimal data structure directly reduces operational complexities, speeding up executions and preserving memory.'
-              }]
-            }
+          "questions": [
+                    {
+                              "questionText": "Why is matching a problem to the correct data structure critical?",
+                              "options": [
+                                        {
+                                                  "text": "To minimize time and space complexity during operations",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "To ensure the code compiles without exceptions",
+                                                  "isCode": false
+                                        },
+                                        {
+                                                  "text": "To convert primitive types to references",
+                                                  "isCode": false
+                                        }
+                              ],
+                              "correctAnswerIndex": 0,
+                              "explanation": "Using the optimal data structure directly reduces operational complexities, speeding up executions and preserving memory."
+                    }
+          ]
+}
           }
         ]
       },

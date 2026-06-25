@@ -793,3 +793,111 @@
     top: 45%;
   }
 }
+
+/* Split Layout for visualizer dashboard */
+.visualizer-split-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+.visualizer-sidebar {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.visualizer-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.visualizer-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.visualizer-sidebar::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+}
+
+.sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sidebar-group-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  margin-bottom: 0.4rem;
+  padding-left: 0.5rem;
+}
+
+.sidebar-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.sidebar-item-btn:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.sidebar-item-btn.active {
+  background-color: rgba(21, 145, 220, 0.1) !important;
+  border-left: 3px solid var(--brand-cyan) !important;
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+  color: var(--brand-cyan) !important;
+  font-weight: 700;
+  padding-left: 0.55rem;
+}
+
+.coming-soon-badge {
+  font-size: 0.55rem;
+  padding: 0.1rem 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  color: var(--text-tertiary);
+  margin-left: auto;
+  background-color: rgba(255, 255, 255, 0.02);
+  font-weight: normal;
+}
+
+@media (max-width: 968px) {
+  .visualizer-split-layout {
+    grid-template-columns: 1fr;
+  }
+  .visualizer-sidebar {
+    max-height: 250px;
+    position: static;
+  }
+}
+

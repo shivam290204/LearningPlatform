@@ -16,7 +16,7 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Fetch all modules for a course
+// Fetch all modules for a course including their populated lessons metadata
 exports.getCourseModules = asyncHandler(async (req, res, next) => {
   const { courseSlug } = req.params;
 
@@ -28,14 +28,38 @@ exports.getCourseModules = asyncHandler(async (req, res, next) => {
   // Fetch modules sorted chronologically
   const modules = await Module.find({ course: course._id, isPublished: true }).sort('order');
 
+  // Aggregate lessons inside each module
+  const modulesWithLessons = await Promise.all(
+    modules.map(async (mod) => {
+      const lessons = await Lesson.find({ module: mod._id }).sort('order');
+      
+      const populatedLessons = await Promise.all(
+        lessons.map(async (les) => {
+          const lesObj = les.toObject();
+          lesObj.sim = !!(les.visualizations && les.visualizations.length > 0);
+          const quizExists = await Quiz.exists({ lesson: les._id });
+          lesObj.quiz = !!quizExists;
+          const wordCount = les.content ? les.content.split(/\s+/).length : 0;
+          const readTime = Math.max(5, Math.min(20, Math.round(wordCount / 120)));
+          lesObj.time = `${readTime} min`;
+          return lesObj;
+        })
+      );
+
+      const modObj = mod.toObject();
+      modObj.lessons = populatedLessons;
+      return modObj;
+    })
+  );
+
   res.status(200).json({
     status: 'success',
-    results: modules.length,
-    data: { modules }
+    results: modulesWithLessons.length,
+    data: { modules: modulesWithLessons }
   });
 });
 
-// Fetch lesson details by slug including its associated Quiz
+// Fetch lesson details by slug including its associated Quiz (stripped of answers)
 exports.getLessonBySlug = asyncHandler(async (req, res, next) => {
   const { lessonSlug } = req.params;
 
@@ -47,11 +71,21 @@ exports.getLessonBySlug = asyncHandler(async (req, res, next) => {
   // Aggregate its 1-to-1 Quiz if it exists
   const quiz = await Quiz.findOne({ lesson: lesson._id });
 
+  let quizData = null;
+  if (quiz) {
+    const quizObj = quiz.toObject();
+    quizObj.questions = quizObj.questions.map(q => {
+      const { correctAnswerIndex, explanation, ...strippedQuestion } = q;
+      return strippedQuestion;
+    });
+    quizData = quizObj;
+  }
+
   res.status(200).json({
     status: 'success',
     data: {
       lesson,
-      quiz: quiz || null
+      quiz: quizData
     }
   });
 });
