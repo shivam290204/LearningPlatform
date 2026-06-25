@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState, useRef } from 'react';
 import { LearningContext } from '../context/LearningContext';
 import { ProgressContext } from '../context/ProgressContext';
 import { AuthContext } from '../context/AuthContext';
-import JavaSandbox from '../components/dashboard/JavaSandbox';
+import CodeEditorTab from '../components/dashboard/CodeEditorTab';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 
 function CourseCatalog({ 
@@ -279,7 +279,7 @@ function CourseCatalog({
   const topicsMasteredCount = Math.min(Math.floor(completedLessons.length / 2), 23);
 
   return (
-    <div className="catalog-wrapper">
+    <div className={`catalog-wrapper ${activeCatalogTab === 'sandbox' ? 'sandbox-active' : ''}`}>
       
       {/* Workspace Tabs Navigation Row */}
       <div className="workspace-tabs-row">
@@ -305,7 +305,7 @@ function CourseCatalog({
           className={`workspace-tab-btn ${activeCatalogTab === 'sandbox' ? 'active' : ''}`}
           onClick={() => setActiveCatalogTab('sandbox')}
         >
-          <i className="fa-solid fa-terminal" style={{ marginRight: '0.5rem' }}></i> Coding Sandbox
+          <i className="fa-solid fa-code" style={{ marginRight: '0.5rem' }}></i> Code Editor
         </button>
         <button
           className={`workspace-tab-btn ${activeCatalogTab === 'certificate' ? 'active' : ''}`}
@@ -785,15 +785,8 @@ function CourseCatalog({
       )}
 
       {activeCatalogTab === 'sandbox' && (
-        <section className="sandbox-tab-section" style={{ padding: '2rem 0' }}>
-          <div className="section-title-wrap text-center mb-4">
-            <div className="badge-features">LIVE CODING SANDBOX</div>
-            <h2>Write and Execute Java Code Live</h2>
-            <p className="section-desc max-w-600">
-              Run real-time Java syntax checks, evaluate logic streams, and inspect dynamically updated JVM Stack and Heap states.
-            </p>
-          </div>
-          <JavaSandbox />
+        <section className="sandbox-tab-section">
+          <CodeEditorTab />
         </section>
       )}
 

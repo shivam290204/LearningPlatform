@@ -203,7 +203,9 @@
 .highlight-text {
   background: linear-gradient(135deg, var(--brand-cyan) 0%, var(--highlight-gradient-end) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .hero-subtitle {
@@ -1866,8 +1868,26 @@
 }
 
 /* Tab contents padding adjustments */
+.catalog-wrapper.sandbox-active {
+  height: calc(100vh - 72px); /* viewport minus navbar */
+  overflow: hidden;
+  gap: 0; /* remove the 3rem gap between tabs row and editor */
+}
+
+.catalog-wrapper.sandbox-active .workspace-tabs-row {
+  margin-bottom: 0;
+  border-radius: 0;
+  position: relative; /* disable sticky inside the locked container */
+  top: auto;
+}
+
 .sandbox-tab-section {
   animation: tab-panel-fade 0.35s ease-out;
+  margin-top: 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes tab-panel-fade {
