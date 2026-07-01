@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Directed vs. Undirected Graph Representations structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Directed vs. Undirected Graph Representations</h3>\n<p>A **Graph** consists of vertices (nodes) connected by edges:</p>\n<ul>\n  <li><strong>Directed Graph (Digraph):</strong> Edges have a direction (U -> V).</li>\n  <li><strong>Undirected Graph:</strong> Edges are bidirectional (U <-> V).</li>\n</ul>\n<p>Graphs are represented in code using an **Adjacency Matrix** (2D array) or an **Adjacency List** (array of lists).</p>",
     "theory": "<h3>Directed vs. Undirected Graph Representations</h3>\n<p>A **Graph** consists of vertices (nodes) connected by edges:</p>\n<ul>\n  <li><strong>Directed Graph (Digraph):</strong> Edges have a direction (U -> V).</li>\n  <li><strong>Undirected Graph:</strong> Edges are bidirectional (U <-> V).</li>\n</ul>\n<p>Graphs are represented in code using an **Adjacency Matrix** (2D array) or an **Adjacency List** (array of lists).</p>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",
@@ -57,10 +59,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "graph-traversal",
+    "visualizations": [],
     "objectives": [
       "Implement Graph Traversals: BFS & DFS structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Graph Traversals: BFS & DFS</h3>\n<p>Traversing a graph involves visiting all its vertices systematically:</p>\n<ul>\n  <li><strong>Breadth-First Search (BFS):</strong> Explores neighbors level by level. Implemented using a **Queue** (FIFO).</li>\n  <li><strong>Depth-First Search (DFS):</strong> Explores paths as deep as possible before backtracking. Implemented using a **Stack** or recursion.</li>\n</ul>",
     "theory": "<h3>Graph Traversals: BFS & DFS</h3>\n<p>Traversing a graph involves visiting all its vertices systematically:</p>\n<ul>\n  <li><strong>Breadth-First Search (BFS):</strong> Explores neighbors level by level. Implemented using a **Queue** (FIFO).</li>\n  <li><strong>Depth-First Search (DFS):</strong> Explores paths as deep as possible before backtracking. Implemented using a **Stack** or recursion.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

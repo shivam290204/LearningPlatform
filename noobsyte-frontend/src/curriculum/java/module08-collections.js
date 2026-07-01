@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "arraylist",
+    "visualizations": [],
     "objectives": [
       "Master the core rules of Java Collections Framework",
       "Explain structural mechanisms under the hood"
     ],
+    "content": "<h3>Java Collections Framework</h3>\n<p>The collection framework offers unified data structure implementations:</p>\n<ul>\n  <li><code>ArrayList</code>: Resizes internally by 1.5x when filled.</li>\n  <li><code>LinkedList</code>: Node chains optimized for quick head/tail operations.</li>\n  <li><code>HashMap</code>: Keys mapped to values via hashing. Employs separate chaining and Red-Black tree bucket conversions to handle collisions.</li>\n</ul>",
     "theory": "<h3>Java Collections Framework</h3>\n<p>The collection framework offers unified data structure implementations:</p>\n<ul>\n  <li><code>ArrayList</code>: Resizes internally by 1.5x when filled.</li>\n  <li><code>LinkedList</code>: Node chains optimized for quick head/tail operations.</li>\n  <li><code>HashMap</code>: Keys mapped to values via hashing. Employs separate chaining and Red-Black tree bucket conversions to handle collisions.</li>\n</ul>",
     "analogy": "Think of this as structuring standard execution patterns.",
     "interviewNotes": "Explain core operations and visual workflows.",

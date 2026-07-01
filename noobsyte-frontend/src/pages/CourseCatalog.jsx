@@ -15,7 +15,7 @@ function CourseCatalog({
   setSelectedCourseSlug
 }) {
   const { courses, modules, loading, fetchCourses, fetchCourseModules } = useContext(LearningContext);
-  const { completedLessons, activeStreak, totalXp } = useContext(ProgressContext);
+  const { completedLessons, activeStreak, totalXp, markModuleComplete } = useContext(ProgressContext);
   const { user } = useContext(AuthContext);
 
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
@@ -308,8 +308,34 @@ function CourseCatalog({
     });
   };
 
+  const getCourseCompletionStats = (courseSlug) => {
+    const courseModules = getMergedModules(courseSlug);
+    let total = 0;
+    let completed = 0;
+    courseModules.forEach(mod => {
+      (mod.lessons || []).forEach(les => {
+        total++;
+        if (completedLessons.includes(les._id)) {
+          completed++;
+        }
+      });
+    });
+    return { total, completed, percent: total > 0 ? Math.round((completed / total) * 100) : 0 };
+  };
+
+  const getCompletedModulesCount = (courseSlug) => {
+    const courseModules = getMergedModules(courseSlug);
+    if (courseModules.length === 0) return 0;
+    let completedCount = 0;
+    courseModules.forEach(mod => {
+      const isCompleted = mod.lessons.length > 0 && mod.lessons.every(les => completedLessons.includes(les._id));
+      if (isCompleted) completedCount++;
+    });
+    return completedCount;
+  };
+
   // Calculate completed modules dynamically based on completed lessons
-  const topicsMasteredCount = Math.min(Math.floor(completedLessons.length / 2), 23);
+  const topicsMasteredCount = getCompletedModulesCount('java-masterclass-core-to-advanced') + getCompletedModulesCount('java-dsa-masterclass');
 
   return (
     <div className={`catalog-wrapper ${activeCatalogTab === 'sandbox' ? 'sandbox-active' : ''}`}>
@@ -465,7 +491,14 @@ function CourseCatalog({
 
               <div className="stats-card">
                 <div className="stats-card-main">
-                  <span className="stats-value">{completedLessons.length >= 4 ? 1 : 0}</span>
+                  <span className="stats-value">
+                    {(() => {
+                      const javaStats = getCourseCompletionStats('java-masterclass-core-to-advanced');
+                      const dsaStats = getCourseCompletionStats('java-dsa-masterclass');
+                      return (javaStats.total > 0 && javaStats.completed === javaStats.total ? 1 : 0) + 
+                             (dsaStats.total > 0 && dsaStats.completed === dsaStats.total ? 1 : 0);
+                    })()}
+                  </span>
                   <span className="stats-label">Certificates Earned</span>
                 </div>
                 <div className="stats-card-footer">
@@ -739,30 +772,71 @@ function CourseCatalog({
                         <span className="metric-row"><i className="fa-solid fa-clock"></i> {course.estTime || '35 Hours'}</span>
                       </div>
 
+                      {/* Course Progress Indicator */}
+                      {user && (() => {
+                        const stats = getCourseCompletionStats(course.slug);
+                        return (
+                          <div className="course-progress-container" style={{ margin: '1.25rem 0 0.5rem 0' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.35rem', color: 'var(--text-secondary)' }}>
+                              <span>Course Progress</span>
+                              <span style={{ fontWeight: 'bold', color: 'var(--brand-cyan)' }}>{stats.percent}% ({stats.completed}/{stats.total} lessons)</span>
+                            </div>
+                            <div style={{ width: '100%', height: '6px', backgroundColor: 'rgba(255,255,255,0.07)', borderRadius: '3px', overflow: 'hidden' }}>
+                              <div style={{ width: `${stats.percent}%`, height: '100%', backgroundColor: 'var(--brand-cyan)', borderRadius: '3px', transition: 'width 0.4s ease', boxShadow: stats.percent === 100 ? '0 0 8px var(--brand-cyan)' : 'none' }}></div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
                       <div className="card-footer">
                         <span className="difficulty advanced">
                           Beginner to Advanced
                         </span>
                         <div className="card-actions-group" style={{ display: 'flex', gap: '0.75rem' }}>
-                          <button 
-                            className="btn-claim-cert"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onClaimCertificate(course.slug);
-                            }}
-                            style={{
-                              backgroundColor: 'var(--brand-cyan-muted)',
-                              color: 'var(--brand-cyan)',
-                              border: '1px solid var(--brand-cyan)',
-                              padding: '0.5rem 1rem',
-                              borderRadius: 'var(--border-radius-sm)',
-                              fontSize: '0.85rem',
-                              fontWeight: '700',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            Claim Cert <i className="fa-solid fa-graduation-cap" style={{ marginLeft: '0.25rem' }}></i>
-                          </button>
+                          {(() => {
+                            const stats = getCourseCompletionStats(course.slug);
+                            const isCourseCompleted = stats.total > 0 && stats.completed === stats.total;
+                            
+                            return (
+                              <button 
+                                className={`btn-claim-cert ${isCourseCompleted ? 'completed-glow' : ''}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (!user) {
+                                    alert('Please sign in to claim verified credentials!');
+                                    return;
+                                  }
+                                  if (!isCourseCompleted) {
+                                    alert(`To claim your certificate, please complete all modules in this course. You have completed ${stats.completed} out of ${stats.total} lessons (${stats.percent}%).`);
+                                    return;
+                                  }
+                                  onClaimCertificate(course.slug);
+                                }}
+                                style={isCourseCompleted ? {
+                                  backgroundColor: 'var(--brand-cyan)',
+                                  color: '#000000',
+                                  border: '1px solid var(--brand-cyan)',
+                                  padding: '0.5rem 1rem',
+                                  borderRadius: 'var(--border-radius-sm)',
+                                  fontSize: '0.85rem',
+                                  fontWeight: '800',
+                                  cursor: 'pointer',
+                                  animation: 'pulse-glow 1.5s infinite alternate'
+                                } : {
+                                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                  color: 'rgba(255, 255, 255, 0.4)',
+                                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                                  padding: '0.5rem 1rem',
+                                  borderRadius: 'var(--border-radius-sm)',
+                                  fontSize: '0.85rem',
+                                  fontWeight: '700',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                {isCourseCompleted ? 'Claim Certificate!' : 'Locked 🔒'} <i className="fa-solid fa-graduation-cap" style={{ marginLeft: '0.25rem' }}></i>
+                              </button>
+                            );
+                          })()}
                           <button className="btn-explore-modules">
                             {isExpanded ? 'Hide Modules ▲' : 'View Modules ▼'}
                           </button>
@@ -776,30 +850,84 @@ function CourseCatalog({
                         {loading ? (
                           <div className="loading-spinner-small">Loading syllabus modules...</div>
                         ) : (
-                          getMergedModules(course.slug).map((mod, idx) => (
-                            <div key={idx} className="directory-module-block">
-                              <h5>{mod.title}</h5>
-                              <div className="lessons-slugs-list">
-                                {(mod.lessons || []).map((les) => (
-                                  <button
-                                    key={les.slug}
-                                    className="lesson-link-row"
-                                    onClick={() => onSelectLesson(les.slug)}
-                                  >
-                                    <span className="play-icon">▶</span>
-                                    <div className="lesson-link-main-details" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-                                      <span className="lesson-link-title">{les.title}</span>
-                                      <div className="lesson-metadata-tags">
-                                        {les.sim && <span className="sim-pill"><i className="fa-solid fa-brain"></i> Visual SIM</span>}
-                                        {les.quiz && <span className="quiz-pill"><i className="fa-solid fa-circle-question"></i> Quiz Included</span>}
-                                      </div>
-                                    </div>
-                                    <span className="read-badge">{les.time || '10 min'} read</span>
-                                  </button>
-                                ))}
+                          getMergedModules(course.slug).map((mod, idx) => {
+                            const isModCompleted = user && mod.lessons.length > 0 && mod.lessons.every(les => completedLessons.includes(les._id));
+                            return (
+                              <div key={idx} className="directory-module-block" style={isModCompleted ? { borderColor: 'rgba(46, 204, 113, 0.25)', backgroundColor: 'rgba(255,255,255,0.01)' } : {}}>
+                                <div className="directory-module-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem', gap: '1rem', flexWrap: 'wrap' }}>
+                                  <h5 style={{ margin: 0, fontSize: '1.05rem', color: isModCompleted ? 'hsl(140, 80%, 75%)' : 'var(--text-primary)' }}>
+                                    {mod.title}
+                                  </h5>
+                                  {user && (
+                                    isModCompleted ? (
+                                      <span className="module-completed-badge" style={{ color: 'hsl(140, 80%, 45%)', fontWeight: '800', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.6rem', backgroundColor: 'rgba(46, 204, 113, 0.1)', borderRadius: '4px', border: '1px solid rgba(46, 204, 113, 0.2)' }}>
+                                        Completed <i className="fa-solid fa-circle-check"></i>
+                                      </span>
+                                    ) : (
+                                      <button
+                                        className="btn-mark-module-complete"
+                                        onClick={async (e) => {
+                                          e.stopPropagation();
+                                          if (confirm(`Mark all lessons in "${mod.title}" as completed?`)) {
+                                            await markModuleComplete(mod._id);
+                                          }
+                                        }}
+                                        style={{
+                                          backgroundColor: 'transparent',
+                                          color: 'var(--brand-cyan)',
+                                          border: '1px solid var(--brand-cyan)',
+                                          padding: '0.35rem 0.8rem',
+                                          borderRadius: '4px',
+                                          fontSize: '0.75rem',
+                                          fontWeight: '700',
+                                          cursor: 'pointer',
+                                          transition: 'all 0.2s ease'
+                                        }}
+                                        onMouseOver={(e) => {
+                                          e.target.style.backgroundColor = 'var(--brand-cyan-muted)';
+                                        }}
+                                        onMouseOut={(e) => {
+                                          e.target.style.backgroundColor = 'transparent';
+                                        }}
+                                      >
+                                        Mark as Completed
+                                      </button>
+                                    )
+                                  )}
+                                </div>
+                                <div className="lessons-slugs-list">
+                                  {(mod.lessons || []).map((les) => {
+                                    const isLesCompleted = user && completedLessons.includes(les._id);
+                                    return (
+                                      <button
+                                        key={les.slug}
+                                        className={`lesson-link-row ${isLesCompleted ? 'completed' : ''}`}
+                                        onClick={() => onSelectLesson(les.slug)}
+                                        style={isLesCompleted ? { borderLeft: '3px solid hsl(180, 100%, 45%)', opacity: 0.85 } : {}}
+                                      >
+                                        <span className="play-icon" style={isLesCompleted ? { color: 'var(--brand-cyan)' } : {}}>
+                                          {isLesCompleted ? <i className="fa-solid fa-circle-check"></i> : '▶'}
+                                        </span>
+                                        <div className="lesson-link-main-details" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                                          <span className="lesson-link-title" style={isLesCompleted ? { color: 'var(--text-secondary)' } : {}}>{les.title}</span>
+                                          <div className="lesson-metadata-tags">
+                                            {les.sim && <span className="sim-pill"><i className="fa-solid fa-brain"></i> Visual SIM</span>}
+                                            {les.quiz && <span className="quiz-pill"><i className="fa-solid fa-circle-question"></i> Quiz Included</span>}
+                                            {isLesCompleted && (
+                                              <span className="completed-pill" style={{ fontSize: '0.65rem', fontWeight: '800', padding: '0.1rem 0.4rem', borderRadius: '4px', backgroundColor: 'rgba(46, 204, 113, 0.1)', color: 'hsl(140, 80%, 45%)', border: '1px solid rgba(46, 204, 113, 0.15)', display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                                                COMPLETED
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                        <span className="read-badge">{les.time || '10 min'} read</span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
                               </div>
-                            </div>
-                          ))
+                            );
+                          })
                         )}
                       </div>
                     )}

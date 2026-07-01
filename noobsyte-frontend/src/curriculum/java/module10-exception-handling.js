@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Master the core rules of Checked vs. Unchecked Exception Hierarchy",
       "Explain structural mechanisms under the hood"
     ],
+    "content": "<h3>Checked vs. Unchecked Exception Hierarchy</h3>\n<p>Exceptions interrupt normal program execution flow. All exceptions inherit from <code>Throwable</code>:</p>\n<ul>\n  <li><strong>Checked:</strong> Compiler verifies handling (e.g. <code>IOException</code>). Forced compile checks.</li>\n  <li><strong>Unchecked (Runtime):</strong> Coding bugs (e.g. <code>NullPointerException</code>, <code>ArithmeticException</code>). Not validated at compile-time.</li>\n</ul>",
     "theory": "<h3>Checked vs. Unchecked Exception Hierarchy</h3>\n<p>Exceptions interrupt normal program execution flow. All exceptions inherit from <code>Throwable</code>:</p>\n<ul>\n  <li><strong>Checked:</strong> Compiler verifies handling (e.g. <code>IOException</code>). Forced compile checks.</li>\n  <li><strong>Unchecked (Runtime):</strong> Coding bugs (e.g. <code>NullPointerException</code>, <code>ArithmeticException</code>). Not validated at compile-time.</li>\n</ul>",
     "analogy": "Think of this as structuring standard execution patterns.",
     "interviewNotes": "Explain core operations and visual workflows.",

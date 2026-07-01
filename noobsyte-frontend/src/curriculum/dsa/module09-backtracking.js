@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Backtracking & Divide-and-Conquer structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Backtracking & Divide-and-Conquer</h3>\n<p>Optimized recursion strategies:</p>\n<ul>\n  <li><strong>Backtracking:</strong> Explores solutions incrementally, abandoning a path as soon as it violates constraints (e.g. N-Queens, Sudoku).</li>\n  <li><strong>Divide-and-Conquer:</strong> Splits a problem into independent subproblems, solves them recursively, and combines their results (e.g. Merge Sort).</li>\n</ul>",
     "theory": "<h3>Backtracking & Divide-and-Conquer</h3>\n<p>Optimized recursion strategies:</p>\n<ul>\n  <li><strong>Backtracking:</strong> Explores solutions incrementally, abandoning a path as soon as it violates constraints (e.g. N-Queens, Sudoku).</li>\n  <li><strong>Divide-and-Conquer:</strong> Splits a problem into independent subproblems, solves them recursively, and combines their results (e.g. Merge Sort).</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

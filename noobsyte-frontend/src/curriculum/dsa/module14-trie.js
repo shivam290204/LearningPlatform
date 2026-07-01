@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "trie-visual",
+    "visualizations": [],
     "objectives": [
       "Implement Trie (Prefix Tree) structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Trie (Prefix Tree)</h3>\n<p>A **Trie** is a specialized tree structure used for storing strings over an alphabet. Each node contains characters, and paths from the root represent prefixes of strings.</p>\n<p>Tries are optimal for auto-complete search engines, checking spelling, and prefix matching. Lookup runs in <code>O(L)</code> where L is the length of the query string.</p>",
     "theory": "<h3>Trie (Prefix Tree)</h3>\n<p>A **Trie** is a specialized tree structure used for storing strings over an alphabet. Each node contains characters, and paths from the root represent prefixes of strings.</p>\n<p>Tries are optimal for auto-complete search engines, checking spelling, and prefix matching. Lookup runs in <code>O(L)</code> where L is the length of the query string.</p>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

@@ -12,11 +12,13 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "string-pool",
+    "visualizations": [],
     "objectives": [
       "Implement string traversals and pointer operations",
       "Solve palindrome and anagram checks in optimal complexity",
       "Understand pattern matching algorithms (KMP, Rabin-Karp)"
     ],
+    "content": "<h3>Strings in Data Structures</h3>\n<p>Strings are array sequences of characters. Many interview problems involve manipulating strings using indexing algorithms.</p>\n<h4>1. Anagram and Palindrome Checks</h4>\n<ul>\n  <li><strong>Palindrome:</strong> String reads the same backward as forward. Solve in O(N) using two pointers moving inward.</li>\n  <li><strong>Anagram:</strong> Two strings contain identical characters in different orders. Check in O(N) using a character frequency hash table or sorting in O(N log N).</li>\n</ul>\n<h4>2. Pattern Matching Algorithms</h4>\n<p>Given a text T of size N and pattern P of size M:</p>\n<ul>\n  <li><strong>Naive Search:</strong> Slides and matches characters. Time complexity: O(N * M).</li>\n  <li><strong>Rabin-Karp:</strong> Uses rolling hashes to filter potential matches in O(N + M) average time.</li>\n  <li><strong>KMP (Knuth-Morris-Pratt):</strong> Uses a precompiled prefix table (LPS) to avoid backtracking, running in O(N + M).</li>\n</ul>",
     "theory": "<h3>Strings in Data Structures</h3>\n<p>Strings are array sequences of characters. Many interview problems involve manipulating strings using indexing algorithms.</p>\n<h4>1. Anagram and Palindrome Checks</h4>\n<ul>\n  <li><strong>Palindrome:</strong> String reads the same backward as forward. Solve in O(N) using two pointers moving inward.</li>\n  <li><strong>Anagram:</strong> Two strings contain identical characters in different orders. Check in O(N) using a character frequency hash table or sorting in O(N log N).</li>\n</ul>\n<h4>2. Pattern Matching Algorithms</h4>\n<p>Given a text T of size N and pattern P of size M:</p>\n<ul>\n  <li><strong>Naive Search:</strong> Slides and matches characters. Time complexity: O(N * M).</li>\n  <li><strong>Rabin-Karp:</strong> Uses rolling hashes to filter potential matches in O(N + M) average time.</li>\n  <li><strong>KMP (Knuth-Morris-Pratt):</strong> Uses a precompiled prefix table (LPS) to avoid backtracking, running in O(N + M).</li>\n</ul>",
     "analogy": "<h3>Real-Life Analogy: The Book Index</h3>\n<p>Searching for words inside a library manual without KMP is like reading every word from the beginning whenever you fail to match. KMP is like writing down intermediate matched prefixes on a notepad, allowing you to skip backward index checks directly to the next probable starting character.</p>",
     "interviewNotes": "<ul>\n  <li><strong>Q: What is the advantage of Rabin-Karp?</strong><br/>A: It uses rolling hashes, making it highly efficient for multiple pattern matching problems.</li>\n</ul>",
@@ -62,10 +64,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Suffix Trees & Suffix Arrays structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Suffix Trees & Suffix Arrays</h3>\n<p>These structures analyze substring properties in text:</p>\n<ul>\n  <li><strong>Suffix Tree:</strong> A compressed trie containing all suffixes of a string. Allows substring searches and pattern matching in <code>O(M)</code> time, where M is the pattern length.</li>\n  <li><strong>Suffix Array:</strong> A sorted array of all suffixes of a string. More space-efficient than suffix trees, supporting queries in <code>O(M log N)</code> time.</li>\n</ul>",
     "theory": "<h3>Suffix Trees & Suffix Arrays</h3>\n<p>These structures analyze substring properties in text:</p>\n<ul>\n  <li><strong>Suffix Tree:</strong> A compressed trie containing all suffixes of a string. Allows substring searches and pattern matching in <code>O(M)</code> time, where M is the pattern length.</li>\n  <li><strong>Suffix Array:</strong> A sorted array of all suffixes of a string. More space-efficient than suffix trees, supporting queries in <code>O(M log N)</code> time.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

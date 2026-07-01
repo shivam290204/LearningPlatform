@@ -12,11 +12,13 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "garbage-collection",
+    "visualizations": [],
     "objectives": [
       "Explain advanced Reflection API inspect mechanisms",
       "Configure JVM options and Garbage Collection flags",
       "Explain Annotations and custom retention levels"
     ],
+    "content": "<h3>Java Interview Preparation Guide</h3>\n<p>This module reviews advanced concepts targeted in core Java placement rounds at major tech firms.</p>\n<h4>1. Reflection API</h4>\n<p>Reflection allows a Java program to inspect, analyze, and modify classes, interfaces, fields, and methods at runtime, bypassing encapsulation barriers:</p>\n<pre><code>Class&lt;?&gt; clazz = Class.forName(\"com.noobsyte.User\");\nConstructor&lt;?&gt; cons = clazz.getDeclaredConstructor();\ncons.setAccessible(true); // Bypass private boundaries\nUser user = (User) cons.newInstance();</code></pre>\n<h4>2. Annotations & Retention</h4>\n<p>Annotations are markers that attach metadata to code without affecting execution logic. They are compiled and have different lifecycles defined by <code>@Retention</code>: Source, Class, or Runtime (accessible via Reflection).</p>",
     "theory": "<h3>Java Interview Preparation Guide</h3>\n<p>This module reviews advanced concepts targeted in core Java placement rounds at major tech firms.</p>\n<h4>1. Reflection API</h4>\n<p>Reflection allows a Java program to inspect, analyze, and modify classes, interfaces, fields, and methods at runtime, bypassing encapsulation barriers:</p>\n<pre><code>Class&lt;?&gt; clazz = Class.forName(\"com.noobsyte.User\");\nConstructor&lt;?&gt; cons = clazz.getDeclaredConstructor();\ncons.setAccessible(true); // Bypass private boundaries\nUser user = (User) cons.newInstance();</code></pre>\n<h4>2. Annotations & Retention</h4>\n<p>Annotations are markers that attach metadata to code without affecting execution logic. They are compiled and have different lifecycles defined by <code>@Retention</code>: Source, Class, or Runtime (accessible via Reflection).</p>",
     "analogy": "<h3>Real-Life Analogy: The Doctor Medical Scan</h3>\n<p>Reflection is like a medical MRI scan. A normal person (compiled class) cannot see their own organs. But an MRI machine (Reflection API) scans the body, reporting and displaying all internal organs, blood vessels, and structure details dynamically.</p>",
     "interviewNotes": "<ul>\n  <li><strong>Q: What is the drawback of using Reflection?</strong><br/>A: Performance overhead (slow lookups), security violations (accesses private fields), and loss of compile-time safety checks.</li>\n</ul>",

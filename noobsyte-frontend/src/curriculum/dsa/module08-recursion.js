@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Brute Force & Recursion structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Brute Force & Recursion</h3>\n<p>Core algorithmic paradigms:</p>\n<ul>\n  <li><strong>Brute Force:</strong> Systematically evaluates all possible solutions. Easy to implement but slow (often exponential time).</li>\n  <li><strong>Recursion:</strong> A function that calls itself to solve smaller subproblems. Requires a **Base Case** to prevent infinite loops and stack overflows.</li>\n</ul>",
     "theory": "<h3>Brute Force & Recursion</h3>\n<p>Core algorithmic paradigms:</p>\n<ul>\n  <li><strong>Brute Force:</strong> Systematically evaluates all possible solutions. Easy to implement but slow (often exponential time).</li>\n  <li><strong>Recursion:</strong> A function that calls itself to solve smaller subproblems. Requires a **Base Case** to prevent infinite loops and stack overflows.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

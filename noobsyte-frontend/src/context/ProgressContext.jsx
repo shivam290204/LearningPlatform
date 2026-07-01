@@ -50,6 +50,15 @@ export const ProgressProvider = ({ children }) => {
     }
   };
 
+  const markModuleComplete = async (moduleId) => {
+    try {
+      await axios.post(`${API_URL}/api/v1/progress/modules/${moduleId}/complete`);
+      await fetchProgressSummary();
+    } catch (error) {
+      console.error('Error marking module complete:', error.message);
+    }
+  };
+
   const submitScore = async (lessonId, selectedOptionIndex, questionIndex = 0) => {
     try {
       const response = await axios.post(`${API_URL}/api/v1/progress/lessons/${lessonId}/quiz-submit`, { selectedOptionIndex, questionIndex });
@@ -113,6 +122,7 @@ export const ProgressProvider = ({ children }) => {
       searching,
       fetchProgressSummary,
       markComplete,
+      markModuleComplete,
       submitScore,
       fetchBookmarks,
       toggleBookmark,

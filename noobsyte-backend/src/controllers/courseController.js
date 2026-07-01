@@ -1,3 +1,6 @@
+const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 const Course = require('../models/Course');
 const Module = require('../models/Module');
 const Lesson = require('../models/Lesson');
@@ -5,8 +8,70 @@ const Quiz = require('../models/Quiz');
 const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 
+const frontendCurriculumDir = 'E:/LearningPlatform/noobsyte-frontend/src/curriculum';
+
+function loadESModule(filePath) {
+  const content = fs.readFileSync(filePath, 'utf8');
+  const code = content.replace('export default', 'return');
+  const fn = new Function(code);
+  return fn();
+}
+
+const offlineCourses = [
+  {
+    title: 'Mastering Java: From Zero to Hero',
+    slug: 'java-masterclass-core-to-advanced',
+    description: 'Master variables, stack & heap models, parameters passing, object oriented architecture, multithreading, and database integrations without dry textbook jargon.',
+    difficulty: 'beginner',
+    isPublished: true
+  },
+  {
+    title: 'Java DSA: Master Data Structures & Algorithms',
+    slug: 'java-dsa-masterclass',
+    description: 'Master Big-O analysis, sorting algorithms, recursion, linked lists, stacks, queues, trees, heaps, graphs, and dynamic programming in Java.',
+    difficulty: 'intermediate',
+    isPublished: true
+  }
+];
+
+function getOfflineCourseModules(courseSlug) {
+  const folder = courseSlug === 'java-dsa-masterclass' ? 'dsa' : 'java';
+  const folderPath = path.join(frontendCurriculumDir, folder);
+  if (!fs.existsSync(folderPath)) {
+    return [];
+  }
+  const files = fs.readdirSync(folderPath)
+    .filter(f => f.startsWith('module') && f.endsWith('.js'))
+    .sort();
+
+  return files.map((file, idx) => {
+    const mData = loadESModule(path.join(folderPath, file));
+    const lessons = (mData.lessons || []).map((l, lesIdx) => {
+      return {
+        ...l,
+        _id: `${courseSlug}-${idx}-${lesIdx}`,
+        sim: !!(l.visualizations && l.visualizations.length > 0),
+        quiz: !!(l.quiz && l.quiz.questions && l.quiz.questions.length > 0),
+        time: l.estTime || '10 min'
+      };
+    });
+    return {
+      ...mData,
+      _id: `${courseSlug}-${idx}`,
+      lessons
+    };
+  });
+}
+
 // Fetch all courses
 exports.getCourses = asyncHandler(async (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(200).json({
+      status: 'success',
+      results: offlineCourses.length,
+      data: { courses: offlineCourses }
+    });
+  }
   const courses = await Course.find({ isPublished: true });
 
   res.status(200).json({
@@ -19,6 +84,15 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
 // Fetch all modules for a course including their populated lessons metadata
 exports.getCourseModules = asyncHandler(async (req, res, next) => {
   const { courseSlug } = req.params;
+
+  if (mongoose.connection.readyState !== 1) {
+    const offlineModules = getOfflineCourseModules(courseSlug);
+    return res.status(200).json({
+      status: 'success',
+      results: offlineModules.length,
+      data: { modules: offlineModules }
+    });
+  }
 
   const course = await Course.findOne({ slug: courseSlug });
   if (!course) {
@@ -62,6 +136,37 @@ exports.getCourseModules = asyncHandler(async (req, res, next) => {
 // Fetch lesson details by slug including its associated Quiz (stripped of answers)
 exports.getLessonBySlug = asyncHandler(async (req, res, next) => {
   const { lessonSlug } = req.params;
+
+  if (mongoose.connection.readyState !== 1) {
+    const courses = ['java-masterclass-core-to-advanced', 'java-dsa-masterclass'];
+    for (const cSlug of courses) {
+      const offlineModules = getOfflineCourseModules(cSlug);
+      for (const mod of offlineModules) {
+        const lesson = (mod.lessons || []).find(l => l.slug === lessonSlug);
+        if (lesson) {
+          let quizData = null;
+          if (lesson.quiz && lesson.quiz.questions) {
+            const strippedQuestions = lesson.quiz.questions.map(q => {
+              const { correctAnswerIndex, explanation, ...strippedQuestion } = q;
+              return strippedQuestion;
+            });
+            quizData = {
+              lesson: lesson._id,
+              questions: strippedQuestions
+            };
+          }
+          return res.status(200).json({
+            status: 'success',
+            data: {
+              lesson,
+              quiz: quizData
+            }
+          });
+        }
+      }
+    }
+    return next(new AppError('No lesson found with that slug identifier.', 404));
+  }
 
   const lesson = await Lesson.findOne({ slug: lessonSlug }).populate('module');
   if (!lesson) {

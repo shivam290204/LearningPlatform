@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Dynamic Programming structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Dynamic Programming</h3>\n<p><strong>Dynamic Programming (DP)</strong> solves complex problems by breaking them down into overlapping subproblems. It solves each subproblem once and stores the result to avoid redundant work.</p>\n<p>DP approaches include:</p>\n<ul>\n  <li><strong>Memoization (Top-Down):</strong> Solves recursively and caches results in a table.</li>\n  <li><strong>Tabulation (Bottom-Up):</strong> Solves iteratively, building up the solution table from the base cases.</li>\n</ul>",
     "theory": "<h3>Dynamic Programming</h3>\n<p><strong>Dynamic Programming (DP)</strong> solves complex problems by breaking them down into overlapping subproblems. It solves each subproblem once and stores the result to avoid redundant work.</p>\n<p>DP approaches include:</p>\n<ul>\n  <li><strong>Memoization (Top-Down):</strong> Solves recursively and caches results in a table.</li>\n  <li><strong>Tabulation (Bottom-Up):</strong> Solves iteratively, building up the solution table from the base cases.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

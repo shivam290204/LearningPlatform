@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": null,
+    "visualizations": [],
     "objectives": [
       "Implement Range Query Structures: Segment Trees & Fenwick Trees structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Range Query Structures: Segment Trees & Fenwick Trees</h3>\n<p>These structures optimize queries on interval ranges of arrays:</p>\n<ul>\n  <li><strong>Segment Tree:</strong> A binary tree where each node represents an interval of the array. Supports range queries (e.g. range sum, range minimum) in <code>O(log N)</code> and point updates in <code>O(log N)</code>.</li>\n  <li><strong>Fenwick Tree (Binary Indexed Tree):</strong> A space-efficient tree structure represented as an array. Supports prefix sum queries and point updates in <code>O(log N)</code> time.</li>\n</ul>",
     "theory": "<h3>Range Query Structures: Segment Trees & Fenwick Trees</h3>\n<p>These structures optimize queries on interval ranges of arrays:</p>\n<ul>\n  <li><strong>Segment Tree:</strong> A binary tree where each node represents an interval of the array. Supports range queries (e.g. range sum, range minimum) in <code>O(log N)</code> and point updates in <code>O(log N)</code>.</li>\n  <li><strong>Fenwick Tree (Binary Indexed Tree):</strong> A space-efficient tree structure represented as an array. Supports prefix sum queries and point updates in <code>O(log N)</code> time.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

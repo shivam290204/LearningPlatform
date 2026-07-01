@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "hashmap",
+    "visualizations": [],
     "objectives": [
       "Implement Hash Functions & Collision Resolution structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Hash Functions & Collision Resolution</h3>\n<p>A **Hash Table** stores key-value pairs. It computes a key's hashcode to determine its index in an array.</p>\n<p>When different keys yield the same index, a **Collision** occurs. Hash tables resolve collisions using:</p>\n<ul>\n  <li><strong>Separate Chaining:</strong> Each bucket contains a linked list of entries.</li>\n  <li><strong>Open Addressing (Linear Probing):</strong> Searches for the next available slot in the array.</li>\n</ul>",
     "theory": "<h3>Hash Functions & Collision Resolution</h3>\n<p>A **Hash Table** stores key-value pairs. It computes a key's hashcode to determine its index in an array.</p>\n<p>When different keys yield the same index, a **Collision** occurs. Hash tables resolve collisions using:</p>\n<ul>\n  <li><strong>Separate Chaining:</strong> Each bucket contains a linked list of entries.</li>\n  <li><strong>Open Addressing (Linear Probing):</strong> Searches for the next available slot in the array.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

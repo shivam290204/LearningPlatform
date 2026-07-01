@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "heap-dsa",
+    "visualizations": [],
     "objectives": [
       "Implement Heaps & Priority Queues structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Heaps & Priority Queues</h3>\n<p>A **Heap** is a complete binary tree where the parent node has a higher priority than its children:</p>\n<ul>\n  <li><strong>Max Heap:</strong> Parent is larger than or equal to its children.</li>\n  <li><strong>Min Heap:</strong> Parent is smaller than or equal to its children.</li>\n</ul>\n<p>Heaps are commonly implemented using arrays to support O(1) access to the minimum/maximum element and O(log N) updates.</p>",
     "theory": "<h3>Heaps & Priority Queues</h3>\n<p>A **Heap** is a complete binary tree where the parent node has a higher priority than its children:</p>\n<ul>\n  <li><strong>Max Heap:</strong> Parent is larger than or equal to its children.</li>\n  <li><strong>Min Heap:</strong> Parent is smaller than or equal to its children.</li>\n</ul>\n<p>Heaps are commonly implemented using arrays to support O(1) access to the minimum/maximum element and O(log N) updates.</p>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

@@ -1,5 +1,6 @@
 const Progress = require('../models/Progress');
 const Lesson = require('../models/Lesson');
+const Module = require('../models/Module');
 const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -76,16 +77,12 @@ exports.submitQuizScore = asyncHandler(async (req, res, next) => {
     progress = await Progress.create({
       user: req.user._id,
       lesson: lessonId,
-      isCompleted: passed,
-      completedAt: passed ? new Date() : null,
+      isCompleted: false,
+      completedAt: null,
       quizScores: [newAttempt]
     });
   } else {
     progress.quizScores.push(newAttempt);
-    if (passed && !progress.isCompleted) {
-      progress.isCompleted = true;
-      progress.completedAt = new Date();
-    }
     await progress.save();
   }
 
@@ -93,7 +90,7 @@ exports.submitQuizScore = asyncHandler(async (req, res, next) => {
     status: 'success',
     data: {
       progress,
-      xpGained: passed ? 50 : 0,
+      xpGained: 0,
       isCorrect,
       correctAnswerIndex: activeQuestion.correctAnswerIndex,
       explanation: activeQuestion.explanation
@@ -158,3 +155,5 @@ exports.getProgressSummary = asyncHandler(async (req, res, next) => {
     }
   });
 });
+
+

@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "quick-sort",
+    "visualizations": [],
     "objectives": [
       "Implement Quadratic Sorts (Bubble, Selection, Insertion) structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Quadratic Sorts (Bubble, Selection, Insertion)</h3>\n<p>Basic sorting algorithms run in <code>O(N²)</code> time and are space-efficient (run in-place):</p>\n<ul>\n  <li><strong>Bubble Sort:</strong> Swaps adjacent elements if out of order.</li>\n  <li><strong>Selection Sort:</strong> Selects the minimum item from the unsorted subarray and swaps it to the front.</li>\n  <li><strong>Insertion Sort:</strong> Inserts elements into their correct position in a sorted subarray.</li>\n</ul>",
     "theory": "<h3>Quadratic Sorts (Bubble, Selection, Insertion)</h3>\n<p>Basic sorting algorithms run in <code>O(N²)</code> time and are space-efficient (run in-place):</p>\n<ul>\n  <li><strong>Bubble Sort:</strong> Swaps adjacent elements if out of order.</li>\n  <li><strong>Selection Sort:</strong> Selects the minimum item from the unsorted subarray and swaps it to the front.</li>\n  <li><strong>Insertion Sort:</strong> Inserts elements into their correct position in a sorted subarray.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",
@@ -61,10 +63,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "merge-sort",
+    "visualizations": [],
     "objectives": [
       "Implement Divide-and-Conquer Sorts (Merge, Quick) structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Divide-and-Conquer Sorts (Merge, Quick)</h3>\n<p>Efficient algorithms split arrays into smaller subarrays:</p>\n<ul>\n  <li><strong>Merge Sort:</strong> Halves arrays, recursively sorts them, and merges them. Runs in <code>O(N log N)</code> time, requiring <code>O(N)</code> space.</li>\n  <li><strong>Quick Sort:</strong> Selects a pivot and partitions elements around it. Average runtime is <code>O(N log N)</code>, worst-case is <code>O(N²)</code>.</li>\n</ul>",
     "theory": "<h3>Divide-and-Conquer Sorts (Merge, Quick)</h3>\n<p>Efficient algorithms split arrays into smaller subarrays:</p>\n<ul>\n  <li><strong>Merge Sort:</strong> Halves arrays, recursively sorts them, and merges them. Runs in <code>O(N log N)</code> time, requiring <code>O(N)</code> space.</li>\n  <li><strong>Quick Sort:</strong> Selects a pivot and partitions elements around it. Average runtime is <code>O(N log N)</code>, worst-case is <code>O(N²)</code>.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",
@@ -110,10 +114,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "heap-dsa",
+    "visualizations": [],
     "objectives": [
       "Implement Heap Sort structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Heap Sort</h3>\n<p><strong>Heap Sort</strong> uses a binary heap to sort elements in-place in <code>O(N log N)</code> worst-case time.</p>\n<p>It inserts elements into a Max Heap, then repeatedly extracts the maximum element, swapping it with the last element of the array and restoring the heap property (heapifying).</p>",
     "theory": "<h3>Heap Sort</h3>\n<p><strong>Heap Sort</strong> uses a binary heap to sort elements in-place in <code>O(N log N)</code> worst-case time.</p>\n<p>It inserts elements into a Max Heap, then repeatedly extracts the maximum element, swapping it with the last element of the array and restoring the heap property (heapifying).</p>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

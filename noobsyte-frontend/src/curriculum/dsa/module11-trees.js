@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "bst-tree",
+    "visualizations": [],
     "objectives": [
       "Implement Binary Trees & Tree Traversals structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Binary Trees & Tree Traversals</h3>\n<p>A **Binary Tree** is a hierarchical structure where each node has at most two children (left and right).</p>\n<p>Depth-First search traversals include:</p>\n<ul>\n  <li><strong>In-Order (Left, Root, Right):</strong> Visits nodes in sorted order for BSTs.</li>\n  <li><strong>Pre-Order (Root, Left, Right):</strong> Useful for copying trees.</li>\n  <li><strong>Post-Order (Left, Right, Root):</strong> Useful for deleting trees.</li>\n</ul>",
     "theory": "<h3>Binary Trees & Tree Traversals</h3>\n<p>A **Binary Tree** is a hierarchical structure where each node has at most two children (left and right).</p>\n<p>Depth-First search traversals include:</p>\n<ul>\n  <li><strong>In-Order (Left, Root, Right):</strong> Visits nodes in sorted order for BSTs.</li>\n  <li><strong>Pre-Order (Root, Left, Right):</strong> Useful for copying trees.</li>\n  <li><strong>Post-Order (Left, Right, Root):</strong> Useful for deleting trees.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",

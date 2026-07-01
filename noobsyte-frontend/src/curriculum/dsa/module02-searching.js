@@ -12,10 +12,12 @@ export default {
     "quizAvailable": true,
     "xpReward": 50,
     "visualizer": "binary-search",
+    "visualizations": [],
     "objectives": [
       "Implement Linear Search vs. Binary Search structure",
       "Explain execution complexity bounds"
     ],
+    "content": "<h3>Linear Search vs. Binary Search</h3>\n<p>Searching involves finding a value within a collection:</p>\n<ul>\n  <li><strong>Linear Search:</strong> Iterates from index 0 to N-1. Operates on unsorted lists in <code>O(N)</code> time.</li>\n  <li><strong>Binary Search:</strong> Halves the search space recursively. Requires sorted inputs, achieving log scales: <code>O(log N)</code>.</li>\n</ul>",
     "theory": "<h3>Linear Search vs. Binary Search</h3>\n<p>Searching involves finding a value within a collection:</p>\n<ul>\n  <li><strong>Linear Search:</strong> Iterates from index 0 to N-1. Operates on unsorted lists in <code>O(N)</code> time.</li>\n  <li><strong>Binary Search:</strong> Halves the search space recursively. Requires sorted inputs, achieving log scales: <code>O(log N)</code>.</li>\n</ul>",
     "analogy": "Think of this like structural sorting in daily logistics.",
     "interviewNotes": "Explain base cases and complexity boundaries.",
