@@ -15,7 +15,7 @@ function CourseCatalog({
   setSelectedCourseSlug
 }) {
   const { courses, modules, loading, fetchCourses, fetchCourseModules } = useContext(LearningContext);
-  const { completedLessons, activeStreak, totalXp, markModuleComplete } = useContext(ProgressContext);
+  const { completedLessons, activeStreak, totalXp } = useContext(ProgressContext);
   const { user } = useContext(AuthContext);
 
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
@@ -863,36 +863,14 @@ function CourseCatalog({
                                       <span className="module-completed-badge" style={{ color: 'hsl(140, 80%, 45%)', fontWeight: '800', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.6rem', backgroundColor: 'rgba(46, 204, 113, 0.1)', borderRadius: '4px', border: '1px solid rgba(46, 204, 113, 0.2)' }}>
                                         Completed <i className="fa-solid fa-circle-check"></i>
                                       </span>
-                                    ) : (
-                                      <button
-                                        className="btn-mark-module-complete"
-                                        onClick={async (e) => {
-                                          e.stopPropagation();
-                                          if (confirm(`Mark all lessons in "${mod.title}" as completed?`)) {
-                                            await markModuleComplete(mod._id);
-                                          }
-                                        }}
-                                        style={{
-                                          backgroundColor: 'transparent',
-                                          color: 'var(--brand-cyan)',
-                                          border: '1px solid var(--brand-cyan)',
-                                          padding: '0.35rem 0.8rem',
-                                          borderRadius: '4px',
-                                          fontSize: '0.75rem',
-                                          fontWeight: '700',
-                                          cursor: 'pointer',
-                                          transition: 'all 0.2s ease'
-                                        }}
-                                        onMouseOver={(e) => {
-                                          e.target.style.backgroundColor = 'var(--brand-cyan-muted)';
-                                        }}
-                                        onMouseOut={(e) => {
-                                          e.target.style.backgroundColor = 'transparent';
-                                        }}
-                                      >
-                                        Mark as Completed
-                                      </button>
-                                    )
+                                    ) : (() => {
+                                      const completedCount = mod.lessons.filter(les => completedLessons.includes(les._id)).length;
+                                      return (
+                                        <span className="module-in-progress-badge" style={{ color: 'var(--brand-cyan)', fontWeight: '700', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.3rem 0.6rem', backgroundColor: 'var(--brand-cyan-muted)', borderRadius: '4px', border: '1px solid rgba(36, 224, 217, 0.2)' }}>
+                                          In Progress ({completedCount}/{mod.lessons.length})
+                                        </span>
+                                      );
+                                    })()
                                   )}
                                 </div>
                                 <div className="lessons-slugs-list">

@@ -1,14 +1,16 @@
 const axios = require("axios");
 
-const JUDGE0_API_URL =
-  "http://localhost:2358/submissions/?base64_encoded=true&wait=true";
+const getJudge0Url = () => {
+  const host = process.env.JUDGE0_URL || "http://localhost:2358";
+  return `${host}/submissions/?base64_encoded=true&wait=true`;
+};
 
 const submitCode = async (sourceCode, languageId, stdin = "") => {
   try {
     const encodedSource = Buffer.from(sourceCode, "utf8").toString("base64");
     const encodedInput = Buffer.from(stdin, "utf8").toString("base64");
 
-    const response = await axios.post(JUDGE0_API_URL, {
+    const response = await axios.post(getJudge0Url(), {
       source_code: encodedSource,
       language_id: languageId,
       stdin: encodedInput,

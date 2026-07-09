@@ -272,7 +272,7 @@ const splitLessonContent = (htmlContent) => {
 
 function LessonViewer({ lessonSlug, onCloseViewer }) {
   const { currentLesson, currentQuiz, loading, fetchLesson } = useContext(LearningContext);
-  const { submitScore, completedLessons } = useContext(ProgressContext);
+  const { submitScore, completedLessons, markComplete } = useContext(ProgressContext);
   const [activeTab, setActiveTab] = useState('theory');
   const [xpUnlocked, setXpUnlocked] = useState(false);
 
@@ -289,8 +289,11 @@ function LessonViewer({ lessonSlug, onCloseViewer }) {
     }
   }, [currentLesson, completedLessons]);
 
-  const handleQuizPassed = (isServerSynced) => {
+  const handleQuizPassed = async (isServerSynced) => {
     if (!xpUnlocked) {
+      if (isServerSynced && currentLesson && currentLesson._id) {
+        await markComplete(currentLesson._id);
+      }
       setXpUnlocked(true);
       
       if (!isServerSynced) {

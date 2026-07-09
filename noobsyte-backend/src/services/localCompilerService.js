@@ -2,20 +2,16 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-// Ensure unique folder generation to handle concurrent runs
+// Base temp sandbox directory
 const SANDBOX_DIR = path.join(__dirname, '../temp_sandbox');
 
 /**
  * Clean up files and directory recursively
  */
-const cleanup = (dirPath, files = []) => {
+const cleanup = (dirPath) => {
   try {
-    files.forEach(f => {
-      const filePath = path.join(dirPath, f);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    });
     if (fs.existsSync(dirPath)) {
-      fs.rmdirSync(dirPath);
+      fs.rmSync(dirPath, { recursive: true, force: true });
     }
   } catch (err) {
     console.error('Cleanup error:', err.message);
@@ -23,17 +19,17 @@ const cleanup = (dirPath, files = []) => {
 };
 
 /**
- * Run a command with stdin and a timeout
+ * Run a command inside Docker sandbox container
  */
-const runCommand = (command, cwd, stdin = '', timeoutMs = 5000) => {
+const runDockerCommand = (command, stdin = '', timeoutMs = 5000) => {
   return new Promise((resolve) => {
     const startTime = Date.now();
-    const child = exec(command, { cwd }, (error, stdout, stderr) => {
-      const elapsed = (Date.now() - startTime) / 1000; // in seconds
+    const child = exec(command, (error, stdout, stderr) => {
+      const elapsed = (Date.now() - startTime) / 1000;
       if (error && child.killed) {
         resolve({
           success: false,
-          stdout,
+          stdout: stdout.toString(),
           stderr: `Time Limit Exceeded (${timeoutMs / 1000}s timeout)`,
           time: elapsed,
           status: { id: 5, description: 'Time Limit Exceeded' }
@@ -41,29 +37,27 @@ const runCommand = (command, cwd, stdin = '', timeoutMs = 5000) => {
       } else if (error) {
         resolve({
           success: false,
-          stdout,
-          stderr: stderr || error.message,
+          stdout: stdout.toString(),
+          stderr: stderr.toString() || error.message,
           time: elapsed,
           status: { id: 11, description: 'Runtime Error' }
         });
       } else {
         resolve({
           success: true,
-          stdout,
-          stderr,
+          stdout: stdout.toString(),
+          stderr: stderr.toString(),
           time: elapsed,
           status: { id: 3, description: 'Accepted' }
         });
       }
     });
 
-    // Write input to stdin if provided
-    if (stdin) {
+    if (stdin && child.stdin) {
       child.stdin.write(stdin);
       child.stdin.end();
     }
 
-    // Set timeout to kill process
     const timeout = setTimeout(() => {
       child.killed = true;
       child.kill('SIGKILL');
@@ -76,25 +70,51 @@ const runCommand = (command, cwd, stdin = '', timeoutMs = 5000) => {
 };
 
 /**
- * Compiles and executes code locally based on Judge0 language ID.
- * Mappings:
- * - 71: Python
- * - 63: JavaScript
- * - 62: Java
- * - 50: C
- * - 54: C++
+ * Parses the Java source code to determine the appropriate class name for compilation & execution.
+ * Prioritizes a public class, then any class containing a 'main' method, and falls back to any class.
+ */
+const findJavaClassName = (sourceCode) => {
+  const publicClassMatch = sourceCode.match(/public\s+class\s+(\w+)/);
+  if (publicClassMatch) return publicClassMatch[1];
+
+  const classes = sourceCode.split(/\bclass\s+/);
+  for (let i = 1; i < classes.length; i++) {
+    const classBlock = classes[i];
+    const nameMatch = classBlock.match(/^(\w+)/);
+    if (nameMatch) {
+      const className = nameMatch[1];
+      if (classBlock.includes('public static void main') || classBlock.includes('public static main')) {
+        return className;
+      }
+    }
+  }
+
+  const anyClassMatch = sourceCode.match(/class\s+(\w+)/);
+  if (anyClassMatch) return anyClassMatch[1];
+
+  return 'Main';
+};
+
+/**
+ * Compiles and executes code inside sandboxed Docker containers based on Judge0 language ID.
+ * Parameters:
+ * - memory: 128m (256m for compile phases)
+ * - network: none (network isolation)
+ * - pids-limit: 20 (fork bomb protection)
+ * - cpus: 0.5 (CPU quota cap)
+ * - read-only: Mount volume :ro for runtime, --read-only for root fs
+ * - user: 1000:1000 (Non-root user)
  */
 const executeLocally = async (sourceCode, languageId, stdin = '') => {
-  // Ensure base sandbox directory exists
   if (!fs.existsSync(SANDBOX_DIR)) {
     fs.mkdirSync(SANDBOX_DIR, { recursive: true });
   }
 
-  // Create unique folder for this execution run
   const runId = `run_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
   const runCwd = path.join(SANDBOX_DIR, runId);
   fs.mkdirSync(runCwd, { recursive: true });
 
+  const dockerVolumePath = runCwd.replace(/\\/g, '/');
   const langId = Number(languageId);
 
   try {
@@ -102,10 +122,11 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       // ── Python ──
       const filename = 'main.py';
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
+
+      const dockerCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app python:3.10-alpine python -B main.py`;
+      const result = await runDockerCommand(dockerCmd, stdin, 5000);
       
-      const result = await runCommand('python main.py', runCwd, stdin);
-      cleanup(runCwd, [filename]);
-      
+      cleanup(runCwd);
       return {
         stdout: result.stdout,
         stderr: result.stderr,
@@ -119,10 +140,11 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       // ── JavaScript ──
       const filename = 'index.js';
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
-      
-      const result = await runCommand('node index.js', runCwd, stdin);
-      cleanup(runCwd, [filename]);
-      
+
+      const dockerCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app node:18-alpine node index.js`;
+      const result = await runDockerCommand(dockerCmd, stdin, 5000);
+
+      cleanup(runCwd);
       return {
         stdout: result.stdout,
         stderr: result.stderr,
@@ -134,18 +156,16 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
     } else if (langId === 62) {
       // ── Java ──
-      // Parse the public class name from code; default to 'Main'
-      const match = sourceCode.match(/public\s+class\s+(\w+)/);
-      const className = match ? match[1] : 'Main';
+      const className = findJavaClassName(sourceCode);
       const filename = `${className}.java`;
-      
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
-      // Phase 1: Compile the Java Class (15s limit)
-      const compileResult = await runCommand(`javac ${filename}`, runCwd, '', 15000);
-      
+      // Compile Phase (256m memory limit, dynamic write privileges needed inside mount)
+      const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app eclipse-temurin:17-alpine javac ${filename}`;
+      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+
       if (!compileResult.success) {
-        cleanup(runCwd, [filename]);
+        cleanup(runCwd);
         return {
           stdout: '',
           stderr: '',
@@ -156,10 +176,11 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
         };
       }
 
-      // Phase 2: Execute bytecode (5s limit)
-      const executeResult = await runCommand(`java ${className}`, runCwd, stdin, 5000);
-      
-      cleanup(runCwd, [filename, `${className}.class`]);
+      // Execution Phase (128m memory limit, read-only code execution)
+      const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app eclipse-temurin:17-alpine java ${className}`;
+      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+
+      cleanup(runCwd);
       return {
         stdout: executeResult.stdout,
         stderr: executeResult.stderr,
@@ -172,13 +193,14 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
     } else if (langId === 50) {
       // ── C ──
       const filename = 'main.c';
-      const binaryName = 'main.exe';
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
-      // Compile using GCC (15s limit)
-      const compileResult = await runCommand(`gcc ${filename} -o ${binaryName}`, runCwd, '', 15000);
+      // Compile Phase (using gcc:latest to match runtime environment)
+      const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app gcc:latest gcc ${filename} -o main.out`;
+      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+
       if (!compileResult.success) {
-        cleanup(runCwd, [filename]);
+        cleanup(runCwd);
         return {
           stdout: '',
           stderr: '',
@@ -189,10 +211,11 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
         };
       }
 
-      // Execute binary (5s limit)
-      const executeResult = await runCommand(binaryName, runCwd, stdin, 5000);
-      cleanup(runCwd, [filename, binaryName]);
-      
+      // Execution Phase (runs inside gcc:latest container with read-only workspace)
+      const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app gcc:latest ./main.out`;
+      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+
+      cleanup(runCwd);
       return {
         stdout: executeResult.stdout,
         stderr: executeResult.stderr,
@@ -205,13 +228,14 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
     } else if (langId === 54) {
       // ── C++ ──
       const filename = 'main.cpp';
-      const binaryName = 'main.exe';
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
-      // Compile using G++ (15s limit)
-      const compileResult = await runCommand(`g++ ${filename} -o ${binaryName}`, runCwd, '', 15000);
+      // Compile Phase (using gcc:latest to compile with g++)
+      const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app gcc:latest g++ ${filename} -o main.out`;
+      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+
       if (!compileResult.success) {
-        cleanup(runCwd, [filename]);
+        cleanup(runCwd);
         return {
           stdout: '',
           stderr: '',
@@ -222,10 +246,11 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
         };
       }
 
-      // Execute binary (5s limit)
-      const executeResult = await runCommand(binaryName, runCwd, stdin, 5000);
-      cleanup(runCwd, [filename, binaryName]);
-      
+      // Execution Phase (runs inside gcc:latest container with read-only workspace)
+      const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app gcc:latest ./main.out`;
+      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+
+      cleanup(runCwd);
       return {
         stdout: executeResult.stdout,
         stderr: executeResult.stderr,

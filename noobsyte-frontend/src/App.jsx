@@ -31,6 +31,10 @@ function AppContent() {
   // Initialize theme state: default 'dark' black and white minimalist
   const [theme, setTheme] = useState(localStorage.getItem('ns_theme') || 'dark');
 
+  useEffect(() => {
+    document.body.className = `${theme}-theme`;
+  }, [theme]);
+
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
@@ -205,6 +209,7 @@ function AppContent() {
         <CertificateViewer 
           courseSlug={certificateCourseSlug} 
           onClose={() => setCertificateCourseSlug(null)} 
+          theme={theme}
         />
       )}
 

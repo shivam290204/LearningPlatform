@@ -20,3 +20,7 @@ target/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Execution Sandbox
+temp_sandbox/
+noobsyte-backend/src/temp_sandbox/

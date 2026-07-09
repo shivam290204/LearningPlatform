@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import './CertificateViewer.css';
 
-function CertificateViewer({ courseSlug, onClose }) {
+function CertificateViewer({ courseSlug, onClose, theme }) {
   const { token } = useContext(AuthContext);
   const [certData, setCertData] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -45,8 +45,8 @@ function CertificateViewer({ courseSlug, onClose }) {
   const displayedCert = certData || (errorMsg ? null : getMockedCert());
 
   return (
-    <div className="cert-overlay">
-      <div className="cert-modal-card no-print">
+    <div className={`cert-overlay ${theme}-theme`}>
+      <div className={`cert-modal-card no-print ${theme}-theme`}>
         <div className="cert-modal-header">
           <h3><i className="fa-solid fa-graduation-cap" style={{ color: 'var(--brand-cyan)', marginRight: '0.55rem' }}></i> Verified Completion Certificate</h3>
           <button className="btn-close-cert" onClick={onClose}>×</button>
@@ -135,32 +135,32 @@ function CertificateViewer({ courseSlug, onClose }) {
 
       {/* Hidden printable frame that replaces full body on window.print() */}
       {!loading && displayedCert && (
-        <div className="print-only-cert-wrapper">
+        <div className={`print-only-cert-wrapper ${theme}-theme`}>
           <div className="cert-border-outer">
             <div className="cert-border-inner">
               <div className="cert-header">
-                <span className="cert-logo-glow" style={{ color: 'hsl(180, 100%, 45%)' }}>noob</span>
-                <span className="cert-logo-text" style={{ color: '#ffffff' }}>Syte</span>
-                <div className="cert-subtitle" style={{ letterSpacing: '2px', color: 'hsl(215, 20%, 75%)' }}>
+                <span className="cert-logo-glow" style={{ color: 'var(--brand-cyan)' }}>noob</span>
+                <span className="cert-logo-text" style={{ color: 'var(--text-primary)' }}>Syte</span>
+                <div className="cert-subtitle" style={{ letterSpacing: '2px', color: 'var(--text-secondary)' }}>
                   VERIFIED COMPLETION CREDENTIAL
                 </div>
               </div>
               <div className="cert-body">
-                <p className="cert-award-text" style={{ color: 'hsl(215, 20%, 75%)' }}>This is to officially certify that</p>
-                <h2 className="cert-student-name" style={{ color: '#ffffff' }}>{displayedCert.studentName}</h2>
-                <p className="cert-achievement-text" style={{ color: 'hsl(215, 20%, 75%)' }}>
+                <p className="cert-award-text" style={{ color: 'var(--text-secondary)' }}>This is to officially certify that</p>
+                <h2 className="cert-student-name" style={{ color: 'var(--text-primary)' }}>{displayedCert.studentName}</h2>
+                <p className="cert-achievement-text" style={{ color: 'var(--text-secondary)' }}>
                   has successfully completed the interactive learning track and validated all self-assessment quizzes for
                 </p>
-                <h3 className="cert-course-title" style={{ color: 'hsl(180, 100%, 45%)' }}>{displayedCert.courseTitle}</h3>
+                <h3 className="cert-course-title" style={{ color: 'var(--brand-cyan)' }}>{displayedCert.courseTitle}</h3>
               </div>
-              <div className="cert-footer" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+              <div className="cert-footer" style={{ borderTop: '1px solid var(--bg-tertiary)' }}>
                 <div className="footer-col">
-                  <span className="footer-label" style={{ color: 'hsl(215, 20%, 75%)' }}>ISSUED DATE</span>
-                  <span className="footer-val" style={{ color: '#ffffff' }}>{displayedCert.issueDate}</span>
+                  <span className="footer-label" style={{ color: 'var(--text-secondary)' }}>ISSUED DATE</span>
+                  <span className="footer-val" style={{ color: 'var(--text-primary)' }}>{displayedCert.issueDate}</span>
                 </div>
                 <div className="footer-col">
-                  <span className="footer-label" style={{ color: 'hsl(215, 20%, 75%)' }}>CREDENTIAL ID</span>
-                  <span className="footer-val cert-hash" style={{ color: 'hsl(180, 100%, 45%)' }}>{displayedCert.verificationHash}</span>
+                  <span className="footer-label" style={{ color: 'var(--text-secondary)' }}>CREDENTIAL ID</span>
+                  <span className="footer-val cert-hash" style={{ color: 'var(--brand-cyan)' }}>{displayedCert.verificationHash}</span>
                 </div>
               </div>
             </div>
