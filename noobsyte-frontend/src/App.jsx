@@ -8,6 +8,7 @@ import CourseCatalog from './pages/CourseCatalog';
 import LessonViewer from './pages/LessonViewer';
 import Bookmarks from './pages/Bookmarks';
 import CertificateViewer from './pages/CertificateViewer';
+import AiTutorWidget from './components/AiTutorWidget';
 import './App.css';
 
 function AppContent() {
@@ -277,6 +278,9 @@ function AppContent() {
           <p>© 2026 NoobSyte Educational Platform.</p>
         </footer>
       )}
+
+      {/* Embedded AI Tutor Assistant */}
+      <AiTutorWidget />
     </div>
   );
 }

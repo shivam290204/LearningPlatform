@@ -420,13 +420,7 @@ function CourseCatalog({
                   <span className="info-sub">Verified Credentials</span>
                 </div>
               </div>
-              <div className="hero-highlight-item">
-                <span className="highlight-icon"><i className="fa-solid fa-brain"></i></span>
-                <div className="highlight-info">
-                  <span className="info-title">JVM Visuals</span>
-                  <span className="info-sub">Stack & Heap SIMs</span>
-                </div>
-              </div>
+
             </div>
 
             {/* Hero CTAs */}
@@ -608,128 +602,7 @@ function CourseCatalog({
             </div>
           </section>
 
-          {/* ==================================
-              SECTION 4: WHAT YOU WILL LEARN
-              ================================== */}
-          <section className="objectives-section">
-            <div className="section-title-wrap">
-              <h2>What You Will Master</h2>
-              <p className="section-desc">By completing this track, you will develop industrial competence in core and advanced Java.</p>
-            </div>
 
-            <div className="learn-objectives-grid">
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Understand JVM Architecture</h4>
-                  <p>Learn how execution engines, classloaders, and garbage collectors orchestrate memory under the hood.</p>
-                </div>
-              </div>
-
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Master Heap/Stack Models</h4>
-                  <p>See exactly how primitives, objects references, stack frames, and dereferenced heap boundaries allocate memory.</p>
-                </div>
-              </div>
-
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Implement Object Oriented Architectures</h4>
-                  <p>Apply real inheritance models, polymorphic dispatches, encapsulation rules, and dynamic binding contracts.</p>
-                </div>
-              </div>
-
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Write Bulletproof Multithreaded Core</h4>
-                  <p>Understand race conditions, volatile variables, synchronisation barriers, and executors service scopes.</p>
-                </div>
-              </div>
-
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Leverage Collections Framework</h4>
-                  <p>Compare ArrayList, LinkedList, HashMap, and HashSet architectures based on lookup, insertion, and memory parameters.</p>
-                </div>
-              </div>
-
-              <div className="objective-item">
-                <div className="objective-icon-wrap">
-                  <i className="fa-solid fa-check"></i>
-                </div>
-                <div className="objective-text">
-                  <h4>Build Real Database Connections</h4>
-                  <p>Establish structural JDBC pipelines, statement buffers, prepared transactions, and connection wrappers.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ==================================
-              SECTION 5: PLATFORM FEATURES
-              ================================== */}
-          <section className="features-section">
-            <div className="section-title-wrap text-center">
-              <div className="badge-features">FEATURES</div>
-              <h2>Interactive Visual Learning Features</h2>
-              <p className="section-desc max-w-600">
-                Engineered from the ground up to guarantee a state-of-the-art interactive study flow.
-              </p>
-            </div>
-
-            <div className="features-deck-grid">
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-brain"></i></div>
-                <h4>JVM Simulations</h4>
-                <p>Step inside JVM memory stack and heap blocks. Watch references allocation, parameters passing, and heap dereferencing occur in real-time.</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-earth-americas"></i></div>
-                <h4>Real-Life Analogies</h4>
-                <p>No dry syntax charts. Complex OOP rules and concurrency models explained through intuitive real-world structures.</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-code"></i></div>
-                <h4>Interactive Examples</h4>
-                <p>Run, modify, and dissect actual code snippets inside modular execution containers right in your browser tab.</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-circle-question"></i></div>
-                <h4>Conceptual Quizzes</h4>
-                <p>Validate your knowledge at the end of each lesson with challenging quizzes focused on memory rules and structural outcomes.</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-bolt"></i></div>
-                <h4>Reward-Driven XP</h4>
-                <p>Climb milestones and gain reputation by keeping streaks alive, completing lessons, and answering quizzes cleanly.</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fa-solid fa-graduation-cap"></i></div>
-                <h4>Verified Certificates</h4>
-                <p>Unlock, view, print, and share your graduation certificate to highlight your core Java expertise on platforms like LinkedIn.</p>
-              </div>
-            </div>
-          </section>
         </>
       )}
 
