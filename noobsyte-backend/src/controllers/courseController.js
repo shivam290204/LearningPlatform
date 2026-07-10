@@ -31,11 +31,34 @@ const offlineCourses = [
     description: 'Master Big-O analysis, sorting algorithms, recursion, linked lists, stacks, queues, trees, heaps, graphs, and dynamic programming in Java.',
     difficulty: 'intermediate',
     isPublished: true
+  },
+  {
+    title: 'Python Fundamentals',
+    slug: 'python-fundamentals',
+    description: 'Master Python variables, control flow, functions, OOP, collections, file handling, and decorators visually.',
+    difficulty: 'beginner',
+    isPublished: true
+  },
+  {
+    title: 'C++ Fundamentals',
+    slug: 'cpp-fundamentals',
+    description: 'Master C++ syntax, pointers, references, memory management, OOP, and STL containers visually.',
+    difficulty: 'beginner',
+    isPublished: true
   }
 ];
 
 function getOfflineCourseModules(courseSlug) {
-  const folder = courseSlug === 'java-dsa-masterclass' ? 'dsa' : 'java';
+  let folder;
+  if (courseSlug === 'java-dsa-masterclass') {
+    folder = 'dsa';
+  } else if (courseSlug === 'python-fundamentals') {
+    folder = 'python';
+  } else if (courseSlug === 'cpp-fundamentals') {
+    folder = 'cpp';
+  } else {
+    folder = 'java';
+  }
   const folderPath = path.join(frontendCurriculumDir, folder);
   if (!fs.existsSync(folderPath)) {
     return [];
@@ -138,7 +161,12 @@ exports.getLessonBySlug = asyncHandler(async (req, res, next) => {
   const { lessonSlug } = req.params;
 
   if (mongoose.connection.readyState !== 1) {
-    const courses = ['java-masterclass-core-to-advanced', 'java-dsa-masterclass'];
+    const courses = [
+      'java-masterclass-core-to-advanced',
+      'java-dsa-masterclass',
+      'python-fundamentals',
+      'cpp-fundamentals'
+    ];
     for (const cSlug of courses) {
       const offlineModules = getOfflineCourseModules(cSlug);
       for (const mod of offlineModules) {

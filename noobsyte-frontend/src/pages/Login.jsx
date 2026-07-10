@@ -33,7 +33,7 @@ function Login({ onSwitchScreen, onLoginSuccess }) {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Welcome Back</h2>
-          <p>Login to resume your Java and DSA learning tracks.</p>
+          <p>Login to resume your programming and DSA learning tracks.</p>
         </div>
 
         {errorMsg && (

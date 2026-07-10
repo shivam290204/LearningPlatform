@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { registry } from '../curriculum/curriculumRegistry';
 import './CertificateViewer.css';
 
 function CertificateViewer({ courseSlug, onClose, theme }) {
@@ -33,9 +34,10 @@ function CertificateViewer({ courseSlug, onClose, theme }) {
 
   // Mock certificate template seeder for development fallbacks (excellent layout visual test-bed!)
   const getMockedCert = () => {
+    const course = registry[courseSlug] || {};
     return {
       studentName: 'Shivam Kumar',
-      courseTitle: 'Java Fundamentals for Beginners',
+      courseTitle: course.title || 'Interactive Programming Course',
       verificationHash: 'NS-9982-F84D-77A1',
       issueDate: 'June 1, 2026',
       totalLessons: 4
@@ -92,7 +94,7 @@ function CertificateViewer({ courseSlug, onClose, theme }) {
                     </p>
                     <h3 className="cert-course-title">{displayedCert.courseTitle}</h3>
                     <p className="cert-congrats">
-                      Demonstrating a solid comprehension of object-oriented syntax, variable references, JVM Stack vs Heap memory allocation models, and parameters passing mechanics.
+                      Demonstrating a solid comprehension of programming syntax, variable references, memory management models, and object-oriented architecture.
                     </p>
                   </div>
 

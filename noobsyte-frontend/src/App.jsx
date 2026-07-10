@@ -254,7 +254,7 @@ function AppContent() {
                   <div className="search-result-details" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     <span className="lesson-link-title" style={{ fontSize: '1.05rem' }}>{lesson.title}</span>
                     <span className="search-result-module" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                      In: {lesson.module?.title || 'Java Fundamentals'}
+                      In: {lesson.module?.title || 'Programming Fundamentals'}
                     </span>
                   </div>
                   <span className="read-badge">Go to Lesson →</span>

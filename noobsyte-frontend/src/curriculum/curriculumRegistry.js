@@ -1,21 +1,37 @@
 // Central Curriculum Registry for NoobSyte
 import javaModules from './java/index.js';
 import dsaModules from './dsa/index.js';
+import pythonModules from './python/index.js';
+import cppModules from './cpp/index.js';
 
 export const registry = {
   'java-masterclass-core-to-advanced': {
     title: 'Mastering Java: From Zero to Hero',
     slug: 'java-masterclass-core-to-advanced',
-    description: 'Master variables, stack & heap models, parameters passing, object oriented architecture, multithreading, and database integrations without dry textbook jargon.',
+    topics: ['OOP', 'Collections', 'Exception Handling', 'Multithreading'],
     difficulty: 'beginner to advanced',
     modules: javaModules
   },
   'java-dsa-masterclass': {
     title: 'Java DSA: Master Data Structures & Algorithms',
     slug: 'java-dsa-masterclass',
-    description: 'Master Big-O analysis, sorting algorithms, recursion, linked lists, stacks, queues, trees, heaps, graphs, and dynamic programming in Java.',
+    topics: ['Sorting', 'Trees & Graphs', 'Dynamic Programming', 'Big-O Analysis'],
     difficulty: 'intermediate to advanced',
     modules: dsaModules
+  },
+  'python-fundamentals': {
+    title: 'Python Fundamentals',
+    slug: 'python-fundamentals',
+    topics: ['Data Types', 'Functions', 'OOP', 'File I/O'],
+    difficulty: 'beginner',
+    modules: pythonModules
+  },
+  'cpp-fundamentals': {
+    title: 'C++ Fundamentals',
+    slug: 'cpp-fundamentals',
+    topics: ['Pointers', 'Memory Management', 'OOP', 'STL'],
+    difficulty: 'beginner to intermediate',
+    modules: cppModules
   }
 };
 
@@ -44,7 +60,7 @@ export const getCourses = () => {
     return {
       title: course.title,
       slug: course.slug,
-      description: course.description,
+      topics: course.topics,
       difficulty: course.difficulty,
       lessonsCount,
       quizzesCount,

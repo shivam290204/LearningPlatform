@@ -313,6 +313,23 @@
   line-height: 1.55;
 }
 
+/* Topic chip row — replaces paragraph descriptions on syllabus cards */
+.topic-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.topic-chip {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--border-radius-sm);
+  letter-spacing: 0.2px;
+}
 .catalog-card-container:hover {
   transform: translateY(-4px);
   border-color: var(--brand-cyan);
@@ -617,11 +634,7 @@
   }
 }
 
-/* ==========================================================================
-   NEW PREMIUM JAVA LEARNING HOME DASHBOARD REDESIGN STYLES
-   ========================================================================== */
 
-/* Hero Highlights & Badge Customization */
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -2223,4 +2236,57 @@
     width: 100%;
     justify-content: center;
   }
+}
+
+/* Language Toggle Bar in course card */
+.lang-toggle-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lang-toggle-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lang-toggle-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lang-toggle-btn {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.85rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.lang-toggle-btn:hover {
+  border-color: rgba(36, 224, 217, 0.4);
+  color: var(--text-primary);
+  background-color: rgba(36, 224, 217, 0.02);
+}
+
+.lang-toggle-btn.active {
+  background-color: var(--brand-cyan-muted);
+  border-color: var(--brand-cyan);
+  color: var(--brand-cyan);
+  box-shadow: 0 0 8px rgba(36, 224, 217, 0.25);
+  font-weight: 700;
 }

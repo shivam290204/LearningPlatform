@@ -34,6 +34,22 @@ const coursesData = [
     difficulty: 'intermediate',
     isPublished: true,
     folder: 'dsa'
+  },
+  {
+    title: 'Python Fundamentals',
+    slug: 'python-fundamentals',
+    description: 'Master Python variables, control flow, functions, OOP, collections, file handling, and decorators visually.',
+    difficulty: 'beginner',
+    isPublished: true,
+    folder: 'python'
+  },
+  {
+    title: 'C++ Fundamentals',
+    slug: 'cpp-fundamentals',
+    description: 'Master C++ syntax, pointers, references, memory management, OOP, and STL containers visually.',
+    difficulty: 'beginner',
+    isPublished: true,
+    folder: 'cpp'
   }
 ];
 
