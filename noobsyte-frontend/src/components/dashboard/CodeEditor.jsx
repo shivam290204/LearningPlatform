@@ -4,11 +4,11 @@ import { runCodeAPI } from '../../services/compilerService';
 import './CodeEditor.css';
 
 const LANGUAGES = [
-  { id: 'python',     label: 'Python',     monacoId: 'python',     filename: 'main.py',   judge0Id: 71 },
-  { id: 'javascript', label: 'JavaScript', monacoId: 'javascript', filename: 'index.js',  judge0Id: 63 },
-  { id: 'java',       label: 'Java',       monacoId: 'java',       filename: 'Main.java', judge0Id: 62 },
-  { id: 'c',          label: 'C',          monacoId: 'c',          filename: 'main.c',    judge0Id: 50 },
-  { id: 'cpp',        label: 'C++',        monacoId: 'cpp',        filename: 'main.cpp',  judge0Id: 54 },
+  { id: 'python', label: 'Python', monacoId: 'python', filename: 'main.py', judge0Id: 71 },
+  { id: 'javascript', label: 'JavaScript', monacoId: 'javascript', filename: 'index.js', judge0Id: 63 },
+  { id: 'java', label: 'Java', monacoId: 'java', filename: 'Main.java', judge0Id: 62 },
+  { id: 'c', label: 'C', monacoId: 'c', filename: 'main.c', judge0Id: 50 },
+  { id: 'cpp', label: 'C++', monacoId: 'cpp', filename: 'main.cpp', judge0Id: 54 },
 ];
 
 const DEFAULT_CODE = {
@@ -72,11 +72,11 @@ export default function CodeEditor() {
     return localStorage.getItem('noobsyte_panel_resized') === 'true';
   });
 
-  const [output, setOutput]             = useState(null);
+  const [output, setOutput] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [copyOutputFeedback, setCopyOutputFeedback] = useState(false);
-  const [showModal, setShowModal]       = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isHighlighting, setIsHighlighting] = useState(false);
   const [lastRunStdin, setLastRunStdin] = useState(() => {
     return localStorage.getItem('noobsyte_last_run_stdin') || '';
@@ -151,6 +151,18 @@ export default function CodeEditor() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [code, stdin, showModal, selectedLang]);
 
+  // Automatically scroll console body to the bottom of the outputs on run completion to make Program Output visible
+  useEffect(() => {
+    if (output && output.type !== 'pending') {
+      if (outputBodyRef.current) {
+        outputBodyRef.current.scrollTo({
+          top: outputBodyRef.current.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [output]);
+
   const getStatusBadge = () => {
     if (output?.type === 'pending') {
       return <span className="ce-badge ce-badge--running">Running...</span>;
@@ -173,37 +185,65 @@ export default function CodeEditor() {
     setDropdownOpen(false);
   };
 
+  const isInputRuntimeError = (text) => {
+    if (!text) return false;
+    const lower = text.toLowerCase();
+    return (
+      lower.includes('eoferror') ||
+      lower.includes('nosuchelementexception') ||
+      lower.includes('eof when reading a line') ||
+      lower.includes('eof') ||
+      lower.includes('stdin') ||
+      lower.includes('no more lines') ||
+      lower.includes('reader.readline') ||
+      lower.includes('bufferedreader.readline')
+    );
+  };
+
   const detectsInputRequirement = (sourceCode) => {
     if (!sourceCode) return false;
-    
+
+    // Regex to match and strip comments and string literals to prevent false positives
+    const cleanRegex = /"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|\/\*[\s\S]*?\*\/|\/\/.*|#.*/g;
+    const cleanedCode = sourceCode.replace(cleanRegex, ' ');
+
     // Patterns covering C++, C, Python, Java, and JavaScript input methods
     const inputPatterns = [
       // C++
       /cin\s*>>/,
       /getline\s*\(\s*cin\b/,
-      
+      /\bistream\b/,
+
       // C
       /scanf\s*\(/,
       /fgets\s*\(/,
       /getchar\s*\(/,
       /getc\s*\(/,
-      
+      /\bfscanf\s*\(/,
+      /\bgets\s*\(/,
+
       // Python
       /input\s*\(/,
       /sys\.stdin\.readline\b/,
       /sys\.stdin\.read\b/,
-      
+      /sys\.stdin\.readlines\b/,
+      /fileinput\s*\.\s*input\b/,
+
       // Java
       /\bScanner\b/,
       /\bnext(Int|Long|Float|Double|Line)?\s*\(/,
-      
+      /\bBufferedReader\b/,
+      /\bInputStreamReader\b/,
+      /\breadLine\s*\(/,
+
       // JavaScript
       /prompt\s*\(/,
       /\breadline\b/,
-      /process\.stdin\b/
+      /process\.stdin\b/,
+      /readFileSync\s*\(\s*0\b/
     ];
 
-    return inputPatterns.some(pattern => pattern.test(sourceCode));
+    return inputPatterns.some(pattern => pattern.test(cleanedCode));
   };
 
   const executeProgram = async () => {
@@ -216,6 +256,13 @@ export default function CodeEditor() {
       console.log("Compiler Response:", response);
 
       if (response.success) {
+        const errorText = (response.compile_output || '') + '\n' + (response.stderr || '') + '\n' + (response.output || '');
+        if (stdin.trim() === '' && isInputRuntimeError(errorText)) {
+          setShowModal(true);
+          setOutput(null);
+          return;
+        }
+
         if (response.compile_output) {
           setOutput({
             type: 'error',
@@ -250,6 +297,13 @@ export default function CodeEditor() {
           });
         }
       } else {
+        const errorText = response.message || '';
+        if (stdin.trim() === '' && isInputRuntimeError(errorText)) {
+          setShowModal(true);
+          setOutput(null);
+          return;
+        }
+
         setOutput({
           type: 'error',
           text: response.message || 'Execution failed',
@@ -259,6 +313,12 @@ export default function CodeEditor() {
         });
       }
     } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message || '';
+      if (stdin.trim() === '' && isInputRuntimeError(errorMsg)) {
+        setShowModal(true);
+        setOutput(null);
+        return;
+      }
       setOutput({
         type: 'error',
         text: error.response?.data?.message || error.message || 'Execution failed',
@@ -313,12 +373,13 @@ export default function CodeEditor() {
   };
 
   const handleResetCode = () => {
-    setCode(''); // Clear editor
+    const defaultCode = DEFAULT_CODE[selectedLang] || '';
+    setCode(defaultCode); // Restore template
     setStdin(''); // Clear Custom Input
     setLastRunStdin(''); // Clear Execution Input
     setOutput(null); // Clear Console Output
     setIsResized(false); // Reset default 50% split
-    localStorage.removeItem(`noobsyte_code_${selectedLang}`);
+    localStorage.setItem(`noobsyte_code_${selectedLang}`, defaultCode);
     localStorage.setItem('noobsyte_program_input', '');
     localStorage.setItem('noobsyte_last_run_stdin', '');
     localStorage.setItem('noobsyte_panel_resized', 'false');
@@ -391,12 +452,24 @@ export default function CodeEditor() {
     // 1. Close the modal
     setShowModal(false);
 
-    // 2. Smoothly scroll the console so the Custom Input section becomes visible
+    // 2. Smoothly scroll only the console container until the Custom Input section becomes visible
     if (stdinInputRef.current) {
-      stdinInputRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-      });
+      let parent = stdinInputRef.current.parentElement;
+      while (parent && parent !== document.body && parent !== document.documentElement) {
+        const style = window.getComputedStyle(parent);
+        const isScrollable = parent.scrollHeight > parent.clientHeight &&
+          (style.overflowY === 'auto' || style.overflowY === 'scroll');
+        if (isScrollable) {
+          const targetTop = stdinInputRef.current.getBoundingClientRect().top;
+          const parentTop = parent.getBoundingClientRect().top;
+          parent.scrollTo({
+            top: parent.scrollTop + (targetTop - parentTop) - 20,
+            behavior: 'smooth'
+          });
+          break;
+        }
+        parent = parent.parentElement;
+      }
 
       // 3. Focus the textarea & 4. Move the text cursor inside the textarea
       setTimeout(() => {
@@ -411,11 +484,6 @@ export default function CodeEditor() {
     setTimeout(() => {
       setIsHighlighting(true);
     }, 50);
-
-    // Turn off highlighting class after animation finishes (1.8s)
-    setTimeout(() => {
-      setIsHighlighting(false);
-    }, 1850);
   };
 
   const handleStdinScroll = (e) => {
@@ -500,9 +568,9 @@ export default function CodeEditor() {
             <i className="fa-solid fa-rotate-left"></i>
             Clear
           </button>
-          <button 
-            className="ce-run-btn" 
-            id="ce-run-btn" 
+          <button
+            className="ce-run-btn"
+            id="ce-run-btn"
             onClick={handleRunCode}
             disabled={output?.type === 'pending'}
           >
@@ -620,14 +688,18 @@ export default function CodeEditor() {
             {output !== null && output.type !== 'pending' && (
               <div className="ce-console-sections">
                 {/* Section 1: Execution Input (Read Only) */}
-                <div className="ce-console-section">
-                  <div className="ce-console-section-title">Execution Input</div>
-                  <pre className="ce-console-input-preview">
-                    {lastRunStdin.trim() === '' ? '(No input used)' : lastRunStdin}
-                  </pre>
-                </div>
-                <div className="ce-console-section-divider"></div>
-                
+                {lastRunStdin.trim() !== '' && (
+                  <>
+                    <div className="ce-console-section">
+                      <div className="ce-console-section-title">Execution Input</div>
+                      <pre className="ce-console-input-preview">
+                        {lastRunStdin}
+                      </pre>
+                    </div>
+                    <div className="ce-console-section-divider"></div>
+                  </>
+                )}
+
                 {/* Section 2: Program Output */}
                 <div className="ce-console-section">
                   <div className="ce-console-section-title">Program Output</div>
@@ -645,8 +717,8 @@ export default function CodeEditor() {
           <div className="ce-console-splitter" onMouseDown={handleConsoleResizeStart}></div>
 
           {/* Section 3: Custom Input (Editable textarea) */}
-          <div 
-            className={`ce-terminal-stdin-wrapper ${isResized ? 'resized' : ''}`} 
+          <div
+            className={`ce-terminal-stdin-wrapper ${isResized ? 'resized' : ''}`}
             style={isResized ? { height: `${inputHeight}px` } : {}}
           >
             <div className="ce-stdin-header-inline">
@@ -656,7 +728,10 @@ export default function CodeEditor() {
             <div className="ce-stdin-helper-text">
               Enter values exactly as you would type them in a terminal.
             </div>
-            <div className={`ce-terminal-input-row ${isHighlighting ? 'ce-highlight-active' : ''}`}>
+            <div
+              className={`ce-terminal-input-row ${isHighlighting ? 'ce-highlight-active' : ''}`}
+              onAnimationEnd={() => setIsHighlighting(false)}
+            >
               <div className="ce-terminal-prompts-column" ref={promptsColumnRef}>
                 {stdin.split('\n').map((_, index) => (
                   <div key={index} className="ce-line-prompt">&gt;</div>
