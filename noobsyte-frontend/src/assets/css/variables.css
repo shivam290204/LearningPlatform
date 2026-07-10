@@ -26,7 +26,7 @@
   --accent-error: #FFFFFF;                 /* Mapped to white with custom border styles to keep strict branding */
 
   /* Modern Interface Typography Scale */
-  --font-family-sans: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-sans: 'Outfit', 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-slab: 'Roboto Slab', serif;
   --font-family-serif: 'Lora', serif;
   --font-family-pixel: 'Press Start 2P', system-ui, sans-serif;

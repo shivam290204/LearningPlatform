@@ -22,12 +22,24 @@ function AppContent() {
     setSearchResults 
   } = useContext(ProgressContext);
 
-  const [activeScreen, setActiveScreen] = useState('home');
+  const [activeScreen, setActiveScreen] = useState(() => {
+    return localStorage.getItem('ns_active_screen') || 'home';
+  });
   const [selectedLessonSlug, setSelectedLessonSlug] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [certificateCourseSlug, setCertificateCourseSlug] = useState(null);
-  const [activeCatalogTab, setActiveCatalogTab] = useState('learning');
+  const [activeCatalogTab, setActiveCatalogTab] = useState(() => {
+    return localStorage.getItem('ns_active_catalog_tab') || 'learning';
+  });
   const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('ns_active_screen', activeScreen);
+  }, [activeScreen]);
+
+  useEffect(() => {
+    localStorage.setItem('ns_active_catalog_tab', activeCatalogTab);
+  }, [activeCatalogTab]);
 
   // Initialize theme state: default 'dark' black and white minimalist
   const [theme, setTheme] = useState(localStorage.getItem('ns_theme') || 'dark');
