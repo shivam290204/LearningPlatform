@@ -14,6 +14,8 @@ const submitCode = async (sourceCode, languageId, stdin = "") => {
       source_code: encodedSource,
       language_id: languageId,
       stdin: encodedInput,
+    }, {
+      timeout: 2000 // 2 seconds fail-fast timeout
     });
 
     if (response.data.stdout) {

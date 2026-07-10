@@ -272,9 +272,13 @@ export default function CodeEditor() {
             memory: response.memory
           });
         } else if (response.stderr) {
+          let errText = response.stderr;
+          if (errText.includes('Time Limit Exceeded')) {
+            errText += '\n\n⚠️ Hint: If your code expects inputs (e.g., cin, Scanner, input()), click the "Input" button at the top right of the console to provide them before clicking Run.';
+          }
           setOutput({
             type: 'error',
-            text: response.stderr,
+            text: errText,
             status: response.status,
             time: response.executionTime,
             memory: response.memory
@@ -725,9 +729,6 @@ export default function CodeEditor() {
               <i className="fa-solid fa-keyboard"></i>
               <span>Custom Input</span>
             </div>
-            <div className="ce-stdin-helper-text">
-              Enter values exactly as you would type them in a terminal.
-            </div>
             <div
               className={`ce-terminal-input-row ${isHighlighting ? 'ce-highlight-active' : ''}`}
               onAnimationEnd={() => setIsHighlighting(false)}
@@ -743,7 +744,7 @@ export default function CodeEditor() {
                 value={stdin}
                 onChange={(e) => setStdin(e.target.value)}
                 onScroll={handleStdinScroll}
-                placeholder={"Type your input here...\n\nOne value per line.\n\nExample:\n10\n20"}
+                placeholder={"Type your input here..."}
                 spellCheck={false}
               />
             </div>
