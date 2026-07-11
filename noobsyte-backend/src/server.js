@@ -1,9 +1,6 @@
 // Load environment variables as early as possible
 require('dotenv').config();
 
-const app = require('./app');
-const connectDB = require('./config/db');
-
 // Handle uncaught operational anomalies gracefully
 process.on('uncaughtException', err => {
   console.error('UNCAUGHT EXCEPTION! Shutting down server...');
@@ -11,6 +8,22 @@ process.on('uncaughtException', err => {
   console.error(err.stack);
   process.exit(1);
 });
+
+const { execSync } = require('child_process');
+const app = require('./app');
+const connectDB = require('./config/db');
+
+// Verify Docker daemon availability on startup
+try {
+  execSync('docker info', { stdio: 'ignore' });
+  console.log('🐳 Docker daemon is reachable. Sandbox compiler is active.');
+} catch (err) {
+  console.error('\n❌ CRITICAL ERROR: Docker daemon is not running or unreachable!');
+  console.error('The compiler service requires Docker to execute user code in a secure sandbox.');
+  console.error('Please start Docker Desktop and ensure it is accessible.');
+  console.error('Shutting down server to prevent un-sandboxed code execution...');
+  process.exit(1); // Fail loudly!
+}
 
 // Connect to MongoDB Database
 connectDB();

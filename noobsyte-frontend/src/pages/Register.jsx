@@ -38,7 +38,7 @@ function Register({ onSwitchScreen, onRegisterSuccess }) {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Create Account</h2>
-          <p>Join NoobSyte today and master Java & DSA visually.</p>
+          <p>Join NoobSyte today and master programming & DSA visually.</p>
         </div>
 
         {errorMsg && (

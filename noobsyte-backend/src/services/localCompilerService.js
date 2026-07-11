@@ -19,12 +19,12 @@ const cleanup = (dirPath) => {
 };
 
 /**
- * Run a command inside Docker sandbox container
+ * Run a command in a child process (Docker or native)
  */
-const runDockerCommand = (command, stdin = '', timeoutMs = 5000) => {
+const runCommand = (command, cwd, stdin = '', timeoutMs = 5000) => {
   return new Promise((resolve) => {
     const startTime = Date.now();
-    const child = exec(command, (error, stdout, stderr) => {
+    const child = exec(command, { cwd }, (error, stdout, stderr) => {
       const elapsed = (Date.now() - startTime) / 1000;
       if (error && child.killed) {
         resolve({
@@ -124,7 +124,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
       const dockerCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app python:3.10-alpine python -B main.py`;
-      const result = await runDockerCommand(dockerCmd, stdin, 5000);
+      const result = await runCommand(dockerCmd, runCwd, stdin, 5000);
       
       cleanup(runCwd);
       return {
@@ -142,7 +142,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
       const dockerCmd = `docker run --rm -i --memory=512m --cpus=0.5 --pids-limit=20 --network=none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=32m --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app node:18-alpine node --max-old-space-size=64 --max-semi-space-size=8 index.js`;
-      const result = await runDockerCommand(dockerCmd, stdin, 5000);
+      const result = await runCommand(dockerCmd, runCwd, stdin, 5000);
 
       cleanup(runCwd);
       return {
@@ -162,7 +162,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Compile Phase (512m memory limit, dynamic write privileges needed inside mount)
       const compileCmd = `docker run --rm --memory=512m --cpus=0.5 --pids-limit=20 --network=none --tmpfs /tmp:rw,noexec,nosuid,size=32m -v "${dockerVolumePath}:/app" -w /app eclipse-temurin:17-alpine javac -J-Xmx256m ${filename}`;
-      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+      const compileResult = await runCommand(compileCmd, runCwd, '', 15000);
 
       if (!compileResult.success) {
         cleanup(runCwd);
@@ -178,7 +178,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Execution Phase (512m memory limit, read-only code execution, JVM tuned for containers)
       const runCmd = `docker run --rm -i --memory=512m --cpus=0.5 --pids-limit=20 --network=none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=32m --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app eclipse-temurin:17-alpine java -Xmx128m -XX:CICompilerCount=2 -XX:+UseSerialGC -XX:+TieredCompilation -XX:TieredStopAtLevel=1 ${className}`;
-      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+      const executeResult = await runCommand(runCmd, runCwd, stdin, 5000);
 
       cleanup(runCwd);
       return {
@@ -197,7 +197,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Compile Phase (using gcc:latest to match runtime environment)
       const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app gcc:latest gcc ${filename} -o main.out`;
-      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+      const compileResult = await runCommand(compileCmd, runCwd, '', 15000);
 
       if (!compileResult.success) {
         cleanup(runCwd);
@@ -213,7 +213,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Execution Phase (runs inside gcc:latest container with read-only workspace)
       const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app gcc:latest ./main.out`;
-      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+      const executeResult = await runCommand(runCmd, runCwd, stdin, 5000);
 
       cleanup(runCwd);
       return {
@@ -232,7 +232,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Compile Phase (using gcc:latest to compile with g++)
       const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app gcc:latest g++ ${filename} -o main.out`;
-      const compileResult = await runDockerCommand(compileCmd, '', 15000);
+      const compileResult = await runCommand(compileCmd, runCwd, '', 15000);
 
       if (!compileResult.success) {
         cleanup(runCwd);
@@ -248,7 +248,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       // Execution Phase (runs inside gcc:latest container with read-only workspace)
       const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app gcc:latest ./main.out`;
-      const executeResult = await runDockerCommand(runCmd, stdin, 5000);
+      const executeResult = await runCommand(runCmd, runCwd, stdin, 5000);
 
       cleanup(runCwd);
       return {

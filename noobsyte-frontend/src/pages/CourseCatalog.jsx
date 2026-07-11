@@ -20,6 +20,10 @@ function CourseCatalog({
 
   const [activeRoadmapMod, setActiveRoadmapMod] = useState(1);
   const [simStep, setSimStep] = useState('declare'); // 'declare' or 'allocate'
+  const [fundamentalsLang, setFundamentalsLang] = useState('java');
+  const [dsaLang, setDsaLang] = useState(() => {
+    return localStorage.getItem('noobsyte_selected_lang') || 'java';
+  });
 
   // Ref for roadmap scrolling
   const roadmapRef = useRef(null);
@@ -276,11 +280,46 @@ function CourseCatalog({
     return [];
   };
 
+  const langToSlug = {
+    java: 'java-masterclass-core-to-advanced',
+    python: 'python-fundamentals',
+    cpp: 'cpp-fundamentals'
+  };
+
+  const handleFundamentalsLangSelect = async (lang, e) => {
+    e.stopPropagation();
+    setFundamentalsLang(lang);
+    localStorage.setItem('noobsyte_selected_lang', lang);
+    const targetSlug = langToSlug[lang];
+    const isCurrentlyFundamentals = selectedCourseSlug === 'java-masterclass-core-to-advanced' || selectedCourseSlug === 'python-fundamentals' || selectedCourseSlug === 'cpp-fundamentals';
+    if (isCurrentlyFundamentals) {
+      setSelectedCourseSlug(targetSlug);
+      await fetchCourseModules(targetSlug);
+    }
+  };
+
+  const handleDsaLangSelect = (lang, e) => {
+    e.stopPropagation();
+    setDsaLang(lang);
+    localStorage.setItem('noobsyte_selected_lang', lang);
+  };
+
   const registryCourses = getCourses();
   const displayedCourses = courses && courses.length > 0 ? courses.map(c => {
     const regC = registryCourses.find(rc => rc.slug === c.slug) || {};
     return { ...c, ...regC };
   }) : registryCourses;
+
+  const activeFundamentalsCourse = displayedCourses.find(c => c.slug === langToSlug[fundamentalsLang]) || displayedCourses.find(c => c.slug === 'java-masterclass-core-to-advanced');
+  const dsaCourse = displayedCourses.find(c => c.slug === 'java-dsa-masterclass');
+
+  const consolidatedCoursesList = [];
+  if (activeFundamentalsCourse) {
+    consolidatedCoursesList.push({ ...activeFundamentalsCourse, isFundamentals: true });
+  }
+  if (dsaCourse) {
+    consolidatedCoursesList.push({ ...dsaCourse, isFundamentals: false });
+  }
   
   const getMergedModules = (courseSlug) => {
     const backendModules = modules || [];
@@ -335,7 +374,9 @@ function CourseCatalog({
   };
 
   // Calculate completed modules dynamically based on completed lessons
-  const topicsMasteredCount = getCompletedModulesCount('java-masterclass-core-to-advanced') + getCompletedModulesCount('java-dsa-masterclass');
+  const topicsMasteredCount = (courses || []).reduce((acc, course) => {
+    return acc + getCompletedModulesCount(course.slug);
+  }, 0);
 
   return (
     <div className={`catalog-wrapper ${activeCatalogTab === 'sandbox' ? 'sandbox-active' : ''}`}>
@@ -381,10 +422,10 @@ function CourseCatalog({
               ================================== */}
           <section className="hero-section">
             <div className="hero-badge">
-              <span className="badge-glow-dot"></span> PURE JAVA VISUAL ACCELERATOR
+              <span className="badge-glow-dot"></span> INTERACTIVE PROGRAMMING ACCELERATOR
             </div>
             <h1 className="hero-title">
-              Master Java <span className="highlight-text">the Visual Way</span>
+              Master Coding <span className="highlight-text">the Visual Way</span>
             </h1>
             <p className="hero-subtitle">
               Zero boring textbooks, 100% execution-based depth.
@@ -487,10 +528,10 @@ function CourseCatalog({
                 <div className="stats-card-main">
                   <span className="stats-value">
                     {(() => {
-                      const javaStats = getCourseCompletionStats('java-masterclass-core-to-advanced');
-                      const dsaStats = getCourseCompletionStats('java-dsa-masterclass');
-                      return (javaStats.total > 0 && javaStats.completed === javaStats.total ? 1 : 0) + 
-                             (dsaStats.total > 0 && dsaStats.completed === dsaStats.total ? 1 : 0);
+                      return (courses || []).reduce((acc, course) => {
+                        const stats = getCourseCompletionStats(course.slug);
+                        return acc + (stats.total > 0 && stats.completed === stats.total ? 1 : 0);
+                      }, 0);
                     })()}
                   </span>
                   <span className="stats-label">Certificates Earned</span>
@@ -502,7 +543,7 @@ function CourseCatalog({
 
               <div className="stats-card">
                 <div className="stats-card-main">
-                  <span className="stats-value">{topicsMasteredCount}/23</span>
+                  <span className="stats-value">{topicsMasteredCount}/{roadmapModules.length}</span>
                   <span className="stats-label">Topics Mastered</span>
                 </div>
                 <div className="stats-card-footer">
@@ -519,12 +560,12 @@ function CourseCatalog({
           </section>
 
           {/* ==================================
-              SECTION 3: JAVA ROADMAP
+              SECTION 3: DEVELOPER ROADMAP
               ================================== */}
           <section className="roadmap-section" ref={roadmapRef}>
             <div className="section-title-wrap text-center">
               <div className="badge-roadmap">TIMELINE ROADMAP</div>
-              <h2>The Ultimate Java Learning Path</h2>
+              <h2>The Ultimate Programming Learning Path</h2>
               <p className="section-desc max-w-600">
                 A comprehensive, step-by-step career path mapping out your progression from basic syntax to enterprise systems.
               </p>
@@ -623,8 +664,10 @@ function CourseCatalog({
             <div className="loading-spinner">Hydrating syllabus tracks...</div>
           ) : (
             <div className="catalog-grid">
-              {displayedCourses.map((course) => {
-                const isExpanded = selectedCourseSlug === course.slug;
+              {consolidatedCoursesList.map((course) => {
+                const isExpanded = course.isFundamentals 
+                  ? (selectedCourseSlug === 'java-masterclass-core-to-advanced' || selectedCourseSlug === 'python-fundamentals' || selectedCourseSlug === 'cpp-fundamentals')
+                  : selectedCourseSlug === 'java-dsa-masterclass';
                 return (
                   <div
                     key={course.slug}
@@ -632,17 +675,87 @@ function CourseCatalog({
                   >
                     <div 
                       className="catalog-course-card"
-                      onClick={() => handleCourseClick(course.slug)}
+                      onClick={() => course.isFundamentals ? handleCourseClick(langToSlug[fundamentalsLang]) : handleCourseClick(course.slug)}
                     >
                       <div className="catalog-badge">Mastery Track</div>
-                      <h3>{course.title}</h3>
-                      <p>{course.description}</p>
+                      <h3>
+                        {course.isFundamentals 
+                          ? 'Programming Fundamentals' 
+                          : (dsaLang === 'java' 
+                              ? 'Java DSA: Master Data Structures & Algorithms' 
+                              : (dsaLang === 'python' 
+                                  ? 'Python DSA: Master Data Structures & Algorithms' 
+                                  : 'C++ DSA: Master Data Structures & Algorithms'))}
+                      </h3>
+
+                      <div className="topic-chip-row">
+                        {(course.isFundamentals
+                          ? (course.topics || [])
+                          : ['Sorting', 'Trees & Graphs', 'Dynamic Programming', 'Big-O Analysis']
+                        ).map((topic) => (
+                          <span key={topic} className="topic-chip">{topic}</span>
+                        ))}
+                      </div>
                       
+                      {/* Language Selector for Fundamentals card block */}
+                      {course.isFundamentals && (
+                        <div className="lang-toggle-bar" onClick={(e) => e.stopPropagation()}>
+                          <span className="lang-toggle-label">Language:</span>
+                          <div className="lang-toggle-buttons">
+                            <button 
+                              className={`lang-toggle-btn ${fundamentalsLang === 'java' ? 'active' : ''}`}
+                              onClick={(e) => handleFundamentalsLangSelect('java', e)}
+                            >
+                              <i className="fa-brands fa-java"></i> Java
+                            </button>
+                            <button 
+                              className={`lang-toggle-btn ${fundamentalsLang === 'python' ? 'active' : ''}`}
+                              onClick={(e) => handleFundamentalsLangSelect('python', e)}
+                            >
+                              <i className="fa-brands fa-python"></i> Python
+                            </button>
+                            <button 
+                              className={`lang-toggle-btn ${fundamentalsLang === 'cpp' ? 'active' : ''}`}
+                              onClick={(e) => handleFundamentalsLangSelect('cpp', e)}
+                            >
+                              <i className="fa-solid fa-code"></i> C++
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Language Selector for DSA card block */}
+                      {!course.isFundamentals && (
+                        <div className="lang-toggle-bar" onClick={(e) => e.stopPropagation()}>
+                          <span className="lang-toggle-label">Language:</span>
+                          <div className="lang-toggle-buttons">
+                            <button 
+                              className={`lang-toggle-btn ${dsaLang === 'java' ? 'active' : ''}`}
+                              onClick={(e) => handleDsaLangSelect('java', e)}
+                            >
+                              <i className="fa-brands fa-java"></i> Java
+                            </button>
+                            <button 
+                              className={`lang-toggle-btn ${dsaLang === 'python' ? 'active' : ''}`}
+                              onClick={(e) => handleDsaLangSelect('python', e)}
+                            >
+                              <i className="fa-brands fa-python"></i> Python
+                            </button>
+                            <button 
+                              className={`lang-toggle-btn ${dsaLang === 'cpp' ? 'active' : ''}`}
+                              onClick={(e) => handleDsaLangSelect('cpp', e)}
+                            >
+                              <i className="fa-solid fa-code"></i> C++
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Visual metadata metrics */}
                       <div className="course-card-metrics">
-                        <span className="metric-row"><i className="fa-solid fa-book"></i> {course.lessonsCount || 120} Lessons</span>
-                        <span className="metric-row"><i className="fa-solid fa-circle-question"></i> {course.quizzesCount || 40} Quizzes</span>
-                        <span className="metric-row"><i className="fa-solid fa-clock"></i> {course.estTime || '35 Hours'}</span>
+                        <span className="metric-row"><i className="fa-solid fa-book"></i> {course.lessonsCount || 16} Lessons</span>
+                        <span className="metric-row"><i className="fa-solid fa-circle-question"></i> {course.quizzesCount || 16} Quizzes</span>
+                        <span className="metric-row"><i className="fa-solid fa-clock"></i> {course.estTime || '10 Hours'}</span>
                       </div>
 
                       {/* Course Progress Indicator */}
@@ -814,15 +927,15 @@ function CourseCatalog({
               <div className="cert-border-accent"></div>
               <div className="cert-header">
                 <div className="cert-logo">noob<span>Syte</span></div>
-                <span className="cert-doc-type">VERIFIED ACADEMIC CREDENTIAL</span>
+                <span className="cert-doc-type">CERTIFICATE OF COMPLETION</span>
               </div>
               
               <div className="cert-body">
-                <span className="cert-presentation">This is to certify that</span>
+                <span className="cert-presentation">This certifies that</span>
                 <h4>[ YOUR FULL NAME ]</h4>
-                <p>has successfully completed the complete visual and interactive track of the</p>
-                <h5 className="cert-course-title">Java Fundamentals & Advanced JVM Architecture</h5>
-                <p>comprising 120+ interactive lessons, 40+ memory assessments, and JVM Heap allocations mastery labs.</p>
+                <p>has successfully completed the course</p>
+                <h5 className="cert-course-title">Programming Fundamentals & Data Structures</h5>
+                <p>demonstrating proficiency through hands-on coding exercises, interactive simulations, and assessed problem-solving across the full curriculum.</p>
               </div>
 
               <div className="cert-footer">
@@ -830,34 +943,35 @@ function CourseCatalog({
                   <div className="cert-seal">
                     <i className="fa-solid fa-graduation-cap"></i>
                   </div>
-                  <span>VERIFIED SYSTEM ID</span>
+                  <span>CERTIFICATE ID: NBS-2026-XXXXX</span>
                 </div>
                 <div className="cert-date-wrap">
-                  <span className="cert-signature-line">Antigravity Architect</span>
-                  <span className="cert-date">Date: June 1, 2026</span>
+                  <span className="cert-signature-line">NoobSyte Academic Board</span>
+                  <span className="cert-date">Issued: June 1, 2026</span>
                 </div>
               </div>
             </div>
 
             <div className="certificate-details-info">
               <span className="badge-features">CREDENTIAL OVERVIEW</span>
-              <h2>Earn Your Verified Java Fundamentals Certificate</h2>
+              <h2>Earn Your Verified Completion Certificate</h2>
               <p>
-                Highlight your visual Java execution credentials. Complete all modules, solve quizzes perfectly, maintain streaks to rack up XP points, and claim your shared verified graduation certificate.
+                Show what you've learned. Complete every module, pass each quiz, and build a consistent 
+                learning streak to earn a verified certificate you can share on your resume or LinkedIn.
               </p>
               
               <div className="milestones-checklist mb-4">
                 <div className="milestone-check-row">
                   <i className="fa-solid fa-circle-check"></i>
-                  <span>Complete 120 visual lessons</span>
+                  <span>Complete every lesson in the course</span>
                 </div>
                 <div className="milestone-check-row">
                   <i className="fa-solid fa-circle-check"></i>
-                  <span>Secure passing scores on all module quizzes</span>
+                  <span>Pass all module quizzes</span>
                 </div>
                 <div className="milestone-check-row">
                   <i className="fa-solid fa-circle-check"></i>
-                  <span>Unlock professional PDF printing and active URLs</span>
+                  <span>Download a shareable, verifiable PDF certificate</span>
                 </div>
               </div>
 

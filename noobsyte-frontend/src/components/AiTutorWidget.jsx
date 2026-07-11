@@ -9,7 +9,7 @@ function AiTutorWidget() {
   const [messages, setMessages] = useState([
     {
       sender: 'ai',
-      text: "Hi! I'm your NoobSyte Learning Assistant. 🤖\n\nI can help you understand Java concepts, explain Data Structures & Algorithms, or debug your code! What are you studying today?"
+      text: "Hi! I'm your NoobSyte Learning Assistant. 🤖\n\nI can help you understand programming concepts (Java, Python, C++), explain Data Structures & Algorithms, or debug your code! What are you studying today?"
     }
   ]);
   const [inputVal, setInputVal] = useState('');
@@ -175,7 +175,7 @@ function AiTutorWidget() {
               ))}
 
               {loading && (
-                <div className="ai-tutor-msg-row ai">
+                <div className="ai-tutor-messages ai">
                   <div className="ai-tutor-bubble">
                     <div className="chat-loading-container">
                       <div className="chat-dot"></div>
@@ -192,21 +192,21 @@ function AiTutorWidget() {
                   <span>SUGGESTIONS</span>
                   <button 
                     className="ai-tutor-suggestion-btn" 
-                    onClick={() => handleSuggestionClick('Explain the difference between JVM Stack and Heap memory')}
+                    onClick={() => handleSuggestionClick('Explain the difference between Stack and Heap memory models')}
                   >
                     Explain Stack vs Heap 🧠 <i className="fa-solid fa-chevron-right"></i>
                   </button>
                   <button 
                     className="ai-tutor-suggestion-btn" 
-                    onClick={() => handleSuggestionClick('What is the difference between ArrayList and LinkedList in Java?')}
+                    onClick={() => handleSuggestionClick('What is the difference between mutable and immutable objects in Python?')}
                   >
-                    What is an ArrayList? 📦 <i className="fa-solid fa-chevron-right"></i>
+                    Python Mutability 📦 <i className="fa-solid fa-chevron-right"></i>
                   </button>
                   <button 
                     className="ai-tutor-suggestion-btn" 
-                    onClick={() => handleSuggestionClick('Can you look at my code and tell me what the bug is?\n\n```java\nint x = 10;\nwhile (x > 0) {\n    System.out.println(x);\n}\n```')}
+                    onClick={() => handleSuggestionClick('Can you explain pointers and memory addresses in C++?')}
                   >
-                    Help me debug this code 🐞 <i className="fa-solid fa-chevron-right"></i>
+                    Pointers & References 🐞 <i className="fa-solid fa-chevron-right"></i>
                   </button>
                 </div>
               )}
@@ -225,7 +225,7 @@ function AiTutorWidget() {
               <input
                 type="text"
                 className="ai-tutor-input"
-                placeholder="Ask tutor about Java or DSA..."
+                placeholder="Ask tutor about coding or DSA..."
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 disabled={loading}
