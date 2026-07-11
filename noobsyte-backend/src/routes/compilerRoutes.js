@@ -9,6 +9,7 @@ const router = express.Router();
 const compilerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30, // Limit each user to 30 requests per window
+  validate: { trustProxy: false },
   keyGenerator: (req) => {
     // Limit per authenticated user if available, otherwise by IP
     return req.user ? req.user._id.toString() : req.ip;

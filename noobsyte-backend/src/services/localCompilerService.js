@@ -98,7 +98,7 @@ const findJavaClassName = (sourceCode) => {
 /**
  * Compiles and executes code inside sandboxed Docker containers based on Judge0 language ID.
  * Parameters:
- * - memory: 128m (256m for compile phases)
+ * - memory: 256m for JS/Python, 384m for Java/compiled (to accommodate JVM/V8 overhead)
  * - network: none (network isolation)
  * - pids-limit: 20 (fork bomb protection)
  * - cpus: 0.5 (CPU quota cap)
@@ -141,7 +141,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       const filename = 'index.js';
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
-      const dockerCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app node:18-alpine node index.js`;
+      const dockerCmd = `docker run --rm -i --memory=512m --cpus=0.5 --pids-limit=20 --network=none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=32m --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app node:18-alpine node --max-old-space-size=64 --max-semi-space-size=8 index.js`;
       const result = await runDockerCommand(dockerCmd, stdin, 5000);
 
       cleanup(runCwd);
@@ -160,8 +160,8 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
       const filename = `${className}.java`;
       fs.writeFileSync(path.join(runCwd, filename), sourceCode, 'utf8');
 
-      // Compile Phase (256m memory limit, dynamic write privileges needed inside mount)
-      const compileCmd = `docker run --rm --memory=256m --cpus=0.5 --pids-limit=20 --network=none -v "${dockerVolumePath}:/app" -w /app eclipse-temurin:17-alpine javac ${filename}`;
+      // Compile Phase (512m memory limit, dynamic write privileges needed inside mount)
+      const compileCmd = `docker run --rm --memory=512m --cpus=0.5 --pids-limit=20 --network=none --tmpfs /tmp:rw,noexec,nosuid,size=32m -v "${dockerVolumePath}:/app" -w /app eclipse-temurin:17-alpine javac -J-Xmx256m ${filename}`;
       const compileResult = await runDockerCommand(compileCmd, '', 15000);
 
       if (!compileResult.success) {
@@ -176,8 +176,8 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
         };
       }
 
-      // Execution Phase (128m memory limit, read-only code execution)
-      const runCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app eclipse-temurin:17-alpine java ${className}`;
+      // Execution Phase (512m memory limit, read-only code execution, JVM tuned for containers)
+      const runCmd = `docker run --rm -i --memory=512m --cpus=0.5 --pids-limit=20 --network=none --read-only --tmpfs /tmp:rw,noexec,nosuid,size=32m --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app eclipse-temurin:17-alpine java -Xmx128m -XX:CICompilerCount=2 -XX:+UseSerialGC -XX:+TieredCompilation -XX:TieredStopAtLevel=1 ${className}`;
       const executeResult = await runDockerCommand(runCmd, stdin, 5000);
 
       cleanup(runCwd);
