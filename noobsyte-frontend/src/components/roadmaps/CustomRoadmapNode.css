@@ -1,0 +1,249 @@
+/* noobsyte-frontend/src/components/roadmaps/CustomRoadmapNode.css */
+
+.custom-roadmap-node {
+  width: 340px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  font-family: var(--font-family-sans);
+}
+
+.custom-roadmap-node:hover {
+  border-color: var(--brand-cyan);
+  box-shadow: var(--brand-cyan-glow);
+}
+
+.custom-roadmap-node.is-expanded {
+  border: 1.5px solid var(--brand-cyan);
+  box-shadow: var(--brand-cyan-glow);
+  background-color: var(--bg-primary);
+}
+
+.node-card-inner {
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.node-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.node-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.node-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000000;
+  background-color: var(--brand-cyan);
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--border-radius-sm);
+}
+
+.node-lesson-count {
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.node-lesson-count i {
+  color: var(--brand-cyan);
+  font-size: 0.7rem;
+}
+
+.node-toggle-btn {
+  background-color: var(--brand-cyan-muted);
+  border: 1px solid var(--brand-cyan);
+  color: var(--brand-cyan);
+  width: 26px;
+  height: 26px;
+  border-radius: var(--border-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-roadmap-node:hover .node-toggle-btn {
+  background-color: var(--brand-cyan);
+  color: #000000;
+}
+
+.node-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+/* Expandable Body with Smooth Animation */
+.node-expanded-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.node-expanded-body.expanded {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bg-tertiary);
+}
+
+.node-card-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.node-stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stat-item i {
+  color: var(--brand-cyan);
+}
+
+.node-syllabus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.syllabus-header {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--brand-cyan);
+}
+
+.lessons-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.lessons-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.lessons-list::-webkit-scrollbar-thumb {
+  background-color: var(--brand-cyan);
+  border-radius: 4px;
+}
+
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--bg-tertiary);
+}
+
+.lesson-index {
+  color: var(--brand-cyan);
+  font-weight: 700;
+  font-size: 0.75rem;
+  min-width: 18px;
+}
+
+.lesson-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lesson-time {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--bg-tertiary);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.node-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+}
+
+.node-action-btn {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background-color: var(--brand-cyan);
+  border: none;
+  border-radius: var(--border-radius-md);
+  color: #000000;
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: var(--brand-cyan-glow);
+}
+
+.node-action-btn:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.roadmap-handle {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: var(--brand-cyan) !important;
+  border: 2px solid #000000 !important;
+}

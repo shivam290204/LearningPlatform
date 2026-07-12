@@ -1,4 +1,4 @@
-// Load environment variables as early as possible
+// NoobSyte Production API Server - Gmail Forwarding Active
 require('dotenv').config();
 
 // Handle uncaught operational anomalies gracefully

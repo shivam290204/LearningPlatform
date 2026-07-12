@@ -10,6 +10,7 @@ import LessonViewer from './pages/LessonViewer';
 import Bookmarks from './pages/Bookmarks';
 import CertificateViewer from './pages/CertificateViewer';
 import AiTutorWidget from './components/AiTutorWidget';
+import SupportInboxModal from './components/support/SupportInboxModal';
 import './App.css';
 
 function AppContent() {
@@ -33,6 +34,7 @@ function AppContent() {
     return localStorage.getItem('ns_active_catalog_tab') || 'learning';
   });
   const [selectedCourseSlug, setSelectedCourseSlug] = useState(null);
+  const [showSupportInbox, setShowSupportInbox] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('ns_active_screen', activeScreen);
@@ -178,6 +180,9 @@ function AppContent() {
                 <i className="fa-solid fa-fire icon-badge-streak"></i>
                 {activeStreak} Days
               </div>
+              <button className="btn-support-inbox" onClick={() => setShowSupportInbox(true)} title="View Support Messages Inbox">
+                <i className="fa-solid fa-inbox"></i> Inbox
+              </button>
               <button className="btn-logout" onClick={handleLogout}>Logout</button>
             </>
           ) : (
@@ -294,6 +299,10 @@ function AppContent() {
             <p>© 2026 NoobSyte Educational Platform.</p>
           </footer>
         )
+      )}
+
+      {showSupportInbox && (
+        <SupportInboxModal onClose={() => setShowSupportInbox(false)} />
       )}
 
       {/* Embedded AI Tutor Assistant */}

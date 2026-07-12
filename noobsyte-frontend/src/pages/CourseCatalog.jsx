@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { getCourses, getCourseModules } from '../curriculum/curriculumRegistry';
 import CodeEditorTab from '../components/dashboard/CodeEditorTab';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
+import RoadmapFlow from '../components/roadmaps/RoadmapFlow';
 
 function CourseCatalog({ 
   onSelectLesson, 
@@ -563,84 +564,10 @@ function CourseCatalog({
               SECTION 3: DEVELOPER ROADMAP
               ================================== */}
           <section className="roadmap-section" ref={roadmapRef}>
-            <div className="section-title-wrap text-center">
-              <div className="badge-roadmap">TIMELINE ROADMAP</div>
-              <h2>The Ultimate Programming Learning Path</h2>
-              <p className="section-desc max-w-600">
-                A comprehensive, step-by-step career path mapping out your progression from basic syntax to enterprise systems.
-              </p>
-            </div>
-
-            <div className="roadmap-layout-container">
-              {/* Timeline Scroll Tracker */}
-              <div className="roadmap-timeline-tracker">
-                <div className="roadmap-track-line">
-                  <div 
-                    className="roadmap-track-fill" 
-                    style={{ height: `${((activeRoadmapMod - 1) / 22) * 100}%` }}
-                  ></div>
-                </div>
-
-                <div className="roadmap-nodes-container">
-                  {roadmapModules.map((m) => {
-                    const isActive = activeRoadmapMod === m.num;
-                    const isCompleted = m.num <= topicsMasteredCount;
-                    return (
-                      <div 
-                        key={m.num} 
-                        className={`roadmap-node-row ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
-                        onClick={() => setActiveRoadmapMod(m.num)}
-                      >
-                        <div className="node-bullet-circle">
-                          {isCompleted ? <i className="fa-solid fa-check"></i> : m.num}
-                        </div>
-                        <div className="node-content">
-                          <span className="node-module-num">Module {m.num}</span>
-                          <h4 className="node-module-title">{m.title}</h4>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Active Module Focused Details */}
-              <div className="roadmap-focused-panel">
-                <div className="focused-panel-glow"></div>
-                <div className="focused-header">
-                  <span className="focused-tag">ACTIVE SELECTION MODULE {activeRoadmapMod}</span>
-                  <h3>{roadmapModules[activeRoadmapMod - 1].title}</h3>
-                </div>
-                <p className="focused-desc">
-                  {roadmapModules[activeRoadmapMod - 1].desc}
-                </p>
-                
-                <div className="focused-milestones-box">
-                  <h5>Target Mastery Goals:</h5>
-                  <div className="milestones-checklist">
-                    <div className="milestone-check-row">
-                      <i className="fa-solid fa-circle-check"></i>
-                      <span>Deep dive JVM mechanics and byte-code patterns</span>
-                    </div>
-                    <div className="milestone-check-row">
-                      <i className="fa-solid fa-circle-check"></i>
-                      <span>Explain pointers, memory allocations, and scopes</span>
-                    </div>
-                    <div className="milestone-check-row">
-                      <i className="fa-solid fa-circle-check"></i>
-                      <span>Code-along execution models and debugging labs</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button 
-                  className="btn-primary btn-roadmap-focused"
-                  onClick={() => setActiveCatalogTab('syllabus')}
-                >
-                  Go to Syllabus Module <i className="fa-solid fa-magnifying-glass"></i>
-                </button>
-              </div>
-            </div>
+            <RoadmapFlow 
+              initialLang={fundamentalsLang} 
+              onStartModule={() => setActiveCatalogTab('syllabus')} 
+            />
           </section>
 
 

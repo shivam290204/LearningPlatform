@@ -126,7 +126,8 @@
   box-shadow: 0 0 25px rgba(36, 224, 217, 0.45);
 }
 
-.btn-logout {
+.btn-logout,
+.btn-support-inbox {
   background: none;
   border: 1px solid var(--bg-tertiary);
   color: var(--text-primary);
@@ -136,9 +137,13 @@
   font-weight: 600;
   transition: all 0.2s;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
-.btn-logout:hover {
+.btn-logout:hover,
+.btn-support-inbox:hover {
   border-color: var(--brand-cyan);
   color: var(--brand-cyan);
   background-color: var(--brand-cyan-muted);
