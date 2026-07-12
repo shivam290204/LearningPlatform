@@ -20,7 +20,7 @@
 12. [Deployment & DevOps Guide](#12-deployment--devops-guide)
 13. [SEO & Indexing Strategy](#13-seo--indexing-strategy)
 14. [Monetization Architecture](#14-monetization-architecture)
-15. [Innovative Roadmap Features](#15-innovative-roadmap-features)
+15. [Innovative Roadmap & Hybrid Support Architecture](#15-innovative-roadmap--hybrid-support-architecture)
 16. [MVP Development Roadmap & Sprints](#16-mvp-development-roadmap--sprints)
 
 ---
@@ -1185,11 +1185,41 @@ While NoobSyte's core lessons are completely free, the platform includes a scala
 
 ---
 
-## 15. INNOVATIVE ROADMAP FEATURES
+## 15. INNOVATIVE ROADMAP & HYBRID SUPPORT ARCHITECTURE
 
-To provide a complete learning experience, we will introduce several interactive tools in Phase 2.
+NoobSyte incorporates cutting-edge interactive learning roadmaps alongside an enterprise-grade multi-channel support communication system.
 
-### 1. Web-Assembly & Serverless Code Compiler
+### 1. Silicon Valley Glassmorphic Interactive Roadmaps (`RoadmapFlow.jsx`)
+NoobSyte replaces static syllabus lists with an interactive, top-down visual curriculum canvas powered by `ReactFlow`:
+* **Interactive Track Selection Deck:** Learners choose between 4 dedicated engineering tracks:
+  1. **Java Learning Path** (28 Modules • Core Java to Enterprise Architecture)
+  2. **Python Ecosystem** (24 Modules • Scripting, Automation & AI/ML)
+  3. **C++ Engineering** (20 Modules • STL, Memory & Low-Level Mastery)
+  4. **DSA & Algorithms** (18 Modules • Big-O, Trees, Graphs & Dynamic Programming)
+* **On-Demand Expandable Nodes:** All nodes load collapsed by default (`Click to expand topics ↓`) to maintain visual clarity. Clicking any node expands its full breakdown of real lessons, duration estimates, and direct navigation links.
+* **Strict 3-Color Design System Adherence:** The entire roadmap canvas, glassmorphic track cards, neon glowing badges, and animated connection edges strictly follow the project's signature **Cyber Cyan (`#24E0D9`)** and **Pure Black (`#000000`)** design palette.
+
+### 2. Hybrid Multi-Channel Support & Inbox System
+Every submission through the platform's footer **Contact Us** form is processed through a resilient 3-tier delivery pipeline:
+
+```mermaid
+graph TD
+    User[Learner / Visitor] -->|Submits Contact Form| API[Express API: POST /api/v1/contact]
+    API -->|1. Persistent Storage| DB[(MongoDB: ContactMessage Collection)]
+    API -->|2. Instant Alert| Terminal[Live Backend Terminal Banner Log]
+    API -->|3. Nodemailer SMTP| Gmail[Forward to Admin Gmail Address]
+    
+    subgraph Admin Management
+        Nav[Navbar Support Inbox Modal] -->|GET /api/v1/contact| DB
+    end
+```
+
+* **Tier 1: Permanent Database Log (`ContactMessage` Schema):** Every message is saved to MongoDB with sender metadata, timestamps, and read status.
+* **Tier 2: Real-Time Terminal Alert:** The backend server prints an immediate, formatted notification banner directly to the developer console.
+* **Tier 3: Automatic Gmail Forwarding (`utils/sendEmail.js`):** Using Nodemailer and Gmail App Passwords (`EMAIL_USER`, `EMAIL_PASS`, `CONTACT_RECEIVER_EMAIL`), messages are forwarded instantly to the administrator's personal inbox (`shivam290204tiwari@gmail.com`).
+* **In-App Support Inbox Modal (`SupportInboxModal.jsx`):** Logged-in users can click the **`<i class="fa-solid fa-inbox"></i> Inbox`** button in the top navigation bar to open a sleek glassmorphic inbox displaying all received messages, complete with live keyword search and **Reply via Email** actions.
+
+### 3. Web-Assembly & Serverless Code Compiler
 Users can write and run Java code directly in their browser without installing anything locally.
 
 ```mermaid
@@ -1203,12 +1233,12 @@ graph LR
 
 *   **Security:** Code runs in isolated sandboxes with strict execution timeouts (2 seconds) to prevent server misuse.
 
-### 2. State-Based DSA Visualizer
+### 4. State-Based DSA Visualizer
 An interactive tool that animates data structures in real-time as users modify them:
 *   **Technology:** Built using React and SVG/D3 to render memory layouts dynamically.
 *   **Visualizations:** Users can watch how nodes are added or removed in Linked Lists, Stacks, Queues, and Binary Search Trees step-by-step.
 
-### 3. Context-Aware AI Study Assistant
+### 5. Context-Aware AI Study Assistant
 An AI tutor built directly into lessons to help users who get stuck:
 *   **How it works:** Uses a secure backend server to send the current lesson content and the user's question to the Gemini API (`gemini-2.5-flash`), returning an instant, beginner-friendly explanation.
 
