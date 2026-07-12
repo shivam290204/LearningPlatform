@@ -180,9 +180,11 @@ function AppContent() {
                 <i className="fa-solid fa-fire icon-badge-streak"></i>
                 {activeStreak} Days
               </div>
-              <button className="btn-support-inbox" onClick={() => setShowSupportInbox(true)} title="View Support Messages Inbox">
-                <i className="fa-solid fa-inbox"></i> Inbox
-              </button>
+              {user.role === 'admin' && (
+                <button className="btn-support-inbox" onClick={() => setShowSupportInbox(true)} title="View Admin Support Inbox">
+                  <i className="fa-solid fa-inbox"></i> Inbox
+                </button>
+              )}
               <button className="btn-logout" onClick={handleLogout}>Logout</button>
             </>
           ) : (

@@ -155,4 +155,20 @@ const seedDB = async () => {
   }
 };
 
+/*
+ * =========================================================================================
+ * ADMIN ROLE PROMOTION GUIDE
+ * =========================================================================================
+ * To access protected admin endpoints (such as the Support Messages Inbox GET /api/v1/contact),
+ * a user must have role: 'admin' in their User document.
+ * 
+ * To promote an existing user to admin via mongosh or MongoDB Atlas UI shell:
+ * 
+ *   db.users.updateOne({ email: 'yourpersonalemail@gmail.com' }, { $set: { role: 'admin' } })
+ * 
+ * Or in Node.js / Mongoose shell:
+ *   await User.findOneAndUpdate({ email: 'yourpersonalemail@gmail.com' }, { role: 'admin' });
+ * =========================================================================================
+ */
+
 seedDB();

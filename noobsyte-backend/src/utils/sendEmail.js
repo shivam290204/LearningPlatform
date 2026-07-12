@@ -8,8 +8,8 @@ const sendEmail = async (options) => {
   const emailUser = process.env.EMAIL_USER;
   const emailPass = process.env.EMAIL_PASS;
 
-  if (!emailUser || !emailPass || emailUser.includes('yourpersonalemail')) {
-    // If credentials aren't set in .env yet or are default placeholders, skip SMTP sending
+  if (!emailUser || !emailPass) {
+    // If credentials aren't set in .env yet, skip SMTP sending
     return false;
   }
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { submitContactMessage, getContactMessages } = require('../controllers/contactController');
+const { protect, restrictTo } = require('../middlewares/auth');
 
 const router = express.Router();
 
@@ -17,6 +18,6 @@ const contactLimiter = rateLimit({
 });
 
 router.post('/', contactLimiter, submitContactMessage);
-router.get('/', getContactMessages);
+router.get('/', protect, restrictTo('admin'), getContactMessages);
 
 module.exports = router;

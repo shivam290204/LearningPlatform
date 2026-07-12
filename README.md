@@ -786,6 +786,12 @@ exports.restrictTo = (...roles) => {
 };
 ```
 
+### Promoting a User to Admin (`role: 'admin'`)
+To access protected administrative endpoints (such as `GET /api/v1/contact` or the Support Inbox modal), execute the following one-line command in MongoDB Compass, Atlas UI, or `mongosh`:
+```javascript
+db.users.updateOne({ email: 'shivam290204tiwari@gmail.com' }, { $set: { role: 'admin' } })
+```
+
 ---
 
 ## 7. ADMIN PANEL DESIGN
