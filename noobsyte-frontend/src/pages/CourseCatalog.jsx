@@ -7,8 +7,8 @@ import CodeEditorTab from '../components/dashboard/CodeEditorTab';
 import InteractiveVisualizer from '../components/dashboard/InteractiveVisualizer';
 import RoadmapFlow from '../components/roadmaps/RoadmapFlow';
 
-function CourseCatalog({ 
-  onSelectLesson, 
+function CourseCatalog({
+  onSelectLesson,
   onClaimCertificate,
   activeCatalogTab,
   setActiveCatalogTab,
@@ -25,6 +25,15 @@ function CourseCatalog({
   const [dsaLang, setDsaLang] = useState(() => {
     return localStorage.getItem('noobsyte_selected_lang') || 'java';
   });
+
+  const [certPreviewName, setCertPreviewName] = useState(user ? user.name : '');
+  const [certPreviewCourseSlug, setCertPreviewCourseSlug] = useState('java-masterclass-core-to-advanced');
+
+  useEffect(() => {
+    if (user && !certPreviewName) {
+      setCertPreviewName(user.name);
+    }
+  }, [user]);
 
   // Ref for roadmap scrolling
   const roadmapRef = useRef(null);
@@ -321,14 +330,14 @@ function CourseCatalog({
   if (dsaCourse) {
     consolidatedCoursesList.push({ ...dsaCourse, isFundamentals: false });
   }
-  
+
   const getMergedModules = (courseSlug) => {
     const backendModules = modules || [];
     const localModules = getCourseModules(courseSlug);
-    
+
     return localModules.map((localMod, modIdx) => {
       const backendMod = backendModules.find(bm => bm.title === localMod.title) || backendModules[modIdx] || {};
-      
+
       const mergedLessons = localMod.lessons.map((localLes, lesIdx) => {
         const backendLes = (backendMod.lessons || []).find(l => l.slug === localLes.slug) || (backendMod.lessons || [])[lesIdx] || {};
         return {
@@ -339,7 +348,7 @@ function CourseCatalog({
           time: localLes.estTime || backendLes.time || '10 min'
         };
       });
-      
+
       return {
         ...localMod,
         _id: backendMod._id,
@@ -381,7 +390,7 @@ function CourseCatalog({
 
   return (
     <div className={`catalog-wrapper ${activeCatalogTab === 'sandbox' ? 'sandbox-active' : ''}`}>
-      
+
       {/* Workspace Tabs Navigation Row */}
       <div className="workspace-tabs-row">
         <button
@@ -467,13 +476,13 @@ function CourseCatalog({
 
             {/* Hero CTAs */}
             <div className="hero-cta-group">
-              <button 
-                className="btn-primary btn-hero-primary" 
+              <button
+                className="btn-primary btn-hero-primary"
                 onClick={() => setActiveCatalogTab('syllabus')}
               >
                 Start Learning <i className="fa-solid fa-arrow-right" style={{ marginLeft: '0.5rem' }}></i>
               </button>
-              <button 
+              <button
                 className="btn-secondary btn-hero-secondary"
                 onClick={() => scrollToSection(roadmapRef)}
               >
@@ -564,9 +573,9 @@ function CourseCatalog({
               SECTION 3: DEVELOPER ROADMAP
               ================================== */}
           <section className="roadmap-section" ref={roadmapRef}>
-            <RoadmapFlow 
-              initialLang={fundamentalsLang} 
-              onStartModule={() => setActiveCatalogTab('syllabus')} 
+            <RoadmapFlow
+              initialLang={fundamentalsLang}
+              onStartModule={() => setActiveCatalogTab('syllabus')}
             />
           </section>
 
@@ -592,7 +601,7 @@ function CourseCatalog({
           ) : (
             <div className="catalog-grid">
               {consolidatedCoursesList.map((course) => {
-                const isExpanded = course.isFundamentals 
+                const isExpanded = course.isFundamentals
                   ? (selectedCourseSlug === 'java-masterclass-core-to-advanced' || selectedCourseSlug === 'python-fundamentals' || selectedCourseSlug === 'cpp-fundamentals')
                   : selectedCourseSlug === 'java-dsa-masterclass';
                 return (
@@ -600,19 +609,19 @@ function CourseCatalog({
                     key={course.slug}
                     className={`catalog-card-container ${isExpanded ? 'expanded' : ''}`}
                   >
-                    <div 
+                    <div
                       className="catalog-course-card"
                       onClick={() => course.isFundamentals ? handleCourseClick(langToSlug[fundamentalsLang]) : handleCourseClick(course.slug)}
                     >
                       <div className="catalog-badge">Mastery Track</div>
                       <h3>
-                        {course.isFundamentals 
-                          ? 'Programming Fundamentals' 
-                          : (dsaLang === 'java' 
-                              ? 'Java DSA: Master Data Structures & Algorithms' 
-                              : (dsaLang === 'python' 
-                                  ? 'Python DSA: Master Data Structures & Algorithms' 
-                                  : 'C++ DSA: Master Data Structures & Algorithms'))}
+                        {course.isFundamentals
+                          ? 'Programming Fundamentals'
+                          : (dsaLang === 'java'
+                            ? 'Java DSA: Master Data Structures & Algorithms'
+                            : (dsaLang === 'python'
+                              ? 'Python DSA: Master Data Structures & Algorithms'
+                              : 'C++ DSA: Master Data Structures & Algorithms'))}
                       </h3>
 
                       <div className="topic-chip-row">
@@ -623,25 +632,25 @@ function CourseCatalog({
                           <span key={topic} className="topic-chip">{topic}</span>
                         ))}
                       </div>
-                      
+
                       {/* Language Selector for Fundamentals card block */}
                       {course.isFundamentals && (
                         <div className="lang-toggle-bar" onClick={(e) => e.stopPropagation()}>
                           <span className="lang-toggle-label">Language:</span>
                           <div className="lang-toggle-buttons">
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${fundamentalsLang === 'java' ? 'active' : ''}`}
                               onClick={(e) => handleFundamentalsLangSelect('java', e)}
                             >
                               <i className="fa-brands fa-java"></i> Java
                             </button>
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${fundamentalsLang === 'python' ? 'active' : ''}`}
                               onClick={(e) => handleFundamentalsLangSelect('python', e)}
                             >
                               <i className="fa-brands fa-python"></i> Python
                             </button>
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${fundamentalsLang === 'cpp' ? 'active' : ''}`}
                               onClick={(e) => handleFundamentalsLangSelect('cpp', e)}
                             >
@@ -656,19 +665,19 @@ function CourseCatalog({
                         <div className="lang-toggle-bar" onClick={(e) => e.stopPropagation()}>
                           <span className="lang-toggle-label">Language:</span>
                           <div className="lang-toggle-buttons">
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${dsaLang === 'java' ? 'active' : ''}`}
                               onClick={(e) => handleDsaLangSelect('java', e)}
                             >
                               <i className="fa-brands fa-java"></i> Java
                             </button>
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${dsaLang === 'python' ? 'active' : ''}`}
                               onClick={(e) => handleDsaLangSelect('python', e)}
                             >
                               <i className="fa-brands fa-python"></i> Python
                             </button>
-                            <button 
+                            <button
                               className={`lang-toggle-btn ${dsaLang === 'cpp' ? 'active' : ''}`}
                               onClick={(e) => handleDsaLangSelect('cpp', e)}
                             >
@@ -709,9 +718,9 @@ function CourseCatalog({
                           {(() => {
                             const stats = getCourseCompletionStats(course.slug);
                             const isCourseCompleted = stats.total > 0 && stats.completed === stats.total;
-                            
+
                             return (
-                              <button 
+                              <button
                                 className={`btn-claim-cert ${isCourseCompleted ? 'completed-glow' : ''}`}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -847,76 +856,181 @@ function CourseCatalog({
             SECTION 8: CERTIFICATION SECTION
             ================================== */
         <section className="certification-promo-section">
-          <div className="certificate-showcase-panel">
-            <div className="certificate-mock-glow"></div>
-            
-            <div className="certificate-mock-frame">
-              <div className="cert-border-accent"></div>
-              <div className="cert-header">
-                <div className="cert-logo">noob<span>Syte</span></div>
-                <span className="cert-doc-type">CERTIFICATE OF COMPLETION</span>
-              </div>
-              
-              <div className="cert-body">
-                <span className="cert-presentation">This certifies that</span>
-                <h4>[ YOUR FULL NAME ]</h4>
-                <p>has successfully completed the course</p>
-                <h5 className="cert-course-title">Programming Fundamentals & Data Structures</h5>
-                <p>demonstrating proficiency through hands-on coding exercises, interactive simulations, and assessed problem-solving across the full curriculum.</p>
-              </div>
+          {/* Dynamic selectors and telemetry tracking for high-fidelity interactive review */}
+          {(() => {
+            const fundamentalsSlug = langToSlug[fundamentalsLang] || 'java-masterclass-core-to-advanced';
+            const dsaSlug = 'java-dsa-masterclass';
 
-              <div className="cert-footer">
-                <div className="cert-seal-wrap">
-                  <div className="cert-seal">
-                    <i className="fa-solid fa-graduation-cap"></i>
+            // Set dynamic selection lists based on languages
+            const activePreviewCourse = displayedCourses.find(c => c.slug === certPreviewCourseSlug) || displayedCourses[0] || {};
+            const previewCourseTitle = activePreviewCourse.slug === dsaSlug
+              ? (dsaLang === 'java' ? 'Java DSA: Data Structures & Algorithms' : dsaLang === 'python' ? 'Python DSA: Data Structures & Algorithms' : 'C++ DSA: Data Structures & Algorithms')
+              : (activePreviewCourse.title || 'Programming Fundamentals & Data Structures');
+
+            const stats = getCourseCompletionStats(certPreviewCourseSlug);
+            const isCourseCompleted = stats.percent === 100;
+
+            return (
+              <div className="certificate-showcase-panel">
+                <div className="certificate-mock-glow"></div>
+
+                {/* 3D Perspective Certificate Preview Frame */}
+                <div className="certificate-mock-card-wrapper">
+                  <div className="certificate-mock-frame">
+                    <div className="cert-watermark-mesh"></div>
+                    <div className="cert-border-accent-outer"></div>
+                    <div className="cert-border-accent-inner"></div>
+
+                    <div className="cert-header">
+                      <div className="cert-logo">noob<span>Syte</span></div>
+                      <span className="cert-doc-type">VERIFIED GRADUATE CREDENTIAL</span>
+                    </div>
+
+                    <div className="cert-body">
+                      <span className="cert-presentation">This is to officially certify that</span>
+                      <h4 className="cert-recipient-name">{certPreviewName.trim() || '[ YOUR FULL NAME ]'}</h4>
+                      <p className="cert-completion-statement">has successfully completed the interactive learning track and validated all self-assessment quizzes for</p>
+                      <h5 className="cert-course-title">{previewCourseTitle}</h5>
+                      <p className="cert-course-desc">demonstrating a solid comprehension of programming syntax, variable references, memory management models, and object-oriented architecture.</p>
+                    </div>
+
+                    <div className="cert-footer">
+                      <div className="cert-seal-wrap">
+                        <div className="cert-gold-seal">
+                          <div className="seal-ribbon ribbon-left"></div>
+                          <div className="seal-ribbon ribbon-right"></div>
+                          <div className="seal-core">
+                            <i className="fa-solid fa-graduation-cap"></i>
+                          </div>
+                        </div>
+                        <div className="cert-id-info">
+                          <span className="cert-id-label">CREDENTIAL ID</span>
+                          <span className="cert-id-value">NBS-{certPreviewCourseSlug === dsaSlug ? 'DSA' : 'FUND'}-2026-VAL</span>
+                        </div>
+                      </div>
+
+                      <div className="cert-signature-wrap">
+                        <span className="cert-signature-sign">NoobSyte Academic Board</span>
+                        <span className="cert-signature-line"></span>
+                        <span className="cert-date">Issued: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                      </div>
+                    </div>
                   </div>
-                  <span>CERTIFICATE ID: NBS-2026-XXXXX</span>
                 </div>
-                <div className="cert-date-wrap">
-                  <span className="cert-signature-line">NoobSyte Academic Board</span>
-                  <span className="cert-date">Issued: June 1, 2026</span>
+
+                {/* Right controls layout panel */}
+                <div className="certificate-details-info">
+                  <span className="badge-features">CREDENTIAL BUILDER</span>
+                  <h2>Personalize & Preview Your Certificate</h2>
+
+                  {/* Select Course Preview */}
+                  <div className="builder-control-group">
+                    <label className="control-label">SELECT SYSTEM TRACK:</label>
+                    <div className="cert-course-tabs">
+                      <button
+                        className={`cert-course-tab ${certPreviewCourseSlug === fundamentalsSlug ? 'active' : ''}`}
+                        onClick={() => setCertPreviewCourseSlug(fundamentalsSlug)}
+                      >
+                        <i className="fa-solid fa-code"></i> Fundamentals
+                      </button>
+                      <button
+                        className={`cert-course-tab ${certPreviewCourseSlug === dsaSlug ? 'active' : ''}`}
+                        onClick={() => setCertPreviewCourseSlug(dsaSlug)}
+                      >
+                        <i className="fa-solid fa-diagram-project"></i> DSA Masterclass
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Interactive Name Preview Field */}
+                  <div className="builder-control-group">
+                    <label className="control-label" htmlFor="cert-name-input">STUDENT NAME ON CERTIFICATE:</label>
+                    <div className="cert-input-wrapper">
+                      <i className="fa-solid fa-user-edit input-icon"></i>
+                      <input
+                        type="text"
+                        id="cert-name-input"
+                        placeholder="Enter your name to preview..."
+                        value={certPreviewName}
+                        onChange={(e) => setCertPreviewName(e.target.value)}
+                        maxLength={40}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Progress Telemetry */}
+                  <div className="builder-progress-section">
+                    <div className="progress-section-header">
+                      <span className="progress-label">YOUR TRACK PROGRESS:</span>
+                      <span className={`progress-percentage ${isCourseCompleted ? 'completed' : ''}`}>
+                        {stats.completed}/{stats.total} Lessons ({stats.percent}%)
+                      </span>
+                    </div>
+
+                    {/* Visual Progress Bar */}
+                    <div className="progress-bar-outer">
+                      <div
+                        className={`progress-bar-inner ${isCourseCompleted ? 'completed-pulse' : ''}`}
+                        style={{ width: `${stats.percent}%` }}
+                      ></div>
+                    </div>
+
+                    {/* Verification Checklist */}
+                    <div className="milestones-checklist">
+                      <div className={`milestone-check-row ${stats.percent > 0 ? 'achieved' : ''}`}>
+                        <i className={stats.percent > 0 ? "fa-solid fa-circle-check" : "fa-regular fa-circle"}></i>
+                        <span>Start course curriculum ({stats.completed} lessons completed)</span>
+                      </div>
+                      <div className={`milestone-check-row ${isCourseCompleted ? 'achieved' : ''}`}>
+                        <i className={isCourseCompleted ? "fa-solid fa-circle-check" : "fa-regular fa-circle"}></i>
+                        <span>Complete all lessons in this syllabus track</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Interactive Action Buttons */}
+                  {isCourseCompleted ? (
+                    <div className="claim-box active-glow">
+                      <div className="claim-text">
+                        <i className="fa-solid fa-circle-check claim-icon-success"></i>
+                        <div>
+                          <strong>Congratulations!</strong>
+                          <p>You have unlocked the verified credentials for this track.</p>
+                        </div>
+                      </div>
+                      <button
+                        className="btn-primary btn-claim-now"
+                        onClick={() => {
+                          if (!user) {
+                            alert('Please sign in to claim verified credentials!');
+                            return;
+                          }
+                          onClaimCertificate(certPreviewCourseSlug);
+                        }}
+                      >
+                        <i className="fa-solid fa-graduation-cap"></i> Claim Verified Certificate
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn-primary btn-cert-cta"
+                      onClick={() => {
+                        setActiveCatalogTab('syllabus');
+                        setSelectedCourseSlug(certPreviewCourseSlug);
+                        setTimeout(() => {
+                          if (modulesRef.current) {
+                            modulesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }, 150);
+                      }}
+                    >
+                      Continue Syllabus & Unlock <i className="fa-solid fa-arrow-right" style={{ marginLeft: '0.5rem' }}></i>
+                    </button>
+                  )}
                 </div>
               </div>
-            </div>
-
-            <div className="certificate-details-info">
-              <span className="badge-features">CREDENTIAL OVERVIEW</span>
-              <h2>Earn Your Verified Completion Certificate</h2>
-              <p>
-                Show what you've learned. Complete every module, pass each quiz, and build a consistent 
-                learning streak to earn a verified certificate you can share on your resume or LinkedIn.
-              </p>
-              
-              <div className="milestones-checklist mb-4">
-                <div className="milestone-check-row">
-                  <i className="fa-solid fa-circle-check"></i>
-                  <span>Complete every lesson in the course</span>
-                </div>
-                <div className="milestone-check-row">
-                  <i className="fa-solid fa-circle-check"></i>
-                  <span>Pass all module quizzes</span>
-                </div>
-                <div className="milestone-check-row">
-                  <i className="fa-solid fa-circle-check"></i>
-                  <span>Download a shareable, verifiable PDF certificate</span>
-                </div>
-              </div>
-
-              <button 
-                className="btn-primary btn-cert-cta"
-                onClick={() => {
-                  setActiveCatalogTab('syllabus');
-                  setTimeout(() => {
-                    if (modulesRef.current) {
-                      modulesRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }, 100);
-                }}
-              >
-                Start Course & Claim Certificate <i className="fa-solid fa-arrow-right" style={{ marginLeft: '0.5rem' }}></i>
-              </button>
-            </div>
-          </div>
+            );
+          })()}
         </section>
       )}
 
