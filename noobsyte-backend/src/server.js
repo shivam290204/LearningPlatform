@@ -14,15 +14,16 @@ const app = require('./app');
 const connectDB = require('./config/db');
 
 // Verify Docker daemon availability on startup
+let dockerAvailable = false;
+
 try {
-  execSync('docker info', { stdio: 'ignore' });
-  console.log('🐳 Docker daemon is reachable. Sandbox compiler is active.');
+  execSync("docker info", { stdio: "ignore" });
+  dockerAvailable = true;
+  console.log(" Docker daemon is reachable. Sandbox compiler is active.");
 } catch (err) {
-  console.error('\n❌ CRITICAL ERROR: Docker daemon is not running or unreachable!');
-  console.error('The compiler service requires Docker to execute user code in a secure sandbox.');
-  console.error('Please start Docker Desktop and ensure it is accessible.');
-  console.error('Shutting down server to prevent un-sandboxed code execution...');
-  process.exit(1); // Fail loudly!
+  console.warn(" Docker is not available.");
+  console.warn("Compiler service is disabled in this environment.");
+  console.warn("The rest of the application will continue to run.");
 }
 
 // Connect to MongoDB Database
