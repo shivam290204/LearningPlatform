@@ -125,7 +125,7 @@ const executeLocally = async (sourceCode, languageId, stdin = '') => {
 
       const dockerCmd = `docker run --rm -i --memory=128m --cpus=0.5 --pids-limit=20 --network=none --read-only --user=1000:1000 -v "${dockerVolumePath}:/app:ro" -w /app python:3.10-alpine python -B main.py`;
       const result = await runCommand(dockerCmd, runCwd, stdin, 5000);
-      
+
       cleanup(runCwd);
       return {
         stdout: result.stdout,
